@@ -3,6 +3,16 @@
 @import "base";
 @import url(http://fonts.googleapis.com/css?family=Copse);
 
+@font-face {
+  font-family: 'icon';
+  src: url('/assets/fonts/icon.eot');
+  src: url('/assets/fonts/icon.eot?#iefix') format('embedded-opentype'),
+       url('/assets/fonts/icon.woff') format('woff'),
+       url('/assets/fonts/icon.ttf') format('truetype'),
+       url('/assets/fonts/icon.svg#icon') format('svg');
+  font-weight: normal; font-style: normal;
+}
+
 // Typography
 
 $slab: "Copse";
@@ -140,7 +150,8 @@ body {
     .comment-body {
       width:$width-medium;
       @include commentBox(#fff);
-      padding:30px 40px;
+      padding:30px 35px;
+      overflow:hidden;
       
       h1 {
         font-family:$sans;
@@ -158,11 +169,24 @@ body {
       
       .tags {
         margin:0;
+        overflow:hidden;
+        float:left;
         padding:10px 0 0 0;
+        
+        &:before {
+          content: "\e70c";
+          font-family: icon;
+          float:left;
+          margin-right:5px;
+          color:$accent-red;
+          line-height:25px;
+        }
       
         li {
-          display:inline;
+          display:block;
+          float:left;
           font-size:15px;
+          line-height:25px;
       
           + li:before {
             content:", ";
@@ -172,6 +196,45 @@ body {
           a {
             color:$accent-red;
             text-decoration:none;
+          }
+        }
+      }
+      
+      .actions {
+        float:right;
+        margin:0;
+        padding:10px 0 0 0;
+        list-style:none;
+        
+        li {
+          float:left;
+        }
+        
+        a {
+          display:block;
+          font-size:11px;
+          color:#fff;
+          font-family:$sans;
+          border-radius:4px;
+          border:1px solid #653f3f;
+          font-weight:bold;
+          text-decoration:none;
+          padding:5px 10px;
+          margin-left:10px;
+          text-shadow:0 -1px rgba(#000,.25);
+          box-shadow:0 1px 0 #d193ae inset;
+          background:mix(#ba6088,#721840);
+          @include background(linear-gradient(#ba6088 10%,#721840));
+          
+          &:hover {
+            background:lighten(mix(#ba6088,#721840),10%);
+            @include background(linear-gradient(lighten(#ba6088,10%) 10%,lighten(#721840,10%)));  
+          }
+          
+          &:active {
+            box-shadow:none;
+            background:lighten(mix(#ba6088,#721840),10%);
+            @include background(linear-gradient(#721840 10%,darken(#ba6088,10%)));  
           }
         }
       }

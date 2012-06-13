@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>
+Created by FontForge 20100429 at Wed Jun 13 02:03:01 2012
+ By root
+Copyright (C) 2012 by original authors @ fontello.com
+</metadata>
+<defs>
+<font id="icon" horiz-adv-x="900" >
+  <font-face 
+    font-family="fontello"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="1000"
+    panose-1="2 0 6 9 0 0 0 0 0 0"
+    ascent="800"
+    descent="-200"
+    bbox="0 -100 900 800"
+    underline-thickness="50"
+    underline-position="-100"
+    unicode-range="U+E70C-E70C"
+  />
+<missing-glyph 
+d="M33 0v666h265v-666h-265zM66 33h199v600h-199v-600z" />
+    <glyph glyph-name=".notdef" 
+d="M33 0v666h265v-666h-265zM66 33h199v600h-199v-600z" />
+    <glyph glyph-name=".null" horiz-adv-x="0" 
+ />
+    <glyph glyph-name="nonmarkingreturn" 
+ />
+    <glyph glyph-name="uniE70C" unicode="&#xe70c;" 
+d="M756 534.5q25 25.5 25 61t-25 60.5t-60.5 25t-61 -25t-25.5 -60.5t25.5 -61t61 -25.5t60.5 25.5zM900 678v-242l-536 -536l-364 364l536 536h242z" />
+  </font>
+</defs></svg>
