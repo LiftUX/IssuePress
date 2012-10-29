@@ -8,6 +8,7 @@ Author: Upthemes
 Author URI: http://upthemes.com/ 
 */
 
+require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
 
 class UPIP_API_Endpoint{

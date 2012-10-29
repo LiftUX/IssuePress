@@ -27,6 +27,46 @@ function UPIP_draw_options_panel() { ?>
         <td><input type="password" name="upip_options[p]" value="<?php echo $options['p']; ?>" /></td>
       </tr>
 
+<?php if(!empty($options['u']) && !empty($options['p'])) {
+
+  $client = new Github\Client();
+  $client->authenticate($options['u'], $options['p'], Github\Client::AUTH_HTTP_PASSWORD);
+  $gh_repos = $client->api('current_user')->repositories();
+?>
+      <tr valign="top"><th scope="row">Repos (Check the ones you want added to IssuePress)</th>
+        <td>
+          <table>
+            <thead>
+              <td></td>
+              <td>Repo Name</td>
+              <td>Open Issues</td>
+              <td>Private</td>
+            </thead>
+
+<?php foreach($gh_repos as $index => $item) {
+
+  if(in_array($item['name'], $options['r'])){
+    $checked = 'checked="checked"';
+  } else { $checked = ''; }
+
+  echo '<tr>';
+  echo '<td><input type="checkbox" name="upip_options[r][]" value="'.$item['name'].'" '.$checked.'></td>';
+  echo '<td><strong>'.$item['name'].'</strong></td>';
+  echo '<td>'.$item['open_issues'].'</td>';
+  if($item['private'])
+    $private_repo = 'True';
+  else
+    $private_repo = 'False';
+  echo '<td>'.$private_repo.'</td>';
+  echo '</tr>';
+
+} ?>
+
+          </table>
+        </td>
+      </tr>
+<?php } ?>
+
     </table>
 
     <p class="submit">
