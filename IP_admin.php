@@ -32,6 +32,7 @@ function UPIP_draw_options_panel() { ?>
   $client = new Github\Client();
   $client->authenticate($options['u'], $options['p'], Github\Client::AUTH_HTTP_PASSWORD);
   $gh_repos = $client->api('current_user')->repositories();
+
 ?>
       <tr valign="top"><th scope="row">Repos (Check the ones you want added to IssuePress)</th>
         <td>
