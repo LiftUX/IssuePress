@@ -11,13 +11,14 @@ $sans: "Helvetica","Arial",sans-serif;
 // Width
 
 $width-full:   750px;
-$width-small:  (530px/$width-full) * 100%;
-$width-medium: (600px/$width-full) * 100%;
+$width-small:  70.6666667%;
+$width-medium: 81.0810811%;
 
 // Colors
 
 $accent-red:    #b08a8b;
 $accent-yellow: #fce896;
+$accent-purple: #905d87;
 
 @mixin commentBox($color,$arrow:"none") {
   border-radius:4px;
@@ -125,6 +126,7 @@ body {
     .avatar-wrap {
       margin-right:10px;
       margin-top:9px;
+      width:auto;
       
       img {
         width:32px;
@@ -221,22 +223,105 @@ body {
     line-height:40px;
     box-shadow:0 0 10px #000 inset;
     border-radius:50em;
+    width:11.3%;
     
     img {
       display:block;
       border-radius:50em;
       z-index:-1;
+      max-width:100%;
     }
   }
   
   &.staff {
   
     .comment-body {
-      @include commentBox($accent-yellow,right); 
+      @include commentBox($accent-yellow,right);
     }
     
     .avatar-wrap {
       float:right;
+    }
+  }
+}
+
+header {
+  h1 {
+    font-family:$sans;
+    font-size:22px;
+    color:darken($accent-purple,20%);
+  }
+}
+
+form#search-issues {
+  margin-bottom:20px;
+
+  input {
+    width:100%;
+    border:0;
+    @include commentBox(#fff);
+    font-weight:bold;
+    font-size:18px;
+    padding-top:15px;
+    padding-bottom:15px;
+    color:$accent-purple;
+
+    &::-webkit-input-placeholder {
+      color:lighten($accent-purple,30%);
+    }
+  }
+}
+
+#new-issue {
+  display:block;
+  background:image-url("chat-icon.png") center 35% no-repeat;
+  background-size:50% auto;
+  background-color:$accent-purple;
+  border-radius:50% 50% 4px 4px;
+  width:20%;
+  float:left;
+  height:0;
+  text-align:center;
+  color:#fff;
+  font-family:$sans;
+  padding-top:14%;
+  padding-bottom:5.5%;
+  font-weight:bold;
+  text-decoration:none;
+  font-size:14px;
+  @include transition(200ms);
+
+  &:hover {
+    background-color:darken($accent-purple,10%);
+  }
+}
+
+.main-links {
+  float:left;
+  width:80%;
+  list-style:none;
+  margin:0;
+  padding:0 0 0 20px;
+  overflow:hidden;
+
+  li {
+    margin-bottom:10px;
+  }
+
+  a {
+    display:block;
+    padding:15px;
+    background:lighten($accent-purple,40%);
+    color:$accent-purple;
+    font-weight:bold;
+    text-decoration:none;
+    font-size:14px;
+    border-radius:4px;
+    font-family:$sans;
+    @include transition(200ms);
+
+    &:hover {
+      background-color:lighten($accent-purple,35%);
     }
   }
 }
