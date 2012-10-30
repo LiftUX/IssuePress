@@ -24,8 +24,12 @@ class UPIP_API_Endpoint{
   */
   public function __construct(){
     add_filter('query_vars', array($this, 'add_query_vars'), 0);
-    add_action('parse_request', array($this, 'sniff_requests'), 0);
     add_action('init', array($this, 'add_endpoint'), 0);
+    add_action('parse_request', array($this, 'sniff_requests'), 0);
+
+    add_action('init', array($this, 'create_cpt_repo'), 0);
+    add_action('init', array($this, 'create_cpt_issue'), 0);
+
   } 
   
   /** Add public query vars
@@ -60,6 +64,66 @@ class UPIP_API_Endpoint{
     }
   }
   
+  /** Creates The WP Custom Post Type for Repos
+  * @return void
+  */
+  public function create_cpt_repo(){
+    register_post_type( 'repos',
+      array(
+        'labels' => array(
+          'name' => 'Repos',
+          'singular_name' => 'Repo',
+          'add_new' => 'Add New',
+          'add_new_item' => 'Add New Repo',
+          'edit' => 'Edit',
+          'edit_item' => 'Edit Repo',
+          'new_item' => 'New Repo',
+          'search_items' => 'Search Repos',
+          'not_found' => 'No Repos found',
+          'not_found_in_trash' => 'No Repos found in Trash',
+          'parent' => 'Parent Repo'
+        ),
+        'public' => true,
+        'show_ui' => true,
+        'menu_position' => 15,
+        'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
+        'taxonomies' => array( '' ),
+        'menu_icon' => plugins_url( 'images/image.png', __FILE__ ),
+        'has_archive' => false
+      )
+    );
+  }
+
+
+  /** Creates The WP Custom Post Type for Issues
+  * @return void
+  */
+  public function create_cpt_issue(){
+    register_post_type( 'issues',
+      array(
+        'labels' => array(
+          'name' => 'Issues',
+          'singular_name' => 'Issue',
+          'add_new' => 'Add New',
+          'add_new_item' => 'Add New Issue',
+          'edit' => 'Edit',
+          'edit_item' => 'Edit Issue',
+          'new_item' => 'New Issue',
+          'search_items' => 'Search Issue',
+          'not_found' => 'No Issues found',
+          'not_found_in_trash' => 'No Issues found in Trash',
+          'parent' => 'Parent Issue'
+        ),
+        'public' => true,
+        'show_ui' => true,
+        'menu_position' => 15,
+        'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
+        'taxonomies' => array( 'repo' ),
+        'menu_icon' => plugins_url( 'images/image.png', __FILE__ ),
+        'has_archive' => false
+      )
+    );
+  }
   /** Handle Requests
   * This is where we send off for an intense pug bomb package
   * @return void 
