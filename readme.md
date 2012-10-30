@@ -9,7 +9,7 @@ The plugin creates a page template that loads a backbone app that interacts with
 ```
 /plugin-page/
 ```
-List defined repositories.
+Page template to list defined repositories.
 
 ```
 /plugin-page/repo/
@@ -32,7 +32,7 @@ Add a new issue to defined repo.
 
 No github repo/issue data will be stored in wordpress db. We will however, need a user account to authenticate and select IssuePress active repos.
 
-We'll need:
+We'll need: (for testing)
 - username
 - password
 
@@ -40,6 +40,6 @@ Once we have that, we'll be able to send a request out and get a list of all the
 
 - active\_repos  : Array()
 
-
+We'll be using OAUTH for actual release.
 
 
