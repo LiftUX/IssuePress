@@ -29,6 +29,7 @@ class UPIP_API_Endpoint{
 
     add_action('init', array($this, 'create_cpt_repo'), 0);
     add_action('init', array($this, 'create_cpt_issue'), 0);
+    add_action('init', array($this, 'create_repo_tax'), 0);
 
   } 
   
@@ -124,6 +125,37 @@ class UPIP_API_Endpoint{
       )
     );
   }
+
+  /** Register Repo Taxonomy
+   * This taxonomy will be used on issues and will associate them to their respective repo
+   */
+  public function create_repo_tax(){
+    register_taxonomy('repo', 'issues', array(
+      'labels' => array(
+        'name' => _x('Repos', 'taxonomy general name', 'IssuePress'),
+        'singular_nam' => _x('Repo', 'taxonomy singular name', 'IssuePress'),
+        'search_items' => __('Search Repos', 'IssuePress'),
+        'all_items' => __( 'All Repos' , 'IssuePress' ),
+        'parent_item' => __( 'Parent Repo' , 'IssuePress' ),
+        'parent_item_colon' => __( 'Parent Repo:' , 'IssuePress' ),
+        'edit_item' => __( 'Edit Repo' , 'IssuePress' ),
+        'update_item' => __( 'Update Repo' , 'IssuePress' ),
+        'add_new_item' => __( 'Add New Repo' , 'IssuePress' ),
+        'new_item_name' => __( 'New Repo Name' , 'IssuePress' ),
+        'menu_name' => __( 'Repos' , 'IssuePress' ),
+      ),
+      'rewrite' => array(
+        'slug' => 'repo',
+        'with_front' => false,
+        'hierarchical' => false,
+      ),
+      'hierarchical' => false,
+      'public' => true,
+      'show_in_menus' => true,
+    ));
+  }
+
+
   /** Handle Requests
   * This is where we send off for an intense pug bomb package
   * @return void 
