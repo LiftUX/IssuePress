@@ -27,10 +27,6 @@ class UPIP_API_Endpoint{
     add_action('init', array($this, 'add_endpoint'), 0);
     add_action('parse_request', array($this, 'sniff_requests'), 0);
 
-    add_action('init', array($this, 'create_cpt_repo'), 0);
-    add_action('init', array($this, 'create_cpt_issue'), 0);
-    add_action('init', array($this, 'create_repo_tax'), 0);
-
   } 
   
   /** Add public query vars
@@ -65,95 +61,6 @@ class UPIP_API_Endpoint{
     }
   }
   
-  /** Creates The WP Custom Post Type for Repos
-  * @return void
-  */
-  public function create_cpt_repo(){
-    register_post_type( 'repos',
-      array(
-        'labels' => array(
-          'name' => 'Repos',
-          'singular_name' => 'Repo',
-          'add_new' => 'Add New',
-          'add_new_item' => 'Add New Repo',
-          'edit' => 'Edit',
-          'edit_item' => 'Edit Repo',
-          'new_item' => 'New Repo',
-          'search_items' => 'Search Repos',
-          'not_found' => 'No Repos found',
-          'not_found_in_trash' => 'No Repos found in Trash',
-          'parent' => 'Parent Repo'
-        ),
-        'public' => true,
-        'show_ui' => true,
-        'menu_position' => 15,
-        'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
-        'taxonomies' => array( '' ),
-        'menu_icon' => plugins_url( 'images/image.png', __FILE__ ),
-        'has_archive' => false
-      )
-    );
-  }
-
-
-  /** Creates The WP Custom Post Type for Issues
-  * @return void
-  */
-  public function create_cpt_issue(){
-    register_post_type( 'issues',
-      array(
-        'labels' => array(
-          'name' => 'Issues',
-          'singular_name' => 'Issue',
-          'add_new' => 'Add New',
-          'add_new_item' => 'Add New Issue',
-          'edit' => 'Edit',
-          'edit_item' => 'Edit Issue',
-          'new_item' => 'New Issue',
-          'search_items' => 'Search Issue',
-          'not_found' => 'No Issues found',
-          'not_found_in_trash' => 'No Issues found in Trash',
-          'parent' => 'Parent Issue'
-        ),
-        'public' => true,
-        'show_ui' => true,
-        'menu_position' => 15,
-        'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
-        'taxonomies' => array( 'repo' ),
-        'menu_icon' => plugins_url( 'images/image.png', __FILE__ ),
-        'has_archive' => false
-      )
-    );
-  }
-
-  /** Register Repo Taxonomy
-   * This taxonomy will be used on issues and will associate them to their respective repo
-   */
-  public function create_repo_tax(){
-    register_taxonomy('repo', 'issues', array(
-      'labels' => array(
-        'name' => _x('Repos', 'taxonomy general name', 'IssuePress'),
-        'singular_nam' => _x('Repo', 'taxonomy singular name', 'IssuePress'),
-        'search_items' => __('Search Repos', 'IssuePress'),
-        'all_items' => __( 'All Repos' , 'IssuePress' ),
-        'parent_item' => __( 'Parent Repo' , 'IssuePress' ),
-        'parent_item_colon' => __( 'Parent Repo:' , 'IssuePress' ),
-        'edit_item' => __( 'Edit Repo' , 'IssuePress' ),
-        'update_item' => __( 'Update Repo' , 'IssuePress' ),
-        'add_new_item' => __( 'Add New Repo' , 'IssuePress' ),
-        'new_item_name' => __( 'New Repo Name' , 'IssuePress' ),
-        'menu_name' => __( 'Repos' , 'IssuePress' ),
-      ),
-      'rewrite' => array(
-        'slug' => 'repo',
-        'with_front' => false,
-        'hierarchical' => false,
-      ),
-      'hierarchical' => false,
-      'public' => true,
-      'show_in_menus' => true,
-    ));
-  }
 
 
   /** Handle Requests
