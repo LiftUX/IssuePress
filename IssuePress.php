@@ -10,88 +10,133 @@ Author URI: http://upthemes.com/
 
 require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
+require_once 'IP_api.php';
 
-class UPIP_API_Endpoint{
+class UP_IssuePress {
   
-  /**
-  * @var string Pug Bomb Headquarters
-  */
-  protected $api = 'http://api.github.com/repos/LiftUX/';
-  
-  
+  /** Print Scripts?
+   *  @var
+   */
+  private $print_scripts = false;
+
   /** Hook WordPress
   * @return void
   */
   public function __construct(){
-    add_filter('query_vars', array($this, 'add_query_vars'), 0);
-    add_action('init', array($this, 'add_endpoint'), 0);
-    add_action('parse_request', array($this, 'sniff_requests'), 0);
+    add_action('template_redirect', array($this, 'load_IP_template'), 0);
+
+    add_action('init', array($this, 'register_IP_scripts'), 0);
+    add_action('wp_footer', array($this, 'print_IP_scripts'), 20);
 
   } 
+
   
-  /** Add public query vars
-  * @param array $vars List of current public query vars
-  * @return array $vars 
-  */
-  public function add_query_vars($vars){
-    $vars[] = '__api';
-    $vars[] = 'repo';
-    $vars[] = 'issue';
-    return $vars;
-  }
-  
-  /** Add API Endpoint
-  * This is where the magic happens - brush up on your regex skillz
-  * @return void
-  */
-  public function add_endpoint(){
-    add_rewrite_rule('^api/repo/?([0-9]+)?/?','index.php?__api=1&repo=$matches[1]','top');
+
+  /* Overwrite the default template with IssuePress Backbone App
+   * @return void
+   */
+  public function load_IP_template(){
+    global $wp;
+    $IP_dir = dirname(__FILE__);
+    $IP_options = get_option('upip_options');
+    $IP_landing_id = $IP_options['landing'];
+    $IP_landing_name = sanitize_title(get_the_title($IP_landing_id));
+
+    // Check if the page being served matches the name or ID of the one set in options
+    if($wp->query_vars["pagename"] == $IP_landing_name || $wp->query_vars["page_id"] == $IP_landing_id){
+      if(file_exists($IP_dir . '/IP_template.php')){
+        $return_template = $IP_dir . '/IP_template.php';
+        $this->print_scripts = true;
+        $this->do_theme_direct($return_template);
+      }
+    }
+
   }
 
-  /** Sniff Requests
-  * This is where we hijack all API requests
-  *   If $_GET['__api'] is set, we kill WP and serve up pug bomb awesomeness
-  * @return die if API request
-  */
-  public function sniff_requests(){
-    global $wp;
-    if(isset($wp->query_vars['__api'])){
-      $this->handle_request();
-      exit;
+  /* Actually load our template instead of the requested page
+   * @return void
+   */ 
+  private function do_theme_direct($url){
+    global $post, $wp_query;
+    if(have_posts()){
+      include($url);
+      die();
+    } else {
+      $wp_query->is_404 = true;
     }
   }
-  
 
+  /* Register scripts for IP
+   * @return void
+   */
+  public function register_IP_scripts(){
+    // Google jQuery, backbone, it's deps
+    wp_deregister_script('jquery');
+//    wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
+    wp_register_script('jquery', plugins_url('assets/js/jquery.min.js', __FILE__), array(), '1.8.2', true);
+    wp_register_script('underscore', plugins_url('assets/js/underscore.js', __FILE__), array(), '1.4.2', true);
+    wp_register_script('backbone', plugins_url('assets/js/backbone.js', __FILE__), array('underscore', 'jquery', 'json2'), '0.9.2', true);
 
-  /** Handle Requests
-  * This is where we send off for an intense pug bomb package
-  * @return void 
-  */
-  protected function handle_request(){
-    global $wp;
-    $repo = $wp->query_vars['repo'];
-    $issue = $wp->query_vars['issue'];
+    // The IP Backbone app deps
+    wp_register_script('ip_m_repo', plugins_url('src/m/repo.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_m_issue', plugins_url('src/m/issue.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_c_repos', plugins_url('src/c/repos.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_c_issues', plugins_url('src/c/issues.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_v_app', plugins_url('src/v/issuepress.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_v_repo', plugins_url('src/v/repo.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_v_issue', plugins_url('src/v/issue.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_router', plugins_url('src/r/router.js', __FILE__), array(), '0.0.1', true);
 
+    // The IP Backbone app file
+    wp_register_script(
+      'issuepress', 
+      plugins_url('src/issuepress.js', __FILE__), 
+      array(
+        'backbone',
+        'ip_m_repo',
+        'ip_m_issue',
+        'ip_c_repos',
+        'ip_c_issues',
+        'ip_v_app',
+        'ip_v_repo',
+        'ip_v_issue',
+        'ip_router'
+      ),
+      '0.0.1', 
+      true);
+  }
 
-    if(!$repo)
-      $this->send_response('Please tell us a repo.');
-    
-    if($repo)
-      $this->send_response('200 OK', json_decode($repo.$issues));
-    else
-      $this->send_response('Failed response');
+  /* Print out our scripts
+   * @return void
+   */
+  public function print_IP_scripts(){
+    if($this->print_scripts == false)
+      return;
+
+    // We only need this call since we've set up deps properly
+    wp_print_scripts('issuepress');
+  }
+
+  /* Fetch the github data for the repos tracked by IP
+   * @return [json] $IP_repos;
+   */
+  public function get_IP_repo_json(){
+
+    $options =  get_option('upip_options');    
+    foreach($options['r'] as $index => $item) {
+      $IP_repos[]['name'] = $item;  
+    }
+
+    return json_encode($IP_repos);
   }
   
-  /** Response Handler
-  * This sends a JSON response to the browser
-  */
-  protected function send_response($msg, $req = ''){
-    $response['message'] = $msg;
-    if($req)
-      $response['req'] = $req;
-    header('content-type: application/json; charset=utf-8');
-      echo json_encode($response)."\n";
-      exit;
+  /* Fetches the slug for the support page
+   * @return string
+   */
+  public function get_IP_root(){
+    $options =  get_option('upip_options');    
+    return sanitize_title(get_the_title($IP_options['landing']));
   }
+
 }
-new UPIP_API_Endpoint();
+new UP_IssuePress();
