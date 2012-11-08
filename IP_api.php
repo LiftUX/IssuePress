@@ -79,6 +79,7 @@ class UPIP_api{
     *
     * get_issues()
     * /[landing]/[repo name]/issues
+    * GET - {repo}
     *
     *
     * List specific issue for repo
@@ -86,6 +87,7 @@ class UPIP_api{
     *
     * get_issue_num()
     * /[landing]/[repo name]/[issue name/number]
+    * GET - {repo} & {issue}
     *
     *
     * Create an Issue
@@ -93,22 +95,26 @@ class UPIP_api{
     *
     * post_issue()
     * /[landing]/[repo name]/new
-    *
+    * POST - {repo}
+    * 
     *
     * Edit an Issue
     * PATCH /repos/:owner/:repo/issues/:number
     *
     * put_issue()
     * /[landing]/[repo name]/[issue name/number]
+    * PUT = {repo} & {issue}
     *
     */
 
 
     global $wp;
-    $options = get_option('upip_options');
 
+    // GET, POST, PUT, or DELETE
     $method = $_SERVER['REQUEST_METHOD'];
    
+
+    // Get the vars in variables if they exist
     if(isset($wp->query_vars['repo'])) 
       $repoID = json_encode($wp->query_vars['repo']);
     if(isset($wp->query_vars['issue'])) 
@@ -125,9 +131,36 @@ class UPIP_api{
       $data['issue'] = $this->get_issue_data($issue, $repoName);
     }
 
-    $post_data = file_get_contents('php://input');
+    if($method === 'POST')
+      $post_data = file_get_contents('php://input');
+
+
     if(!empty($post_data))
       $data['post'] = json_decode($post_data, true);
+
+
+
+/*
+
+if PUT & Repo $ Issue -> put_issue()
+if GET & Repo & Issue -> get_issue()
+if GET & Repo -> get_repo() & get_issues()
+if POST & Repo -> post_issue()
+
+*/
+    // Route the request
+    if($method === "PUT" && $repoName && $issue){
+      $this->put_issue($issue, $repoName);
+    } else if($method === "GET" && $repoName && $issue){
+      $this->get_issue($issue, $repoName);
+    } else if($method === "GET" && $repoName && !$issue){
+      $this->get_issues($repoName);
+    } else if($method === "POST" && $repoName && !$issue){
+      $this->post_issue($repoName);
+    }
+
+
+
     $this->send_response('200 OK', $data);
 
   }

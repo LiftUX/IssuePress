@@ -4,8 +4,24 @@ var app = app || {};
 // ---------------
 
 app.AppView = Backbone.View.extend({
+
+  el: 'ul#repo-list',
+
+  events: {
+    "click .repo-name": "log",
+  },
+
   initialize: function(){
-    console.log("initializing");
+    
+    _.each(app.repoNames, function(i, q) {
+      $(this.el).html(app.repoNames.at(q).get("name"));
+    });
+
+
+  },
+
+  log: function() {
+    console.log(this.model);
   },
 
 
