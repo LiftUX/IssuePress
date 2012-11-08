@@ -154,6 +154,7 @@ if POST & Repo -> post_issue()
     } else if($method === "GET" && $repoName && $issue){
       $this->get_issue($issue, $repoName);
     } else if($method === "GET" && $repoName && !$issue){
+      $this->get_repo($repoName);
       $this->get_issues($repoName);
     } else if($method === "POST" && $repoName && !$issue){
       $this->post_issue($repoName);
@@ -207,6 +208,40 @@ if POST & Repo -> post_issue()
 
   }
 
+  /** github API call to put issue
+  * @return string
+  */
+  private function put_issue($issue, $repoName){
+    // Github API call to update a particular issue ($issue) in particular repo ($repoName)
+  }
+
+  /** github API call to get issue
+  * @return string
+  */
+  private function get_issue($issue, $repoName){
+    // Github API call to get a particular issue ($issue) in particular repo ($repoName)
+  }
+
+  /** github API call to get repo
+  * @return string
+  */
+  private function get_repo($repoName){
+    // Github API call to get data for a particular repo ($repoName)
+  }
+
+  /** github API call to get all issue data from repo
+  * @return string
+  */
+  private function get_issues($repoName){
+    // Github API call to get issues in particular repo ($repoName)
+  }
+
+  /** github API call to post new issue
+  * @return string
+  */
+  private function post_issue($repoName){
+    // Github API call to post a new issue in particular repo ($repoName)
+  }
 
 }
 new UPIP_api();
