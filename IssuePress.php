@@ -117,7 +117,7 @@ class UP_IssuePress {
     wp_print_scripts('issuepress');
   }
 
-  /* Fetch the github data for the repos tracked by IP
+  /* Fetch the github repos IP tracks to initialize BB
    * @return [json] $IP_repos;
    */
   public function get_IP_repo_json(){

@@ -150,14 +150,14 @@ if POST & Repo -> post_issue()
 */
     // Route the request
     if($method === "PUT" && $repoName && $issue){
-      $this->put_issue($issue, $repoName);
+      $data['response'] = $this->put_issue($issue, $repoName);
     } else if($method === "GET" && $repoName && $issue){
-      $this->get_issue($issue, $repoName);
+      $data['issue'] = $this->get_issue($issue, $repoName);
     } else if($method === "GET" && $repoName && !$issue){
-      $this->get_repo($repoName);
-      $this->get_issues($repoName);
+      $data['repo'] = $this->get_repo($repoName);
+      $data['issues'] = $this->get_issues($repoName);
     } else if($method === "POST" && $repoName && !$issue){
-      $this->post_issue($repoName);
+      $data['response'] = $this->post_issue($repoName);
     }
 
 
@@ -213,6 +213,7 @@ if POST & Repo -> post_issue()
   */
   private function put_issue($issue, $repoName){
     // Github API call to update a particular issue ($issue) in particular repo ($repoName)
+    // $client->api('issue')->update('KnpLabs', 'php-github-api', 4, array('body' => 'The new issue body'));
   }
 
   /** github API call to get issue
@@ -220,6 +221,7 @@ if POST & Repo -> post_issue()
   */
   private function get_issue($issue, $repoName){
     // Github API call to get a particular issue ($issue) in particular repo ($repoName)
+    // $issue = $client->api('issue')->show('KnpLabs', 'php-github-api', 1);
   }
 
   /** github API call to get repo
@@ -227,20 +229,23 @@ if POST & Repo -> post_issue()
   */
   private function get_repo($repoName){
     // Github API call to get data for a particular repo ($repoName)
+    // $repo = $client->api('repo')->show('KnpLabs', 'php-github-api')
   }
 
   /** github API call to get all issue data from repo
-  * @return string
+  * @return json encoded array of objects
   */
   private function get_issues($repoName){
     // Github API call to get issues in particular repo ($repoName)
+    // $issues = $client->api('issue')->all('KnpLabs', 'php-github-api', array('state' => 'open'));
   }
 
   /** github API call to post new issue
-  * @return string
+  * @return string (response)
   */
   private function post_issue($repoName){
     // Github API call to post a new issue in particular repo ($repoName)
+    // $client->api('issue')->create('KnpLabs', 'php-github-api', array('title' => 'The issue title', 'body' => 'The issue body');
   }
 
 }
