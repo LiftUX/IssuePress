@@ -1,3 +1,490 @@
 @import "compass/css3";
 @import "normalize";
 @import "base";
+@import "settings";
+
+body {
+  background:#e2e2e2;
+}
+
+.content {
+  @extend .wrap-content;
+}
+
+.full-column {
+
+}
+
+.left-column {
+  width:65%;
+  float:left;
+
+  .section-title {
+    font-size:1.3em;
+    font-weight:600;
+    padding-bottom:.7em;
+    border-bottom:.15em solid #c5c5c5;
+  }
+}
+
+.right-column {
+  width:35%;
+  float:left;
+  padding-left:2.4em;
+
+  .section-title {
+    font-size:1.2em;
+    font-weight:600;
+    color:#666;
+    padding-bottom:.7em;
+    border-bottom:.2em solid #c5c5c5;
+  }
+}
+
+header {
+  border-bottom:.2em solid #c5c5c5;
+  margin-bottom:2.5em;
+  z-index:1;
+  padding:2em 0;
+
+  .logo {
+    text-decoration:none;
+    color:#666;
+    font-size:2.2em;
+    line-height:1em;
+    margin-right:.5em;
+    text-transform:uppercase;
+    font-weight:600;
+    display:inline-block;
+  }
+
+  nav {
+    display:inline-block;
+    position:static;
+    vertical-align:top;
+
+    ul {
+      margin:0;
+      padding:0;
+      position:static;
+      list-style:none;
+    }
+
+    li {
+      display:inline-block;
+
+      &.account {
+        position:absolute;
+        right:0;
+        top:1.5em;
+        padding-right:0;
+
+        img {
+          border-radius:100%;
+          width:1.8em;
+          height:1.8em;
+          margin-right:.5em;
+          position:absolute;
+          left:1em;
+          top:.7em;
+          display:inline-block;
+        }
+
+        &:hover {  
+
+          > a {
+            background:#fff;
+            box-shadow:0 .1em .1em rgba(#000,.1);
+            border-radius:.25em .25em 0 0;
+          }
+
+          ul {
+            display:block;
+          }
+        }
+
+        > a {
+          padding:1em 1.5em 1em 3.5em;
+
+          &:after {
+            content:"";
+            display:inline-block;
+            border-top:.3125em solid #999;
+            border-left:.3125em solid transparent;
+            border-right:.3125em solid transparent;
+            width:0;
+            height:0;
+            margin-left:.5em;
+            position:relative;
+            top:-.1em;
+          }
+        }
+      }
+
+      ul {
+        display:none;
+        position:absolute;
+        background:#fff;
+        width:125%;
+        right:0;
+        box-shadow:0 .1em .1em rgba(#000,.1);
+        border-radius:.25em 0 .25em .25em;
+        padding:.5em 0;
+
+        li {
+          display:block;
+          padding:0;
+        }
+
+        a {
+          padding:.5em 1em;
+          font-size:.9em;
+          font-weight:normal;
+        }
+      }
+    }
+
+    a {
+      text-decoration:none;
+      color:#999;
+      font-weight:600;
+      display:block;
+      padding:.5em 1em;
+    }
+  }
+}
+
+.breadcrumb {
+  margin-top:-.75em;
+  margin-bottom:1.75em;
+
+  a {
+    color:$primary;
+    text-decoration:none;
+    padding-right:.75em;
+
+    & + a {
+
+      &:before {
+        content:"";
+        display:inline-block;
+        border-left:.3125em solid #999;
+        border-top:.3125em solid transparent;
+        border-bottom:.3125em solid transparent;
+        height:0;
+        width:0;
+        padding-right:.75em;
+      }
+    }
+  }
+}
+
+section {
+  margin-bottom:2.5em;
+}
+
+.search {
+
+  input.search-query {
+    border-radius:.3em;
+    border:.15em solid #c5c5c5;
+    display:block;
+    width:100%;
+    padding:.7em 1em;
+  }
+}
+
+.message {
+  background:#fefdf5;
+  border-radius:.3em;
+  border:.15em solid #f4efc3;
+  padding:1.4em;
+  text-align:center;
+  color:#59564f;
+
+  .message-title {
+    font-size:1.2em;
+    font-weight:600;
+    margin-bottom:.7em;
+  }
+}
+
+.recent-activity {
+
+  .recent-activity-item {
+    overflow:hidden;
+    border-bottom:.15em solid #c5c5c5;
+    padding:.8em 0;
+    vertical-align:middle;
+    text-align:right;
+
+    .recent-activity-content {
+      float:left;
+    }
+
+    .recent-activity-timeago {
+      display:inline-block;
+      font-size:.7em;
+      color:#999;
+    }
+  }
+
+  a {
+    color:$primary;
+    font-weight:600;
+    text-decoration:none;
+  }
+}
+
+.support-sections {
+
+  .section-nav {
+
+    a {
+      color:#222;
+      text-decoration:none;
+      display:inline-block;
+      border-bottom:.1em solid #999;
+      font-weight:600;
+      margin:1em 1em .5em 0;
+      font-size:.9em;
+    }
+  }
+
+  .support-section {
+    display:block;
+    text-decoration:none;
+    padding:.7em 0;
+
+    .support-section-title {
+      color:$primary;
+      font-weight:600;
+    }
+
+    .support-section-date {
+      color:#666;
+      font-size:.8em;
+    }
+  }
+}
+
+.tickets-following {
+
+  .ticket {
+    display:block;
+    text-decoration:none;
+    border-bottom:.15em solid #c5c5c5;
+    padding:1em 0;
+
+    .ticket-title {
+      color:$primary;
+      font-weight:600;
+      display:block;
+      margin-bottom:.3em;
+    }
+
+    .ticket-meta {
+      color:#999;
+      display:block;
+      font-size:.9em;
+      margin-bottom:.3em;
+    }
+
+    .ticket-comment {
+      color:#444;
+      display:block;
+      font-size:.9em;
+    }
+  }
+}
+
+.issue-thread {
+
+  form.comment {
+    overflow:hidden;
+
+    .comment-content {
+      padding:0;
+    }
+  }
+
+  .comment {
+    margin-bottom:1em;
+
+    & + .comment {
+      margin-left:4em;
+
+      p {
+        margin:1em 0;
+      }
+    }
+
+    &.staff {
+      margin-left:0;
+      margin-right:4em;
+
+      .comment-meta {
+        overflow:hidden;
+        margin-left:4em;
+        margin-right:-4em;
+      }
+
+      .author {
+        float:right;
+
+        img {
+          float:right;
+          margin-left:1em;
+          margin-right:0;
+        }
+      }
+
+      .comment-timeago {
+        float:left;
+      }
+    }
+
+    .comment-meta {
+      margin-bottom:.5em;
+    }
+
+    .author {
+      text-decoration:none;
+
+      img {
+        border-radius:100%;
+        display:inline-block;
+        vertical-align:top;
+        margin-right:1em;
+        width:3em;
+      }
+    }
+
+    .author-name {
+      color:$primary;
+      top:1em;
+    }
+
+    .author-action {
+      top:1em;
+      color:#222;
+    }
+
+    .comment-timeago {
+      float:right;
+      top:1em;
+      color:#999;
+      text-decoration:none;
+    }
+
+    .comment-content {
+      border-radius:.3em;
+      background:#fafafa;
+      border:.15em solid #c5c5c5;
+      padding:.4em 1.4em;
+      margin-left:4em;
+
+      textarea {
+        border:0;
+        background:transparent;
+        padding:1.4em 1.4em;
+        height:10em;
+        width:100%;
+        resize:none;
+        border-radius:.3em;
+      }
+    }
+
+    .comment-title {
+      font-size:1.4em;
+      font-weight:600;
+      margin-top:.7em;
+    }
+
+    .comment-tags {
+      margin-bottom:1em;
+
+      a {
+        text-decoration:none;
+        color:$primary;
+        font-weight:600;
+        font-size:.8em;
+        padding-right:.8em;
+      }
+
+      &:before {
+        content:"\e70c";
+        font-family:$icon;
+        color:#c5c5c5;
+        top:.1em;
+        position:relative;
+        margin-right:.8em;
+      }
+    }
+
+    .follow-thread {
+      position:absolute;
+      bottom:-.15em;
+      right:-.15em;
+      color:#222;
+      font-weight:600;
+      font-size:.9em;
+      text-decoration:none;
+      padding:.75em 1.5em;
+      background:lighten($primary,50%);
+      border-radius:.3em 0 .3em 0;
+      border-top:.15em solid lighten($primary,40%);
+      border-left:.15em solid lighten($primary,40%);
+      border:.15em solid lighten($primary,40%);
+    }
+
+    .button {
+      border-radius:.3em;
+      background:$primary;
+      color:#fff;
+      padding:.7em 1em;
+      text-decoration:none;
+      display:inline-block;
+      border:0;
+      float:right;
+      margin-top:1em;
+    }
+  }
+}
+
+.issue-list {
+  border-bottom:.15em solid #c5c5c5;
+
+  .issue-list-item {
+    padding:1.4em 0;
+    border-top:.15em solid #c5c5c5;
+
+    .issue-title {
+      font-size:1.3em;
+      font-weight:600;
+      margin-bottom:.2em;
+      color:$primary;
+    }
+
+    .issue-date {
+      color:#999;
+      font-size:.9em;
+      margin-bottom:.6em;
+    }
+
+    .issue-description {
+      color:#444;
+      margin-bottom:1em;
+    }
+
+    .issue-link {
+      border-radius:.3em;
+      background:$primary;
+      color:#fff;
+      padding:.7em 1em;
+      font-size:.9em;
+      text-decoration:none;
+      display:inline-block;
+    }
+  }
+}
