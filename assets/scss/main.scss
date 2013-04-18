@@ -179,18 +179,49 @@ header {
   }
 }
 
+form {
+  overflow:hidden;
+}
+
+.textbox {
+  border-radius:.3em;
+  border:.15em solid #c5c5c5;
+  display:block;
+  width:100%;
+  padding:.7em 1em;
+  margin-bottom:1em;
+
+  &:focus {
+    outline:none;
+    border-color:$outline-color;
+  }
+}
+
+textarea {
+  @extend .textbox;
+  height:8em;
+  resize:none;
+}
+
+.submit {
+  border-radius:.3em;
+  background:$primary;
+  color:#fff;
+  padding:.7em 1em;
+  text-decoration:none;
+  display:inline-block;
+  border:0;
+  float:right;
+  margin-bottom:.01em;
+}
+
 section {
   margin-bottom:2.5em;
 }
 
-.search {
-
-  input.search-query {
-    border-radius:.3em;
-    border:.15em solid #c5c5c5;
-    display:block;
-    width:100%;
-    padding:.7em 1em;
+.create-issue {
+  .section-title {
+    margin-bottom:1.4em;
   }
 }
 
@@ -383,16 +414,10 @@ section {
       border:.15em solid #c5c5c5;
       padding:.4em 1.4em;
       margin-left:4em;
+    }
 
-      textarea {
-        border:0;
-        background:transparent;
-        padding:1.4em 1.4em;
-        height:10em;
-        width:100%;
-        resize:none;
-        border-radius:.3em;
-      }
+    .textarea-wrap {
+      margin-left:4em;
     }
 
     .comment-title {
@@ -436,18 +461,6 @@ section {
       border-top:.15em solid lighten($primary,40%);
       border-left:.15em solid lighten($primary,40%);
       border:.15em solid lighten($primary,40%);
-    }
-
-    .button {
-      border-radius:.3em;
-      background:$primary;
-      color:#fff;
-      padding:.7em 1em;
-      text-decoration:none;
-      display:inline-block;
-      border:0;
-      float:right;
-      margin-top:1em;
     }
   }
 }

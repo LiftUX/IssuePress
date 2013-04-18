@@ -33,7 +33,7 @@
 
     <section class="search">
       <form>
-        <input type="text" class="search-query" placeholder="Search"/>
+        <input class="textbox" type="text" placeholder="Search"/>
       </form>
     </section>
 
@@ -44,6 +44,17 @@
       <div class="message-content">
         Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper.
       </div>
+    </section>
+
+    <section class="create-issue">
+      <div class="section-title">
+        Create New Issue
+      </div>
+      <form>
+        <input class="textbox" type="text" placeholder="Title"/>
+        <textarea placeholder="Leave a comment"></textarea>
+        <input class="submit" type="submit" value="Create Issue"/>
+      </form>
     </section>
 
     <section class="recent-activity">
@@ -153,10 +164,10 @@
           </a>
           <a href="" class="comment-timeago">Logout</a>
         </div>
-        <div class="comment-content">
-          <textarea></textarea>
+        <div class="textarea-wrap">
+          <textarea placeholder="Leave a comment"></textarea>
         </div>
-        <input type="submit" class="button" value="Post Comment"/>
+        <input type="submit" class="submit" value="Post Comment"/>
       </form>
     </section>
 
