@@ -34,6 +34,35 @@
     <section class="search">
       <form>
         <input class="textbox" type="text" placeholder="Search"/>
+        <div class="live-search-results">
+          <div class="issue-list-item">
+            <a href="" class="issue-link">Open Issue</a>
+            <div class="issue-title">
+              Issue with the Music Player for the homepage on Garage Band
+            </div>
+            <div class="issue-date">
+              Last Updated: December 27, 2012
+            </div>
+          </div>
+          <div class="issue-list-item">
+            <a href="" class="issue-link">Open Issue</a>
+            <div class="issue-title">
+              Issue with the Music Player for the homepage on Garage Band
+            </div>
+            <div class="issue-date">
+              Last Updated: December 27, 2012
+            </div>
+          </div>
+          <div class="issue-list-item">
+            <a href="" class="issue-link">Open Issue</a>
+            <div class="issue-title">
+              Issue with the Music Player for the homepage on Garage Band
+            </div>
+            <div class="issue-date">
+              Last Updated: December 27, 2012
+            </div>
+          </div>
+        </div>
       </form>
     </section>
 

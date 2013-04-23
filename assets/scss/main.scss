@@ -267,6 +267,73 @@ section {
   }
 }
 
+.search {
+  margin-bottom:2.5em;
+
+  form {
+    overflow:visible;
+    z-index:1;
+  }
+
+  .textbox {
+    z-index:1;
+    margin:0;
+
+    &:focus {
+      & + .live-search-results {
+        display:block;
+      }
+    }
+  }
+
+  .live-search-results {
+    margin-top:-.15em;
+    background:#f5f5f5;
+    border-radius:0 0 .3em .3em;
+    border:.15em solid #c5c5c5;
+    display:block;
+    width:100%;
+    display:none;
+
+    .issue-list-item {
+      border:0;
+      overflow:hidden;
+      padding:.7em 1em;
+      font-size:.9em;
+
+      & + .issue-list-item {
+        border-top:.15em solid #c5c5c5;
+      }
+
+      .issue-title {
+        float:left;
+        font-size:1.1em;
+        width:80%;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+
+      .issue-date {
+        float:left;
+        color:#999;
+        font-size:.9em;
+      }
+
+      .issue-link {
+        border-radius:.3em;
+        background:$primary;
+        color:#fff;
+        padding:.7em 1em;
+        font-size:.9em;
+        text-decoration:none;
+        display:inline-block;
+        float:right;
+      }
+    }
+  }
+}
+
 .support-sections {
 
   .section-nav {
