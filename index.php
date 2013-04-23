@@ -35,6 +35,14 @@
       <form>
         <input class="textbox" type="text" placeholder="Search"/>
         <div class="live-search-results">
+          <div class="live-search-message">
+            <div class="message-title">
+              No Results
+            </div>
+            <div class="message-content">
+              Aww shucks, nothing was found. Try updating your search term.
+            </div>
+          </div>
           <div class="issue-list-item">
             <a href="" class="issue-link">Open Issue</a>
             <div class="issue-title">

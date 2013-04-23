@@ -236,7 +236,7 @@ section {
   .message-title {
     font-size:1.2em;
     font-weight:600;
-    margin-bottom:.7em;
+    margin-bottom:.5em;
   }
 }
 
@@ -279,10 +279,8 @@ section {
     z-index:1;
     margin:0;
 
-    &:focus {
-      & + .live-search-results {
-        display:block;
-      }
+    &:focus + .live-search-results {
+      display:block;
     }
   }
 
@@ -294,6 +292,12 @@ section {
     display:block;
     width:100%;
     display:none;
+
+    .live-search-message {
+      @extend .message;
+      border:none;
+      background:transparent;
+    }
 
     .issue-list-item {
       border:0;
