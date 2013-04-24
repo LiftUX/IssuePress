@@ -43,8 +43,11 @@
               Aww shucks, nothing was found. Try updating your search term.
             </div>
           </div>
+          <div class="live-search-results-header">
+            Support Sections
+          </div>
           <div class="issue-list-item">
-            <a href="" class="issue-link">Open Issue</a>
+            <a href="" class="issue-link">Open Section</a>
             <div class="issue-title">
               Issue with the Music Player for the homepage on Garage Band
             </div>
@@ -53,13 +56,16 @@
             </div>
           </div>
           <div class="issue-list-item">
-            <a href="" class="issue-link">Open Issue</a>
+            <a href="" class="issue-link">Open Section</a>
             <div class="issue-title">
               Issue with the Music Player for the homepage on Garage Band
             </div>
             <div class="issue-date">
               Last Updated: December 27, 2012
             </div>
+          </div>
+          <div class="live-search-results-header">
+            Issues
           </div>
           <div class="issue-list-item">
             <a href="" class="issue-link">Open Issue</a>

@@ -293,6 +293,15 @@ section {
     width:100%;
     display:none;
 
+    .live-search-results-header {
+      padding:.7em 1em;
+      border-top:.15em solid #c5c5c5;
+      border-bottom:.15em solid #c5c5c5;
+      background:#fff;
+      font-weight:600;
+      font-size:1.1em;
+    }
+
     .live-search-message {
       @extend .message;
       border:none;
