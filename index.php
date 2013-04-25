@@ -94,7 +94,7 @@
         Create New Issue
       </div>
       <form>
-        <input class="textbox" type="text" placeholder="Title"/>
+        <input class="textbox error" type="text" placeholder="Title"/>
         <textarea placeholder="Leave a comment"></textarea>
         <input class="submit" type="submit" value="Create Issue"/>
       </form>

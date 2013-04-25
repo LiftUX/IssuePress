@@ -181,6 +181,10 @@ header {
 
 form {
   overflow:hidden;
+
+  .error {
+    border-color:$error-color;
+  }
 }
 
 .textbox {
