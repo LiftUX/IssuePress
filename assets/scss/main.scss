@@ -185,6 +185,21 @@ form {
   .error {
     border-color:$error-color;
   }
+
+  .error-message {
+    position:absolute;
+    top:0;
+    right:0;
+    display:block;
+    padding:.5em .8em;
+    margin:.7em;
+    border-radius:.2em;
+    background:$error-color;
+    font-size:.8em;
+    font-weight:600;
+    color:#fff;
+    pointer-events:none;
+  }
 }
 
 .textbox {
