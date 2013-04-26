@@ -89,6 +89,68 @@
       </div>
     </section>
 
+    <section class="recent-activity">
+      <div class="section-title">
+        Recent Activity
+      </div>
+      <div class="recent-activity-list">
+        <div class="recent-activity-item">
+          <div class="recent-activity-content">
+            <div class="recent-activity-icon">
+              <img src="http://lorempixel.com/output/abstract-q-g-75-75-4.jpg"/>
+            </div>
+            <div class="recent-activity-message">
+              <div class="recent-activity-title">
+                Version 2.1.3 of Garage Band released today to the world.
+              </div>
+              <a href="">See release notes</a>
+            </div>
+          </div>
+          <a href="" class="recent-activity-timeago">4 hours ago</a>
+        </div>
+      </div>
+      <div class="recent-activity-item">
+        <div class="recent-activity-content">
+          <div class="recent-activity-message">
+            <div class="recent-activity-title">
+              Issue with the Music Player for the homepage on Garage Band
+            </div>
+            <div class="recent-activity-meta">
+              <a href="">imbradmiller</a> said
+            </div>
+            <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+          </div>
+        </div>
+        <a href="" class="recent-activity-timeago">4 hours ago</a>
+      </div>
+      <div class="recent-activity-item">
+        <div class="recent-activity-content">
+          <div class="recent-activity-message">
+            <div class="recent-activity-meta">
+              <a href="">imbradmiller</a> opened an issue
+            </div>
+            <div class="recent-activity-title">
+              Issue with the Music Player for the homepage on Garage Band
+            </div>
+          </div>
+        </div>
+        <a href="" class="recent-activity-timeago">4 hours ago</a>
+      </div>
+      <div class="recent-activity-item">
+        <div class="recent-activity-content">
+          <div class="recent-activity-message">
+            <div class="recent-activity-meta">
+              <a href="">imbradmiller</a> closed an issue
+            </div>
+            <div class="recent-activity-title">
+              Issue with the Music Player for the homepage on Garage Band
+            </div>
+          </div>
+        </div>
+        <a href="" class="recent-activity-timeago">4 hours ago</a>
+      </div>
+    </section>
+
     <section class="create-issue">
       <div class="section-title">
         Create New Issue
