@@ -112,11 +112,11 @@
       <div class="recent-activity-item">
         <div class="recent-activity-content">
           <div class="recent-activity-message">
-            <div class="recent-activity-title">
-              Issue with the Music Player for the homepage on Garage Band
-            </div>
+            <a href="" class="recent-activity-title">
+              Issue with the Music Player for the homepage
+            </a>
             <div class="recent-activity-meta">
-              <a href="">imbradmiller</a> said
+              <a href="">imbradmiller</a> commented on an issue in <a href="">garageband</a>
             </div>
             <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
           </div>
@@ -127,11 +127,11 @@
         <div class="recent-activity-content">
           <div class="recent-activity-message">
             <div class="recent-activity-meta">
-              <a href="">imbradmiller</a> opened an issue
+              <a href="">imbradmiller</a> opened an issue in <a href="">garageband</a>
             </div>
-            <div class="recent-activity-title">
-              Issue with the Music Player for the homepage on Garage Band
-            </div>
+            <a href="" class="recent-activity-title">
+              Issue with the Music Player for the homepage
+            </a>
           </div>
         </div>
         <a href="" class="recent-activity-timeago">4 hours ago</a>
@@ -140,11 +140,11 @@
         <div class="recent-activity-content">
           <div class="recent-activity-message">
             <div class="recent-activity-meta">
-              <a href="">imbradmiller</a> closed an issue
+              <a href="">imbradmiller</a> closed an issue in <a href="">garageband</a>
             </div>
-            <div class="recent-activity-title">
-              Issue with the Music Player for the homepage on Garage Band
-            </div>
+            <a href="" class="recent-activity-title">
+              Issue with the Music Player for the homepage
+            </a>
           </div>
         </div>
         <a href="" class="recent-activity-timeago">4 hours ago</a>
