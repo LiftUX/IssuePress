@@ -94,8 +94,18 @@
         Create New Issue
       </div>
       <form>
-        <input class="textbox" type="text" placeholder="Title"/>
-        <textarea placeholder="Leave a comment"></textarea>
+        <div class="input-wrap">
+          <input class="textbox error" type="text" placeholder="Title"/>
+          <div class="error-message">
+            This field is required
+          </div>
+        </div>
+        <div class="input-wrap">
+          <textarea class="error" placeholder="Leave a comment"></textarea>
+          <div class="error-message">
+            This field is required
+          </div>
+        </div>
         <input class="submit" type="submit" value="Create Issue"/>
       </form>
     </section>
