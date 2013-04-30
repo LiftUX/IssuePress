@@ -271,16 +271,66 @@ section {
     border-bottom:.15em solid #c5c5c5;
     padding:.8em 0;
     vertical-align:middle;
-    text-align:right;
 
     .recent-activity-content {
+      overflow:hidden;
+    }
+
+    .recent-activity-icon {
+      margin-right:.8em;
       float:left;
+      width:10%;
+
+      img {
+        width:100%;
+        display:block;
+      }
+
+      & + .recent-activity-message {
+        .recent-activity-title {
+          margin-top:.55em;
+        }
+      }
+    }
+
+    .recent-activity-message {
+      width:87%;
+
+      p {
+        margin:0;
+        font-size:.9em;
+        color:#666;
+      }
+    }
+
+    .recent-activity-title {
+      font-size:1.1em;
+      font-weight:600;
+      line-height:1.2em;
+      margin-bottom:.2em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      color:#222;
+
+      & + .recent-activity-meta {
+        margin:.5em 0 .5em 0;
+      }
+    }
+
+    .recent-activity-meta {
+      margin:0 0 .5em 0;
+      color:#666;
     }
 
     .recent-activity-timeago {
-      display:inline-block;
+      display:block;
       font-size:.7em;
       color:#999;
+      position:absolute;
+      right:0;
+      top:50%;
+      margin-top:-.5em;
     }
   }
 
