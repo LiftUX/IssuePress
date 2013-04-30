@@ -10,7 +10,7 @@
         <li><a href="">Support Sections</a></li>
         <li><a href="">Create New Issue</a></li>
         <li class="account">
-          <a href=""><img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/157519_1407402929_769495043_q.jpg"/>Anthony Garand</a>
+          <a href=""><img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>Anthony Garand</a>
           <ul>
             <li><a href="">Dashboard</a></li>
             <li><a href="">Support Sections</a></li>
@@ -97,7 +97,7 @@
         <div class="recent-activity-item">
           <div class="recent-activity-content">
             <div class="recent-activity-icon">
-              <img src="http://lorempixel.com/output/abstract-q-g-75-75-4.jpg"/>
+              <img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
             </div>
             <div class="recent-activity-message">
               <div class="recent-activity-title">
@@ -208,7 +208,7 @@
       <div class="comment">
         <div class="comment-meta">
           <a href="" class="author">
-            <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/157519_1407402929_769495043_q.jpg"/>
+            <img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
             <span class="author-name">garand</span>
           </a>
           <span class="author-action">created an issue</span>
@@ -228,7 +228,7 @@
       <div class="comment">
         <div class="comment-meta">
           <a href="" class="author">
-            <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/157519_1407402929_769495043_q.jpg"/>
+            <img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
             <span class="author-name">garand</span>
             <span class="author-action">said</span>
           </a>
@@ -241,7 +241,7 @@
       <div class="comment staff">
         <div class="comment-meta">
           <a href="" class="author">
-            <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/157519_1407402929_769495043_q.jpg"/>
+            <img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
             <span class="author-name">garand</span>
             <span class="author-action">said</span>
           </a>
@@ -254,7 +254,7 @@
       <div class="comment">
         <div class="comment-meta">
           <a href="" class="author">
-            <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/157519_1407402929_769495043_q.jpg"/>
+            <img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
             <span class="author-name">garand</span>
             <span class="author-action">said</span>
           </a>
@@ -267,7 +267,7 @@
       <form class="comment new-comment">
         <div class="comment-meta">
           <a href="" class="author">
-            <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/157519_1407402929_769495043_q.jpg"/>
+            <img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
             <span class="author-action">Logged in as</span>
             <span class="author-name">garand</span>
           </a>
