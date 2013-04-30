@@ -93,18 +93,12 @@
       <div class="section-title">
         Create New Issue
       </div>
-      <form>
+      <form data-validate="parsley">
         <div class="input-wrap">
-          <input class="textbox error" type="text" placeholder="Title"/>
-          <div class="error-message">
-            This field is required
-          </div>
+          <input class="textbox required" type="text" placeholder="Title"/>
         </div>
         <div class="input-wrap">
-          <textarea class="error" placeholder="Leave a comment"></textarea>
-          <div class="error-message">
-            This field is required
-          </div>
+          <textarea class="required" placeholder="Leave a comment"></textarea>
         </div>
         <input class="submit" type="submit" value="Create Issue"/>
       </form>

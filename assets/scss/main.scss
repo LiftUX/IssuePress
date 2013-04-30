@@ -182,23 +182,28 @@ header {
 form {
   overflow:hidden;
 
-  .error {
+  .parsley-error {
     border-color:$error-color;
   }
 
-  .error-message {
+  .parsley-error-list {
     position:absolute;
     top:0;
     right:0;
     display:block;
-    padding:.5em .8em;
-    margin:.7em;
-    border-radius:.2em;
-    background:$error-color;
-    font-size:.8em;
-    font-weight:600;
-    color:#fff;
     pointer-events:none;
+    margin:0;
+    padding:0;
+
+    li {
+      padding:.5em .8em;
+      margin:.7em;
+      border-radius:.2em;
+      background:$error-color;
+      font-size:.8em;
+      font-weight:600;
+      color:#fff;
+    }
   }
 }
 
