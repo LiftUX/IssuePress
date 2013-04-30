@@ -359,18 +359,22 @@
         <a href="">All</a>
       </div>
       <a href="" class="support-section">
+        <div class="support-section-following">Follow</div>
         <div class="support-section-title">GarageBand Theme</div>
         <div class="support-section-date">December 27th, 2012</div>
       </a>
       <a href="" class="support-section">
+        <div class="support-section-following">Follow</div>
         <div class="support-section-title">GarageBand Theme</div>
         <div class="support-section-date">December 27th, 2012</div>
       </a>
       <a href="" class="support-section">
+        <div class="support-section-following">Following</div>
         <div class="support-section-title">GarageBand Theme</div>
         <div class="support-section-date">December 27th, 2012</div>
       </a>
       <a href="" class="support-section">
+        <div class="support-section-following">Following</div>
         <div class="support-section-title">GarageBand Theme</div>
         <div class="support-section-date">December 27th, 2012</div>
       </a>

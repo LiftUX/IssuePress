@@ -450,6 +450,17 @@ section {
       color:#666;
       font-size:.8em;
     }
+
+    .support-section-following {
+      float:right;
+      border-radius:.3em;
+      background:$primary;
+      color:#fff;
+      padding:.7em 1em;
+      font-size:.9em;
+      text-decoration:none;
+      display:inline-block;
+    }
   }
 }
 
