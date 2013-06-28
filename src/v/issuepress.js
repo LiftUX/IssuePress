@@ -2,27 +2,36 @@ var app = app || {};
 
 // The Application
 // ---------------
+(function($){
+  app.AppView = Backbone.View.extend({
 
-app.AppView = Backbone.View.extend({
+    el: $('ul#repo-list'),
 
-  el: 'ul#repo-list',
+    events: {
+    },
 
-  events: {
-    "click .repo-name": "log",
-  },
+    template: _.template("<li class=\"repo\"><a href=\"/support/<%= name %>\"><%= name %></a></li>"),
 
-  initialize: function(){
-    
-    _.each(app.repoNames, function(i, q) {
-      $(this.el).html(app.repoNames.at(q).get("name"));
-    });
+    initialize: function(){
+      
+      _.bindAll(this, 'render', 'appendItem');
 
+      this.collection = app.repoNames;
 
-  },
+      this.render();
+    },
 
-  log: function() {
-    console.log(this.model);
-  },
+    render: function() {
+      var self = this;
+      _(this.collection.models).each(function(item){
+        self.appendItem(item);
+      }, this);
 
+    },
 
-});
+    appendItem: function(item){
+      $(this.el).append("<li><a href=\"/support/#!/"+item.get('name')+"\">"+item.get('name')+"</a></li>");
+    }
+
+  });
+})(jQuery);

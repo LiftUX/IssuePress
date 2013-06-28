@@ -1,9 +1,9 @@
 var Router = Backbone.Router.extend({
 
   routes: {
-    ':repo/new': 'newIssue',
-    ':repo/:issue': 'getIssue',
-    ':repo': 'getRepo',
+    '#!/:repo/new': 'newIssue',
+    '#!/:repo/:issue': 'getIssue',
+    '#!/:repo': 'getRepo',
   },
 
   getIssue: function( repoName, issueNum ) {
@@ -44,24 +44,27 @@ app.test = function( s ) {
 }
 
 app.isRepo = function( repoName ) {
+  var result;
   app.repoNames.each(function(repo){ 
-    if( repo.get('name') === repoName ) return true;
+    if( repoName === repo.get('name') )
+      result = true;
+    else
+      result = false;
   });
-  return false;
+
+  return result;
 }
 
-// Add a layer to route 
+// Add a verify layer to route 
 // @param (function) vfn - conditional function the if is based on, should return true or false
 // @param (function) fn - function to run if vfn passes
 // @param (string) endRoute - string to pass to app.Router.navigate
 app.verifyController = function( vfn, fn, endRoute ) {
 
-  if(vfn) {
-    console.log("inside vfn true");
+  if(vfn)
     fn;
-  } else {
+  else
     app.Router.navigate(endRoute);
-  }
 
 }
 

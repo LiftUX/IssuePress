@@ -6,7 +6,7 @@ var app = app || {};
 app.ReposList = Backbone.Collection.extend({
   model: app.Repo,
 
-  initialize: function(i){
+  initialize: function(){
   },
 
 });
