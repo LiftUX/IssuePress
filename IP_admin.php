@@ -57,7 +57,8 @@ class UPIP_admin {
     $gh_repos = $client->api('current_user')->repositories();
 
     $current_repos = array();
-    $current_repos = $options['r'];
+    if(!empty($options['r']))
+      $current_repos = $options['r'];
   ?>
         <tr valign="top"><th scope="row">Repos (Check the ones you want added to IssuePress)</th>
           <td>
