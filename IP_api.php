@@ -42,12 +42,15 @@ class UPIP_api{
     $IP_options = get_option('upip_options');
     $IP_landing_name = sanitize_title(get_the_title($IP_options['landing']));
 
-    // add api endpoint
+    // Add API endpoints
+
+    // IP, Repo & Issue
     add_rewrite_rule('^'.$IP_landing_name.'/issuepress/api/([\w-]+?)/([\w-]+?)','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
+    // IP & Repo
     add_rewrite_rule('^'.$IP_landing_name.'/issuepress/api/([\w-]+?)','index.php?__ip_api=1&repo=$matches[1]','top');
+    // IP
     add_rewrite_rule('^'.$IP_landing_name.'/issuepress/api/?','index.php?__ip_api=1','top');
 
-//   add_rewrite_rule('^' . $IP_landing_name . '/(([\w-]+?)/?)+', '/support/' /*/'.$IP_landing_name.'/'.$matches[1]*/,'top');
   }
 
   /** Sniff Requests
