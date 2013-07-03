@@ -4,7 +4,7 @@ Template Name: IssuePress
 */
 ?>
 <!doctype html>
-<html>
+<html data-ng-app="issuepress">
 <head>
   <title>IssuePress</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -25,27 +25,8 @@ var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>"
 </script>
 
 <div class="content">
-
-  <header>
-    <a href="" class="logo">IssuePress</a>
-    <nav>
-      <ul>
-        <li><a href="">Dashboard</a></li>
-        <li><a href="">Support Sections</a></li>
-        <li><a href="">Create New Issue</a></li>
-        <li class="account">
-          <a href=""><img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>Anthony Garand</a>
-          <ul>
-            <li><a href="">Dashboard</a></li>
-            <li><a href="">Support Sections</a></li>
-            <li><a href="">Create New Issue</a></li>
-            <li><a href="">Dashboard</a></li>
-            <li><a href="">Support Sections</a></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <ng-include src="'<?php echo plugins_url('src/app/header.tpl.html', __FILE__); ?>'">
+  </ng-include>
 
   <div class="left-column">
 

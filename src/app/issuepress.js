@@ -1,8 +1,17 @@
-var app = app || {};
-var ENTER_KEY = 13;
+angular.module('issuepress', []);
 
-(function() {
+angular.module('issuepress').controller('IPHeaderCtrl', ['$scope', '$location', '$route',
+  function ($scope, $location, $route) {
+  $scope.location = $location;
 
-  // Kick things off by creating the **App**.
-  new app.AppView();
-})();
+  $scope.home = function () {
+    $location.path('/dashboard');
+  };
+
+  $scope.isNavbarActive = function (navBarPath) {
+    return navBarPath === $scope.location.$$url;
+  };
+
+}]);
+
+
