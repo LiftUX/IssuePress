@@ -36,14 +36,18 @@ class UP_IssuePress {
    * @return void
    */
   public function load_IP_template(){
-    global $wp;
+
+    // Check if we've got work to do.
+    if( !get_query_var("pagename") && !get_query_var("page_id") ) 
+      return false;
+
     $IP_dir = dirname(__FILE__);
     $IP_options = get_option('upip_options');
     $IP_landing_id = $IP_options['landing'];
     $IP_landing_name = sanitize_title(get_the_title($IP_landing_id));
 
     // Check if the page being served matches the name or ID of the one set in options
-    if($wp->query_vars["pagename"] == $IP_landing_name || $wp->query_vars["page_id"] == $IP_landing_id){
+    if(get_query_var("pagename") == $IP_landing_name || get_query_var("page_id") == $IP_landing_id){
       if(file_exists($IP_dir . '/IP_template.php')){
         $return_template = $IP_dir . '/IP_template.php';
         $this->print_scripts = true;
