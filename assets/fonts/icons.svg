@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>
+Created by FontForge 20110222 at Tue Apr  9 17:44:50 2013
+ By root
+Copyright (C) 2012 by original authors @ fontello.com
+</metadata>
+<defs>
+<font id="icons" horiz-adv-x="926" >
+  <font-face 
+    font-family="icons"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="1000"
+    panose-1="2 0 6 9 0 0 0 0 0 0"
+    ascent="850"
+    descent="-150"
+    bbox="18 -90 908 800"
+    underline-thickness="50"
+    underline-position="-100"
+    unicode-range="U+E70C-E70C"
+  />
+<missing-glyph 
+d="M33 0v666h265v-666h-265zM66 33h199v600h-199v-600z" />
+    <glyph glyph-name=".notdef" 
+d="M33 0v666h265v-666h-265zM66 33h199v600h-199v-600z" />
+    <glyph glyph-name=".null" horiz-adv-x="0" 
+ />
+    <glyph glyph-name="nonmarkingreturn" 
+ />
+    <glyph glyph-name="uniE70C" unicode="&#xe70c;" 
+d="M18 400v400h400l465 -466q25 -25 25 -58q0 -30 -25 -56l-285 -285q-26 -25 -56 -25q-33 0 -58 25zM143 576q0 -40 30 -70.5t69.5 -30.5t70 30.5t30.5 70t-30.5 69.5t-70 30t-69.5 -30t-30 -69z" />
+  </font>
+</defs></svg>
