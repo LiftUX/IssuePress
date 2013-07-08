@@ -85,14 +85,9 @@ var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>"
       </form>
     </section>
 
-    <section class="message">
-      <div class="message-title">
-        Welcome to UpThemes Support
-      </div>
-      <div class="message-content">
-        Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper.
-      </div>
-    </section>
+    <div data-message title="Welcome to UpThemes Support">
+      Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper.
+    </div>
 
     <section class="recent-activity">
       <div class="section-title">
