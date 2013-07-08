@@ -56,12 +56,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/KnpLabs/php-github-api.git",
-            "reference": "8a9ccca56e5a6901c7bd44ea645548a14569fac5"
+            "reference": "8bedcf38330a7bb96dd153018849b3506faf6a62"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/8a9ccca56e5a6901c7bd44ea645548a14569fac5",
-            "reference": "8a9ccca56e5a6901c7bd44ea645548a14569fac5",
+            "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/8bedcf38330a7bb96dd153018849b3506faf6a62",
+            "reference": "8bedcf38330a7bb96dd153018849b3506faf6a62",
             "shasum": ""
         },
         "require": {
@@ -69,7 +69,7 @@
             "kriswallsmith/buzz": ">=0.7",
             "php": ">=5.3.2"
         },
-        "time": "2013-06-05 08:21:12",
+        "time": "2013-07-01 14:29:06",
         "type": "library",
         "extra": {
             "branch-alias": {

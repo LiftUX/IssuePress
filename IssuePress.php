@@ -26,7 +26,7 @@ class UP_IssuePress {
     add_action('template_redirect', array($this, 'load_IP_template'), 0);
 
     add_action('init', array($this, 'register_IP_scripts'), 0);
-    add_action('wp_footer', array($this, 'print_IP_scripts'), 20);
+    add_action('ip_head', array($this, 'print_IP_scripts'), 20);
 
   } 
 
@@ -36,14 +36,18 @@ class UP_IssuePress {
    * @return void
    */
   public function load_IP_template(){
-    global $wp;
+
+    // Check if we've got work to do.
+    if( !get_query_var("pagename") && !get_query_var("page_id") ) 
+      return false;
+
     $IP_dir = dirname(__FILE__);
     $IP_options = get_option('upip_options');
     $IP_landing_id = $IP_options['landing'];
     $IP_landing_name = sanitize_title(get_the_title($IP_landing_id));
 
     // Check if the page being served matches the name or ID of the one set in options
-    if($wp->query_vars["pagename"] == $IP_landing_name || $wp->query_vars["page_id"] == $IP_landing_id){
+    if(get_query_var("pagename") == $IP_landing_name || get_query_var("page_id") == $IP_landing_id){
       if(file_exists($IP_dir . '/IP_template.php')){
         $return_template = $IP_dir . '/IP_template.php';
         $this->print_scripts = true;
@@ -70,37 +74,27 @@ class UP_IssuePress {
    * @return void
    */
   public function register_IP_scripts(){
-    // Google jQuery, backbone, it's deps
-    wp_deregister_script('jquery');
-//    wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
-    wp_register_script('jquery', plugins_url('assets/js/jquery.min.js', __FILE__), array(), '1.8.2', true);
-    wp_register_script('underscore', plugins_url('assets/js/underscore.js', __FILE__), array(), '1.4.2', true);
-    wp_register_script('backbone', plugins_url('assets/js/backbone.js', __FILE__), array('underscore', 'jquery', 'json2'), '0.9.2', true);
 
-    // The IP Backbone app deps
-    wp_register_script('ip_m_repo', plugins_url('src/m/repo.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_m_issue', plugins_url('src/m/issue.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_repos', plugins_url('src/c/repos.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_issues', plugins_url('src/c/issues.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_v_app', plugins_url('src/v/issuepress.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_v_repo', plugins_url('src/v/repo.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_v_issue', plugins_url('src/v/issue.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_router', plugins_url('src/r/router.js', __FILE__), array(), '0.0.1', true);
+    // IP Styles
+    wp_register_style(
+      'issuepress-css', 
+      plugins_url('assets/css/main.css', __FILE__), 
+      array(),
+      '0.0.1', 
+      'all');
 
-    // The IP Backbone app file
+    // Google's Angular
+    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
+
+    // The IP Angular app modules
+#    wp_register_script('ip_m_repo', plugins_url('src/m/repo.js', __FILE__), array(), '0.0.1', true);
+
+    // The IP Angular app bootstrap file
     wp_register_script(
       'issuepress', 
-      plugins_url('src/issuepress.js', __FILE__), 
+      plugins_url('src/app/issuepress.js', __FILE__), 
       array(
-        'backbone',
-        'ip_m_repo',
-        'ip_m_issue',
-        'ip_c_repos',
-        'ip_c_issues',
-        'ip_v_app',
-        'ip_v_repo',
-        'ip_v_issue',
-        'ip_router'
+        'ip_angular',
       ),
       '0.0.1', 
       true);
@@ -113,6 +107,8 @@ class UP_IssuePress {
     if($this->print_scripts == false)
       return;
 
+    // Print IP styles
+    wp_print_styles('issuepress-css');
     // We only need this call since we've set up deps properly
     wp_print_scripts('issuepress');
   }
@@ -135,7 +131,7 @@ class UP_IssuePress {
    */
   public function get_IP_root(){
     $options =  get_option('upip_options');    
-    return sanitize_title(get_the_title($IP_options['landing']));
+    return sanitize_title(get_the_title($options['landing']));
   }
 
 }
