@@ -89,6 +89,7 @@ class UP_IssuePress {
     // The IP Angular app modules
 #    wp_register_script('ip_m_repo', plugins_url('src/m/repo.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
 
     // The IP Angular app bootstrap file
     wp_register_script(
@@ -97,6 +98,7 @@ class UP_IssuePress {
       array(
         'ip_angular',
         'ip_c_message',
+        'ip_c_breadcrumbs',
       ),
       '0.0.1', 
       true);

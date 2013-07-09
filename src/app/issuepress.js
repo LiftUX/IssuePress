@@ -1,5 +1,6 @@
 var IP = angular.module('issuepress', [
-  'components.message'
+  'components.message',
+  'components.breadcrumbs'
 ]);
 
 IP.config(function($routeProvider, $locationProvider) {

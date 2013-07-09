@@ -28,8 +28,9 @@ var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>"
   <ng-include src="'<?php echo plugins_url('src/app/header.tpl.html', __FILE__); ?>'">
   </ng-include>
 
-  <div class="left-column" data-ng-view>
+  <div class="left-column">
 
+    <div data-breadcrumbs></div>
     <section class="search">
       <form>
         <input class="textbox" type="text" placeholder="Search"/>
