@@ -28,13 +28,7 @@ var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>"
   <ng-include src="'<?php echo plugins_url('src/app/header.tpl.html', __FILE__); ?>'">
   </ng-include>
 
-  <div class="left-column">
-
-    <section class="breadcrumb">
-      <a href="">Support</a>
-      <a href="">Garage Band</a>
-      <a href="">Music Player won't work</a>
-    </section>
+  <div class="left-column" data-ng-view>
 
     <section class="search">
       <form>

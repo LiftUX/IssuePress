@@ -30,6 +30,7 @@ class UPIP_api{
     $vars[] = 'repo';
     $vars[] = 'issue';
     $vars[] = 'name';
+    $vars[] = 'is_new';
     return $vars;
   }
   
@@ -51,6 +52,10 @@ class UPIP_api{
     // IP
     add_rewrite_rule('^'.$IP_landing_name.'/issuepress/api/?','index.php?__ip_api=1','top');
 
+    // Add app rewrites for valid urls
+//    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)/([^/]*)/new(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]&issue=$matches[2]$is_new=true','top');
+//    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)/([^/]*)(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]&issue=$matches[2]','top');
+//    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]','top');
   }
 
   /** Sniff Requests
