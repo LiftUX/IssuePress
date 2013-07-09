@@ -1,6 +1,7 @@
 
 angular.module('issue', [])
 
-.controller('IssueCtrl', ['$scope', '$location', function($scope, $location) {
+.controller('IssueCtrl', ['$scope', '$location', '$routeParams', function($scope, $location, $routeParams) {
+  $scope.params = $routeParams;
   
 }]);
