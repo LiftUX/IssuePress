@@ -1,5 +1,5 @@
 
-angular.module('components.breadcrumbs', []).directive('breadcrumbs', function() {
+angular.module('components.breadcrumbs', []).directive('ipBreadcrumbs', function() {
   return {
     restrict: 'A',
     replace: true,

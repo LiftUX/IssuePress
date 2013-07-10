@@ -1,5 +1,5 @@
 
-angular.module('components.message', []).directive('message', function() {
+angular.module('components.message', []).directive('ipMessage', function() {
   return {
     restrict: 'A',
     replace: true,
