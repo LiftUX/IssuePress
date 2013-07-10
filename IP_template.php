@@ -25,23 +25,18 @@ IP.config(function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/dashboard', {
       templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/dashboard/dashboard.tpl.html'; ?>',
-      controller: 'DashboardCtrl'
     })
     .when('/sections', {
       templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/sections/sections.tpl.html'; ?>',
-      controller: 'SectionsCtrl'
     })
     .when('/:repo', {
       templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/repo/repo.tpl.html'; ?>',
-      controller: 'RepoCtrl'
     })
     .when('/:repo/:issue', {
       templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/issue/issue.tpl.html'; ?>',
-      controller: 'IssueCtrl'
     })
     .when('/:repo/:issue/new', {
       templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/create-issue/create-issue.tpl.html'; ?>',
-      controller: 'CreateIssueCtrl'
     })
     .otherwise({
       redirectTo: "/dashboard"
