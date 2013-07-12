@@ -6,9 +6,30 @@ var IP = angular.module('issuepress', [
   'issue',
   'create-issue',
   'components.message',
-  'components.breadcrumbs'
+  'components.breadcrumbs',
+  'components.recentActivity'
 ]);
 
-// We'd typically declare IP.config here but working WP makes refereces to templateUrl tough. 
-// Routes are defined in the IP_template.php file.
 
+IP.config(function($routeProvider, $locationProvider) {
+  $routeProvider
+    .when('/dashboard', {
+      templateUrl: IP_PATH + '/app/dashboard/dashboard.tpl.html',
+    })
+    .when('/sections', {
+      templateUrl: IP_PATH + '/app/sections/sections.tpl.html',
+    })
+    .when('/:repo', {
+      templateUrl: IP_PATH + '/app/repo/repo.tpl.html',
+    })
+    .when('/:repo/:issue', {
+      templateUrl: IP_PATH + '/app/issue/issue.tpl.html',
+    })
+    .when('/:repo/issue/new', {
+      templateUrl: IP_PATH + '/app/create-issue/create-issue.tpl.html',
+    })
+    .otherwise({
+      redirectTo: "/dashboard"
+    });
+
+});

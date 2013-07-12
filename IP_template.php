@@ -17,32 +17,12 @@ Template Name: IssuePress
 
 
 <script>
-var IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>
+var IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
 
-var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>"
+var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
 
-IP.config(function($routeProvider, $locationProvider) {
-  $routeProvider
-    .when('/dashboard', {
-      templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/dashboard/dashboard.tpl.html'; ?>',
-    })
-    .when('/sections', {
-      templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/sections/sections.tpl.html'; ?>',
-    })
-    .when('/:repo', {
-      templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/repo/repo.tpl.html'; ?>',
-    })
-    .when('/:repo/:issue', {
-      templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/issue/issue.tpl.html'; ?>',
-    })
-    .when('/:repo/:issue/new', {
-      templateUrl: '<?php echo UP_IssuePress::get_IP_path() . '/app/create-issue/create-issue.tpl.html'; ?>',
-    })
-    .otherwise({
-      redirectTo: "/dashboard"
-    });
+var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
 
-});
 
 </script>
 
