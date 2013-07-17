@@ -98,6 +98,7 @@ class UP_IssuePress {
     wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', __FILE__), array(), '0.0.1', true);
 
     // The IP Angular app bootstrap file
     wp_register_script(
@@ -116,6 +117,7 @@ class UP_IssuePress {
         'ip_c_message',
         'ip_c_breadcrumbs',
         'ip_c_recent_activity',
+        'ip_c_ticket_list',
       ),
       '0.0.1', 
       true);

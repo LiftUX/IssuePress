@@ -63,26 +63,22 @@ var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
       </a>
     </section>
 
-    <section class="tickets-following">
-      <div class="section-title">
-        Tickets I'm Following
-      </div>
-      <a href="" class="ticket">
-        <span class="ticket-title">Issue with the Music Player for the homepage on Garage Band</span>
-        <span class="ticket-meta">imbradmiller said an hour ago</span>
-        <span class="ticket-comment">This is exactly the issue I'm having and I fixed it by</span>
-      </a>
-      <a href="" class="ticket">
-        <span class="ticket-title">Issue with the Music Player for the homepage on Garage Band</span>
-        <span class="ticket-meta">imbradmiller said an hour ago</span>
-        <span class="ticket-comment">This is exactly the issue I'm having and I fixed it by</span>
-      </a>
-      <a href="" class="ticket">
-        <span class="ticket-title">Issue with the Music Player for the homepage on Garage Band</span>
-        <span class="ticket-meta">imbradmiller said an hour ago</span>
-        <span class="ticket-comment">This is exactly the issue I'm having and I fixed it by</span>
-      </a>
-    </section>
+    <div ip-ticket-list title="Tickets I'm Following">
+      <div ip-ticket-list-item
+           title="Issue with the Music Player for the homepage on Garage Band"
+           meta="imbradmiller said an hour ago"
+           href="#test-item">This is exactly the issue I'm having and I fixed it by</div>
+
+      <div ip-ticket-list-item
+           title="Issue with the Music Player for the homepage on Garage Band"
+           meta="imbradmiller said an hour ago"
+           href="#test-item">This is exactly the issue I'm having and I fixed it by</div>
+
+      <div ip-ticket-list-item
+           title="Issue with the Music Player for the homepage on Garage Band"
+           meta="imbradmiller said an hour ago"
+           href="#test-item">This is exactly the issue I'm having and I fixed it by</div>
+    </div>
 
   </div>
 
