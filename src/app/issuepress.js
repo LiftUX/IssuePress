@@ -7,7 +7,7 @@ var IP = angular.module('issuepress', [
   'create-issue',
   'components.message',
   'components.breadcrumbs',
-  'components.recentActivity'
+  'components.recentActivity',
 ]);
 
 
@@ -32,4 +32,10 @@ IP.config(function($routeProvider, $locationProvider) {
       redirectTo: "/dashboard"
     });
 
+});
+
+IP.run(function($rootScope, $templateCache) {
+  $rootScope.$on('$viewContentLoaded', function() {
+    $templateCache.removeAll();
+  });
 });

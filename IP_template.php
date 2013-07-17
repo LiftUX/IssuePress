@@ -22,8 +22,6 @@ var IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
 var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
 
 var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
-
-
 </script>
 
 <div class="content">

@@ -1,14 +1,14 @@
 <div class="recent-activity-item">
   <div class="recent-activity-content">
     <div class="recent-activity-message">
-      <a href="" class="recent-activity-title">
-        Issue with the Music Player for the homepage
+      <a href="" class="recent-activity-title" data-ng-if="title">
+        {{title}}
       </a>
-      <div class="recent-activity-meta">
-        <a href="">imbradmiller</a> commented on an issue in <a href="">garageband</a>
+      <div class="recent-activity-meta" data-ng-if="meta">
+        {{meta}}
       </div>
-      <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+      <div data-ng-transclude></div>
     </div>
   </div>
-  <a href="" class="recent-activity-timeago">4 hours ago</a>
+  <a href="" class="recent-activity-timeago" data-ng-if="timeago">{{timeago}}</a>
 </div>

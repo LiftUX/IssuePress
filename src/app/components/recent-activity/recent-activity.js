@@ -1,5 +1,7 @@
 
-angular.module('components.recentActivity', []).directive('ipRecentActivity', function() {
+angular.module('components.recentActivity', [])
+
+.directive('ipRecentActivity', function() {
   return {
     restrict: 'A',
     replace: true,
@@ -20,8 +22,8 @@ angular.module('components.recentActivity', []).directive('ipRecentActivity', fu
       'title': '@title',
       'icon': '@icon',
       'timeago': '@timeago',
+      'meta': '@meta',
     },
     templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html'
   }
-
 });
