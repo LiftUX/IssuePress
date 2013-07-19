@@ -9,6 +9,7 @@ var IP = angular.module('issuepress', [
   'components.breadcrumbs',
   'components.recentActivity',
   'components.ticketList',
+  'components.issueThread',
 ]);
 
 
