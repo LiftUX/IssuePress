@@ -10,6 +10,7 @@ var IP = angular.module('issuepress', [
   'components.recentActivity',
   'components.ticketList',
   'components.issueThread',
+  'ui.gravatar',
 ]);
 
 
