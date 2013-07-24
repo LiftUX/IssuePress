@@ -101,6 +101,10 @@ class UP_IssuePress {
     wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', __FILE__), array(), '0.0.1', true);
 
+    // Util Angular modules
+    wp_register_script('ip_u_md5', plugins_url('src/util/md5/md5.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_u_gravatar', plugins_url('src/util/gravatar/gravatar.js', __FILE__), array('ip_u_md5'), '0.0.1', true);
+
     // The IP Angular app bootstrap file
     wp_register_script(
       'issuepress', 
@@ -120,6 +124,8 @@ class UP_IssuePress {
         'ip_c_recent_activity',
         'ip_c_ticket_list',
         'ip_c_issue_thread',
+
+        'ip_u_gravatar',
       ),
       '0.0.1', 
       true);

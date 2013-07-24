@@ -46,11 +46,11 @@ class UPIP_api{
     // Add API endpoints
 
     // IP, Repo & Issue
-    add_rewrite_rule('^'.$IP_landing_name.'/issuepress/api/([\w-]+?)/([\w-]+?)','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
+    add_rewrite_rule('^issuepress/api/([^/]*)/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
     // IP & Repo
-    add_rewrite_rule('^'.$IP_landing_name.'/issuepress/api/([\w-]+?)','index.php?__ip_api=1&repo=$matches[1]','top');
+    add_rewrite_rule('^issuepress/api/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]','top');
     // IP
-    add_rewrite_rule('^'.$IP_landing_name.'/issuepress/api/?','index.php?__ip_api=1','top');
+    add_rewrite_rule('^issuepress/api/?','index.php?__ip_api=1','top');
 
     // Add app rewrites for valid urls
 //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)/([^/]*)/new(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]&issue=$matches[2]$is_new=true','top');
@@ -124,19 +124,18 @@ class UPIP_api{
 
     // Get the vars in variables if they exist
     if(isset($wp->query_vars['repo'])) 
-      $repoID = json_encode($wp->query_vars['repo']);
+      $repo = json_encode($wp->query_vars['repo']);
     if(isset($wp->query_vars['issue'])) 
       $issue = json_encode($wp->query_vars['issue']);
 
     // Repo id var has been set, let's figure out which repo they want & fetch it's data
-    if(!empty($repoID)) {
-      $repoName = $this->get_repoName_from_id($repoID);
-      $data['repo'] = $this->get_repo_data($repoName);
+    if(!empty($repo)) {
+      $data['repo'] = $this->get_repo_data($repo);
     }
 
     // Issue id var has been set, let's ask github for that issue's data
     if(!empty($issue)) { 
-      $data['issue'] = $this->get_issue_data($issue, $repoName);
+      $data['issue'] = $this->get_issue_data($issue, $repo);
     }
 
     if($method === 'POST')
@@ -148,27 +147,25 @@ class UPIP_api{
 
 
 
-/*
-
-if PUT & Repo $ Issue -> put_issue()
-if GET & Repo & Issue -> get_issue()
-if GET & Repo -> get_repo() & get_issues()
-if POST & Repo -> post_issue()
-
-*/
-    // Route the request
-    if($method === "PUT" && $repoName && $issue){
-      $data['response'] = $this->put_issue($issue, $repoName);
-    } else if($method === "GET" && $repoName && $issue){
-      $data['issue'] = $this->get_issue($issue, $repoName);
-    } else if($method === "GET" && $repoName && !$issue){
-      $data['repo'] = $this->get_repo($repoName);
-      $data['issues'] = $this->get_issues($repoName);
-    } else if($method === "POST" && $repoName && !$issue){
-      $data['response'] = $this->post_issue($repoName);
+    /*
+     * Route the request:
+     *
+     * if PUT & Repo & Issue -> put_issue()
+     * if GET & Repo & Issue -> get_issue()
+     * if GET & Repo -> get_repo() & get_issues()
+     * if POST & Repo -> post_issue()
+     *
+     */
+    if($method === "PUT" && isset($repo) && isset($issue)){
+      $data['response'] = $this->put_issue($issue, $repo);
+    } else if($method === "GET" && isset($repo) && isset($issue)){
+      $data['issue'] = $this->get_issue($issue, $repo);
+    } else if($method === "GET" && isset($repo) && !isset($issue)){
+      $data['repo'] = $this->get_repo($repo);
+      $data['issues'] = $this->get_issues($repo);
+    } else if($method === "POST" && isset($repo) && !isset($issue)){
+      $data['response'] = $this->post_issue($repo);
     }
-
-
 
     $this->send_response('200 OK', $data);
 
@@ -202,7 +199,7 @@ if POST & Repo -> post_issue()
   private function get_repo_data($repoName){
 
     // Implement github api call for fetching repo data here
-    return json_encode("repo data: " . $repoName);
+    return "repo data: " . $repoName;
 
   }
 
@@ -212,7 +209,7 @@ if POST & Repo -> post_issue()
   private function get_issue_data($issue, $repoName){
 
     // Implement github api call for fetching issue data here
-    return json_encode("issue data: " . $issue . " from " . $repoName);
+    return "issue data: " . $issue . " from " . $repoName;
 
   }
 
@@ -230,6 +227,7 @@ if POST & Repo -> post_issue()
   private function get_issue($issue, $repoName){
     // Github API call to get a particular issue ($issue) in particular repo ($repoName)
     // $issue = $client->api('issue')->show('KnpLabs', 'php-github-api', 1);
+    return "My single issue $issue from $repoName";
   }
 
   /** github API call to get repo
@@ -238,6 +236,7 @@ if POST & Repo -> post_issue()
   private function get_repo($repoName){
     // Github API call to get data for a particular repo ($repoName)
     // $repo = $client->api('repo')->show('KnpLabs', 'php-github-api')
+    return "my repo is $repoName";
   }
 
   /** github API call to get all issue data from repo
@@ -246,6 +245,7 @@ if POST & Repo -> post_issue()
   private function get_issues($repoName){
     // Github API call to get issues in particular repo ($repoName)
     // $issues = $client->api('issue')->all('KnpLabs', 'php-github-api', array('state' => 'open'));
+    return "all issues for $repoName";
   }
 
   /** github API call to post new issue
