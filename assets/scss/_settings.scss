@@ -6,11 +6,13 @@
   font-style:normal;
 }
 
+@import "http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700";
+
 $max-width:980px;
 $primary:#b92b6b;
 $outline-color:#6cbce6;
 $error-color:#d74343;
-$font:"proxima-nova-alt";
+$font:"Source Sans Pro";
 $icon:"icons";
 
 body,
