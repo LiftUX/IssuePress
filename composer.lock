@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "8bedcf38330a7bb96dd153018849b3506faf6a62"
+                "reference": "8a8f304e91a5dbd5ca86fb703675dd060cc5d560"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/8bedcf38330a7bb96dd153018849b3506faf6a62",
-                "reference": "8bedcf38330a7bb96dd153018849b3506faf6a62",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/8a8f304e91a5dbd5ca86fb703675dd060cc5d560",
+                "reference": "8a8f304e91a5dbd5ca86fb703675dd060cc5d560",
                 "shasum": ""
             },
             "require": {
@@ -58,7 +58,7 @@
                 "gist",
                 "github"
             ],
-            "time": "2013-07-01 14:29:06"
+            "time": "2013-07-31 13:28:53"
         },
         {
             "name": "kriswallsmith/buzz",
