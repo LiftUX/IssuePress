@@ -14,7 +14,12 @@ angular.module('ui.gravatar', ['md5']).
             },
             template: '<img src="{{src}}" />',
             controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs){
-              var emailHash = md5.createHash($scope.email);
+
+              if(typeof $scope.email !== 'undefined')
+                var emailHash = md5.createHash($scope.email.toLowerCase());
+              else
+                var emailHash = '00000000000000000000000000000000';
+
               var protocol = $scope.secure ? 'https://secure' : 'http://';
               var src = protocol + 'gravatar.com/avatar/' + emailHash + '?';
               
