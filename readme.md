@@ -3,6 +3,10 @@
 
 The plugin creates a page template that loads a backbone app that interacts with the github v3 api.
 
+## Note On Composer deps
+
+*You shouldn't ever need to edit anything in the `/vendor/` directory, use the [composter](http://getcomposer.org/) cli to update these packages should it be required. *
+
 
 ### Request flow
 
