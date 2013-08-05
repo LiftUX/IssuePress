@@ -2,5 +2,5 @@
     "require": {
         "knplabs/github-api": "*"
     },
-    "minimum-stability": "dev"
+    "preferred-install": "dist"
 }
