@@ -1,3 +1,7 @@
-!vendor/
+!vendor/*
 !vendor/knplabs/github-api/
+!vendor/knplabs/github-api/lib/
+
 !vendor/kriswallsmith/buzz/
+!vendor/kriswallsmith/buzz/lib/
+
