@@ -1,6 +1,6 @@
 <?php
 if(!class_exists('ip_message')){
-  class ip_message extends WP_Widget{
+  class ip_message extends IP_Widget{
     protected $fields = array(
       'msg-title' => 'Message Title',
       'msg-body'  => 'Message Body'
