@@ -28,6 +28,7 @@ class UP_IssuePress {
     add_action('init', array($this, 'register_IP_scripts'), 0);
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
 
+    add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
   } 
 
   
@@ -67,6 +68,50 @@ class UP_IssuePress {
       die();
     } else {
       $wp_query->is_404 = true;
+    }
+  }
+
+  /* Register the IP sidebars
+   * @return void
+   */
+  public function register_IP_sidebars() {
+
+    // Build out the various sidebar detail in an array for easy registering...
+    $widget_locs = array(
+      array(
+        'IssuePress Dashboard Main',
+        'ip-dashboard-main',
+        'Control the content in the IssuePress "Dashboard" page.',
+      ),
+      array(
+        'IssuePress Dashboard Sidebar',
+        'ip-dashboard-side',
+        'Control the content in the IssuePress "Dashboard" page\'s sidebar',
+      ),
+      array(
+        'IssuePress Sections Sidebar',
+        'ip-sections-side',
+        'Control the content in the IssuePress "Sections" page\'s sidebar',
+      ),
+      array(
+        'IssuePress Repo Sidebar',
+        'ip-repo-side',
+        'Control the content in the IssuePress "Repo" page\'s sidebar',
+      ),
+      array(
+        'IssuePress Issue Sidebar',
+        'ip-issue-side',
+        'Control the content in the IssuePress "Issue Thread" page\'s sidebar',
+      ),
+    );
+
+    // Loop through our sidebar details and register them
+    foreach($widget_locs as $widget_loc){
+      register_sidebar(array(
+        'name'        => __($widget_loc[0], 'IssuePress'),
+        'id'          => $widget_loc[1],
+        'description' => __($widget_loc[2], 'IssuePress'),
+      ));
     }
   }
 
