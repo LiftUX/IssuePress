@@ -11,6 +11,7 @@ Author URI: http://upthemes.com/
 require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
 require_once 'IP_api.php';
+require_once('widgets/load.php');
 
 class UP_IssuePress {
   
@@ -18,6 +19,7 @@ class UP_IssuePress {
    *  @var
    */
   private $print_scripts = false;
+
 
   /** Hook WordPress
   * @return void
@@ -31,7 +33,6 @@ class UP_IssuePress {
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
   } 
 
-  
 
   /* Overwrite the default template with IssuePress Backbone App
    * @return void
@@ -58,6 +59,7 @@ class UP_IssuePress {
 
   }
 
+
   /* Actually load our template instead of the requested page
    * @return void
    */ 
@@ -70,6 +72,7 @@ class UP_IssuePress {
       $wp_query->is_404 = true;
     }
   }
+
 
   /* Register the IP sidebars
    * @return void
@@ -114,6 +117,7 @@ class UP_IssuePress {
       ));
     }
   }
+
 
   /* Register scripts for IP
    * @return void
@@ -176,6 +180,7 @@ class UP_IssuePress {
       true);
   }
 
+
   /* Print out our scripts
    * @return void
    */
@@ -188,6 +193,7 @@ class UP_IssuePress {
     // We only need this call since we've set up deps properly
     wp_print_scripts('issuepress');
   }
+
 
   /* Fetch the github repos IP tracks to initialize BB
    * @return [json] $IP_repos;
@@ -202,6 +208,7 @@ class UP_IssuePress {
     return json_encode($IP_repos);
   }
   
+
   /* Fetches the slug for the support page
    * @return string
    */
@@ -210,12 +217,14 @@ class UP_IssuePress {
     return sanitize_title(get_the_title($options['landing']));
   }
 
+
   /* Utility function to output URL path of IP angular app for easy partials reference
    * @return string
    */
   public function get_IP_path(){
     return plugins_url('src', __FILE__);
   }
+
 
 }
 new UP_IssuePress();
