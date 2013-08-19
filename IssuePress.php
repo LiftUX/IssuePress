@@ -171,5 +171,6 @@ class UP_IssuePress {
   public function get_IP_path(){
     return plugins_url('src', __FILE__);
   }
+
 }
 new UP_IssuePress();

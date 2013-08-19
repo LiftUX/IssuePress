@@ -12,13 +12,38 @@
 
 class UPIP_api{
 
+  private $client;
+  private $user;
+
   /** Hook WordPress
   * @return void
   */
   public function __construct(){
+    $this->client = $this->new_client();
+    $this->user = $this->get_user();
+
     add_filter('query_vars', array($this, 'add_query_vars'), 0);
     add_action('parse_request', array($this, 'check_requests'), 0);
     add_action('init', array($this, 'add_endpoint'), 0);
+  }
+
+  public function new_client() {
+    $options = get_option('upip_options');    
+    $client = new Github\Client();
+    $client->authenticate($options['u'], $options['p'], Github\Client::AUTH_HTTP_PASSWORD);
+    return $client;
+  }
+
+  public function get_Client() {
+    return $this->client;
+  }
+
+  private function get_user() {
+    $options = get_option('upip_options');    
+    if($options['u'])
+      return $options['u'];
+    else
+      return '';
   }
 
   /** Add public query vars
@@ -90,12 +115,15 @@ class UPIP_api{
     * GET - {repo}
     *
     *
+    *
     * List specific issue for repo
     * GET /repos/:owner/:repo/issues/:number
     *
     * get_issue_num()
-    * /[landing]/[repo name]/[issue name/number]
-    * GET - {repo} & {issue}
+    * /[landing]/[repo name]/[issue number]
+    * GET - {repo} 
+    * GET - {issue}
+    *
     *
     *
     * Create an Issue
@@ -105,6 +133,7 @@ class UPIP_api{
     * /[landing]/[repo name]/new
     * POST - {repo}
     * 
+    *
     *
     * Edit an Issue
     * PATCH /repos/:owner/:repo/issues/:number
@@ -128,16 +157,6 @@ class UPIP_api{
     if(isset($wp->query_vars['issue'])) 
       $issue = json_encode($wp->query_vars['issue']);
 
-    // Repo id var has been set, let's figure out which repo they want & fetch it's data
-    if(!empty($repo)) {
-      $data['repo'] = $this->get_repo_data($repo);
-    }
-
-    // Issue id var has been set, let's ask github for that issue's data
-    if(!empty($issue)) { 
-      $data['issue'] = $this->get_issue_data($issue, $repo);
-    }
-
     if($method === 'POST')
       $post_data = file_get_contents('php://input');
 
@@ -159,12 +178,16 @@ class UPIP_api{
     if($method === "PUT" && isset($repo) && isset($issue)){
       $data['response'] = $this->put_issue($issue, $repo);
     } else if($method === "GET" && isset($repo) && isset($issue)){
+      $data['repo'] = $this->get_repo($repo);
       $data['issue'] = $this->get_issue($issue, $repo);
+      $data['comments'] = $this->get_issue_comments($issue, $repo);
     } else if($method === "GET" && isset($repo) && !isset($issue)){
       $data['repo'] = $this->get_repo($repo);
       $data['issues'] = $this->get_issues($repo);
     } else if($method === "POST" && isset($repo) && !isset($issue)){
       $data['response'] = $this->post_issue($repo);
+    } else if($mthod === "POST" && isset($repo) && isset($issue)){
+      $data['reponse'] = $this->post_comment($issue, $repo);
     }
 
     $this->send_response('200 OK', $data);
@@ -185,58 +208,19 @@ class UPIP_api{
     exit;
   }
 
-  /** Get Repo Name from ID
-  * @return string
-  */
-  private function get_repoName_from_id($id){
-    $options = get_option('upip_options');
-    return $options['r'][json_decode($id)]; // Will fetch the repo name based on array index
-  }
 
-  /** Get Repo data from github
-  * @return json (string)
-  */
-  private function get_repo_data($repoName){
+  /*** UPAPI refs to Github API ***/
 
-    // Implement github api call for fetching repo data here
-    return "repo data: " . $repoName;
-
-  }
-
-  /** Get Issue Data from github
-  * @return json (string)
-  */
-  private function get_issue_data($issue, $repoName){
-
-    // Implement github api call for fetching issue data here
-    return "issue data: " . $issue . " from " . $repoName;
-
-  }
-
-  /** github API call to put issue
-  * @return string
-  */
-  private function put_issue($issue, $repoName){
-    // Github API call to update a particular issue ($issue) in particular repo ($repoName)
-    // $client->api('issue')->update('KnpLabs', 'php-github-api', 4, array('body' => 'The new issue body'));
-  }
-
-  /** github API call to get issue
-  * @return string
-  */
-  private function get_issue($issue, $repoName){
-    // Github API call to get a particular issue ($issue) in particular repo ($repoName)
-    // $issue = $client->api('issue')->show('KnpLabs', 'php-github-api', 1);
-    return "My single issue $issue from $repoName";
-  }
 
   /** github API call to get repo
   * @return string
   */
   private function get_repo($repoName){
     // Github API call to get data for a particular repo ($repoName)
-    // $repo = $client->api('repo')->show('KnpLabs', 'php-github-api')
-    return "my repo is $repoName";
+    // $repo = $client->api('repo')->show($this->user, 'php-github-api')
+    $client = $this->get_client();
+    $repo = $client->api('repo')->show($this->user, json_decode($repoName));
+    return $repo;
   }
 
   /** github API call to get all issue data from repo
@@ -244,8 +228,9 @@ class UPIP_api{
   */
   private function get_issues($repoName){
     // Github API call to get issues in particular repo ($repoName)
-    // $issues = $client->api('issue')->all('KnpLabs', 'php-github-api', array('state' => 'open'));
-    return "all issues for $repoName";
+    $client = $this->get_client();
+    $issues = $client->api('issue')->all($this->user, json_decode($repoName), array('state' => 'open'));
+    return $issues;
   }
 
   /** github API call to post new issue
@@ -253,8 +238,46 @@ class UPIP_api{
   */
   private function post_issue($repoName){
     // Github API call to post a new issue in particular repo ($repoName)
-    // $client->api('issue')->create('KnpLabs', 'php-github-api', array('title' => 'The issue title', 'body' => 'The issue body');
+    // $client->api('issue')->create($this->user, 'php-github-api', array('title' => 'The issue title', 'body' => 'The issue body');
   }
+
+  /** github API call to put issue
+  * @return string
+  */
+  private function put_issue($issue, $repoName){
+    // Github API call to update a particular issue ($issue) in particular repo ($repoName)
+    // $client->api('issue')->update($this->user, 'php-github-api', 4, array('body' => 'The new issue body'));
+  }
+
+  /** github API call to get issue
+  * @return string
+  */
+  private function get_issue($issue, $repoName){
+    // Github API call to get a particular issue ($issue) in particular repo ($repoName)
+    // $issue = $client->api('issue')->show($this->user, 'php-github-api', 1);
+    $client = $this->get_client();
+    $issue = $client->api('issue')->show($this->user, json_decode($repoName), json_decode($issue));
+
+    return $issue;
+  }
+
+  /** github API call to get an issue's comments
+   * @return string
+   */
+  private function get_issue_comments($issue, $repoName){
+    $client = $this->get_client();
+    $comments = $client->api('issue')->comments()->all($this->user, json_decode($repoName), json_decode($issue));
+    return $comments;
+  }
+
+  /** github API call to post a new comment on issue in repo
+   * @return string (response)
+   */
+  private function post_comment($issue, $repoName){
+    // $client->api('issue')->comments()->create($this->user, 'php-github-api', 4, array('body' => 'My new comment'));
+  }
+
+  /*** END UPAPI refs to Github API ***/
 
 }
 new UPIP_api();
