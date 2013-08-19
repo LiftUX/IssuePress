@@ -21,7 +21,7 @@ angular.module('ui.gravatar', ['md5']).
                 var emailHash = '00000000000000000000000000000000';
 
               var protocol = $scope.secure ? 'https://secure' : 'http://';
-              var src = protocol + 'gravatar.com/avatar/' + emailHash + '?';
+              var src = protocol + 'gravatar.com/avatar/' + emailHash + '?d=mm&';
               
               if(typeof $scope.s !== 'undefined') 
                 src += 's=' + $scope.s + '&';
