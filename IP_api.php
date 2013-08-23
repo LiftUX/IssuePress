@@ -182,10 +182,10 @@ class UPIP_api{
       $data['issue'] = $this->get_issue(json_decode($issue), json_decode($repo));
       $data['comments'] = $this->get_issue_comments(json_decode($issue), json_decode($repo));
     } else if($method === "GET" && isset($repo) && !isset($issue)){
-//      $data['repo'] = $this->get_repo(json_decode($repo));
-//      $data['issues'] = $this->get_issues(json_decode($repo));
+      $data['repo'] = $this->get_repo(json_decode($repo));
+      $data['issues'] = $this->get_issues(json_decode($repo));
       $data['releases'] = $this->get_repo_releases(json_decode($repo));
-//      $data['activity'] = $this->get_repo_activity(json_decode($repo));
+      $data['activity'] = $this->get_repo_activity(json_decode($repo));
     } else if($method === "POST" && isset($repo) && !isset($issue)){
       $data['response'] = $this->post_issue(json_decode($repo));
     } else if($method === "POST" && isset($repo) && isset($issue)){
