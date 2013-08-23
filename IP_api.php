@@ -176,18 +176,20 @@ class UPIP_api{
      *
      */
     if($method === "PUT" && isset($repo) && isset($issue)){
-      $data['response'] = $this->put_issue($issue, $repo);
+      $data['response'] = $this->put_issue(json_decode($issue), json_decode($repo));
     } else if($method === "GET" && isset($repo) && isset($issue)){
-      $data['repo'] = $this->get_repo($repo);
-      $data['issue'] = $this->get_issue($issue, $repo);
-      $data['comments'] = $this->get_issue_comments($issue, $repo);
+//      $data['repo'] = $this->get_repo(json_decode($repo)); // Necessary?
+      $data['issue'] = $this->get_issue(json_decode($issue), json_decode($repo));
+      $data['comments'] = $this->get_issue_comments(json_decode($issue), json_decode($repo));
     } else if($method === "GET" && isset($repo) && !isset($issue)){
-      $data['repo'] = $this->get_repo($repo);
-      $data['issues'] = $this->get_issues($repo);
+//      $data['repo'] = $this->get_repo(json_decode($repo));
+//      $data['issues'] = $this->get_issues(json_decode($repo));
+      $data['releases'] = $this->get_repo_releases(json_decode($repo));
+//      $data['activity'] = $this->get_repo_activity(json_decode($repo));
     } else if($method === "POST" && isset($repo) && !isset($issue)){
-      $data['response'] = $this->post_issue($repo);
-    } else if($mthod === "POST" && isset($repo) && isset($issue)){
-      $data['reponse'] = $this->post_comment($issue, $repo);
+      $data['response'] = $this->post_issue(json_decode($repo));
+    } else if($method === "POST" && isset($repo) && isset($issue)){
+      $data['reponse'] = $this->post_comment(json_decode($issue), json_decode($repo));
     }
 
     $this->send_response('200 OK', $data);
@@ -213,24 +215,41 @@ class UPIP_api{
 
 
   /** github API call to get repo
-  * @return string
+  * @return object
   */
   private function get_repo($repoName){
     // Github API call to get data for a particular repo ($repoName)
-    // $repo = $client->api('repo')->show($this->user, 'php-github-api')
     $client = $this->get_client();
-    $repo = $client->api('repo')->show($this->user, json_decode($repoName));
+    $repo = $client->api('repo')->show($this->user, $repoName);
     return $repo;
   }
 
   /** github API call to get all issue data from repo
-  * @return json encoded array of objects
+  * @return array of objects
   */
   private function get_issues($repoName){
     // Github API call to get issues in particular repo ($repoName)
     $client = $this->get_client();
-    $issues = $client->api('issue')->all($this->user, json_decode($repoName), array('state' => 'open'));
+    $issues = $client->api('issue')->all($this->user, $repoName, array('state' => 'open'));
     return $issues;
+  }
+
+  /** github API call to get releases of a repo
+   * * @return array of objects
+   */
+  private function get_repo_releases($repoName){
+    $client = $this->get_client();
+    $releases = $client->api('repo')->releases()->all($this->user, $repoName);
+    return $releases;
+  }
+
+  /** github API call to get recent activity of a repo
+   * * @return array of objects
+   */
+  private function get_repo_activity($repoName){
+    $client = $this->get_client();
+    $activity = $client->api('issue')->events()->all($this->user, $repoName);
+    return $activity;
   }
 
   /** github API call to post new issue
@@ -256,7 +275,7 @@ class UPIP_api{
     // Github API call to get a particular issue ($issue) in particular repo ($repoName)
     // $issue = $client->api('issue')->show($this->user, 'php-github-api', 1);
     $client = $this->get_client();
-    $issue = $client->api('issue')->show($this->user, json_decode($repoName), json_decode($issue));
+    $issue = $client->api('issue')->show($this->user, $repoName, $issue);
 
     return $issue;
   }
@@ -266,7 +285,7 @@ class UPIP_api{
    */
   private function get_issue_comments($issue, $repoName){
     $client = $this->get_client();
-    $comments = $client->api('issue')->comments()->all($this->user, json_decode($repoName), json_decode($issue));
+    $comments = $client->api('issue')->comments()->all($this->user, $repoName, $issue);
     return $comments;
   }
 
