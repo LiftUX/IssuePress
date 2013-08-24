@@ -136,6 +136,7 @@ class UP_IssuePress {
     wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
 
     // The IP Angular app modules
+    wp_register_script('ip_app_state', plugins_url('src/app/app-state/app-state.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_header', plugins_url('src/app/header/header.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_dashboard', plugins_url('src/app/dashboard/dashboard.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_sections', plugins_url('src/app/sections/sections.js', __FILE__), array(), '0.0.1', true);
@@ -145,7 +146,7 @@ class UP_IssuePress {
 
     // The IP Angular app components
     wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', __FILE__), array(), '0.0.1', true);
@@ -161,6 +162,7 @@ class UP_IssuePress {
       array(
         'ip_angular',
 
+        'ip_app_state',
         'ip_header',
         'ip_dashboard',
         'ip_sections',

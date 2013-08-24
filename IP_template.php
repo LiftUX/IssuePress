@@ -25,8 +25,7 @@ var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
 </script>
 
 <div class="content">
-  <ng-include src="'<?php echo UP_IssuePress::get_IP_path() . '/app/header/header.tpl.html'; ?>'">
-  </ng-include>
+  <div ip-header></div>
 
   <div class="left-column" data-ng-view>
   </div>

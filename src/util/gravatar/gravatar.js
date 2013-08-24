@@ -12,7 +12,7 @@ angular.module('ui.gravatar', ['md5']).
               r: '@r',
               d: '@d'
             },
-            template: '<img src="{{src}}" />',
+            template: '<img ng-show="src" src="{{src}}" />',
             controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs){
 
               if(typeof $scope.email !== 'undefined')
