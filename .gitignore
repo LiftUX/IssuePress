@@ -1,3 +1,4 @@
+.sass-cache/
 !/vendor/**/*
 vendor/.git
 **/*/.DS_Store

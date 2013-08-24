@@ -143,6 +143,7 @@ class UP_IssuePress {
     wp_register_script('ip_repo', plugins_url('src/app/repo/repo.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_issue', plugins_url('src/app/issue/issue.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_create_issue', plugins_url('src/app/create-issue/create-issue.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_user', plugins_url('src/app/user/user.js', __FILE__), array(), '0.0.1', true);
 
     // The IP Angular app components
     wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', __FILE__), array(), '0.0.1', true);
@@ -169,6 +170,7 @@ class UP_IssuePress {
         'ip_repo',
         'ip_issue',
         'ip_create_issue',
+        'ip_user',
 
         'ip_c_message',
         'ip_c_breadcrumbs',
@@ -225,6 +227,35 @@ class UP_IssuePress {
    */
   public function get_IP_path(){
     return plugins_url('src', __FILE__);
+  }
+
+  /* Utility function to output current user data safely
+   * @return json_encoded objec
+   */
+  public function get_IP_user() {
+    $user = wp_get_current_user();
+
+    if( !($user instanceof WP_User) || $user->data == null )
+      return 'null';
+    
+    $IP_user = array(
+      'username' => $user->user_login,
+      'email' => $user->user_email,
+      'firstname' => $user->user_firstname,
+      'lastname' => $user->user_lastname,
+      'display_name' => $user->display_name,
+      'ID' => $user->ID,
+    );
+
+
+    return json_encode($IP_user);
+  }
+
+  /* Utility function to pass login page to angular app
+   * @return string
+   */
+  public function get_IP_login(){
+    return wp_login_url(site_url( '/'.$this->get_IP_root().'/'));
   }
 
 

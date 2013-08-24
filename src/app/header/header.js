@@ -1,5 +1,5 @@
 
-angular.module('header', [])
+angular.module('header', ['user'])
 
 .directive('ipHeader', function() {
   return {
@@ -9,8 +9,12 @@ angular.module('header', [])
   }
 })
 
-.controller('HeaderCtrl', ['$scope', '$location',
-function ($scope, $location) {
+.controller('HeaderCtrl', ['$scope', '$location', 'IPUser',
+function ($scope, $location, IPUser) {
+  $scope.user = IPUser.user;
+  $scope.login_link = IPUser.login_link;
+  $scope.logout = IPUser.logout; 
+
   $scope.loc = $location.$$url;
 
   $scope.isNavbarActive = function (navBarPath) {
