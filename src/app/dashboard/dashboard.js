@@ -1,4 +1,4 @@
-angular.module('dashboard', ['AppState'])
+angular.module('dashboard', [])
 
 .controller('DashboardCtrl', ['$scope', '$location', '$routeParams', function($scope, $location, $routeParams) {
   
