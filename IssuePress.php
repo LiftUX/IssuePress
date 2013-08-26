@@ -205,6 +205,10 @@ class UP_IssuePress {
   public function get_IP_repo_json(){
 
     $options =  get_option('upip_options');    
+
+    if(!array_key_exists('r', $options))
+      return 'undefined';
+
     foreach($options['r'] as $index => $item) {
       $IP_repos[]['name'] = $item;  
     }
