@@ -1,5 +1,5 @@
 angular.module('ui.breadcrumbs', [])
-.factory('breadcrumbs', ['$rootScope', '$location', function($rootScope, $location){
+.factory('breadcrumbs', ['$rootScope', '$location', '$routeParams', function($rootScope, $location, $routeParams){
 
   // Dashboard bc item
   var dashboard = {
@@ -22,11 +22,30 @@ angular.module('ui.breadcrumbs', [])
       bcArray = [dashboard];
     } else if(path === '/sections') {
       bcArray = [dashboard,sections];
-    } else {
+    } 
+    
+    if (typeof $routeParams.repo != 'undefined'){ 
+      var repo = $routeParams.repo;
       bcArray = [dashboard,sections, {
-        href: path,
-        title: path.substr(1, path.length)
+        href: '/'+repo,
+        title: $routeParams.repo
       }];
+      
+      // Check if it's a specific issue template
+      if (typeof $routeParams.issue != 'undefined'){
+        bcArray.push({
+          href: path,
+          title: "Issue #" + $routeParams.issue
+        });
+
+      // Check if it's a Create Issue template
+      } else if(path === '/' + repo + '/issue/new') {
+        bcArray.push({
+          href: path,
+          title: "Create Issue"
+        });
+      }
+
     }
 
     return bcArray;
