@@ -39,7 +39,7 @@ angular.module('ui.breadcrumbs', [])
         });
 
       // Check if it's a Create Issue template
-      } else if(path === '/' + repo + '/issue/new') {
+      } else if(path === '/' + repo + '/new') {
         bcArray.push({
           href: path,
           title: "Create Issue"
