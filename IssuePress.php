@@ -1,20 +1,29 @@
 <?php
 /*
 Plugin Name: IssuePress
-Plugin URI: http://upthemes.com/plugins/issuepress
+Plugin URI: http://issuepress.co
 Description: Github Issues integration with WP - for support stuff
-Version: 0.0.1
-Author: Upthemes
-Author URI: http://upthemes.com/ 
+Version: 0.1
+Author: UpThemes
+Author URI: http://issuepress.co
 */
 
 require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
 require_once 'IP_api.php';
-require_once('widgets/load.php');
+require_once 'IP_license_admin.php';
+require_once 'widgets/load.php';
+
+if( !class_exists( 'IP_SL_Plugin_Updater' ) ) {
+  // load our custom updater if it doesn't already exist
+  include( dirname( __FILE__ ) . '/IP_SL_Plugin_Updater.php' );
+}
+
+define( 'IP_SL_STORE_URL', 'http://issuepress.co' );
+define( 'IP_SL_ITEM_NAME', 'IssuePress' );
 
 class UP_IssuePress {
-  
+
   /** Print Scripts?
    *  @var
    */
@@ -31,7 +40,19 @@ class UP_IssuePress {
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
 
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
-  } 
+
+    // retrieve our license key from the DB
+    $license_key  = get_option( 'upip_license_key' );
+
+    // setup the updater
+    $ip_updater = new EDD_SL_Plugin_Updater( IP_SL_STORE_URL, __FILE__, array(
+        'version'   => '0.1',     // current version number
+        'license'   => $license_key,  // license key (used get_option above to retrieve from DB)
+        'item_name'     => IP_SL_ITEM_NAME,  // name of this plugin
+        'author'  => 'UpThemes'  // author of this plugin
+      )
+    );
+  }
 
 
   /* Overwrite the default template with IssuePress Backbone App
@@ -40,7 +61,7 @@ class UP_IssuePress {
   public function load_IP_template(){
 
     // Check if we've got work to do.
-    if( !get_query_var("pagename") && !get_query_var("page_id") ) 
+    if( !get_query_var("pagename") && !get_query_var("page_id") )
       return false;
 
     $IP_dir = dirname(__FILE__);
@@ -62,7 +83,7 @@ class UP_IssuePress {
 
   /* Actually load our template instead of the requested page
    * @return void
-   */ 
+   */
   private function do_theme_direct($url){
     global $post, $wp_query;
     if(have_posts()){
@@ -126,10 +147,10 @@ class UP_IssuePress {
 
     // IP Styles
     wp_register_style(
-      'issuepress-css', 
-      plugins_url('assets/css/main.css', __FILE__), 
+      'issuepress-css',
+      plugins_url('assets/css/main.css', __FILE__),
       array(),
-      '0.0.1', 
+      '0.0.1',
       'all');
 
     // Google's Angular
@@ -158,8 +179,8 @@ class UP_IssuePress {
 
     // The IP Angular app bootstrap file
     wp_register_script(
-      'issuepress', 
-      plugins_url('src/app/issuepress.js', __FILE__), 
+      'issuepress',
+      plugins_url('src/app/issuepress.js', __FILE__),
       array(
         'ip_angular',
 
@@ -180,7 +201,7 @@ class UP_IssuePress {
 
         'ip_u_gravatar',
       ),
-      '0.0.1', 
+      '0.0.1',
       true);
   }
 
@@ -204,24 +225,24 @@ class UP_IssuePress {
    */
   public function get_IP_repo_json(){
 
-    $options =  get_option('upip_options');    
+    $options =  get_option('upip_options');
 
     if(!array_key_exists('r', $options))
       return 'undefined';
 
     foreach($options['r'] as $index => $item) {
-      $IP_repos[]['name'] = $item;  
+      $IP_repos[]['name'] = $item;
     }
 
     return json_encode($IP_repos);
   }
-  
+
 
   /* Fetches the slug for the support page
    * @return string
    */
   public function get_IP_root(){
-    $options =  get_option('upip_options');    
+    $options =  get_option('upip_options');
     return sanitize_title(get_the_title($options['landing']));
   }
 
@@ -241,7 +262,7 @@ class UP_IssuePress {
 
     if( !($user instanceof WP_User) || $user->data == null )
       return 'null';
-    
+
     $IP_user = array(
       'username' => $user->user_login,
       'email' => $user->user_email,

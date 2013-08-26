@@ -12,7 +12,7 @@ class UPIP_admin {
   }
 
   public function UPIP_add_menu() {
-    add_options_page('IssuePress Options', 'IssuePress', 'manage_options', 'issuepress-options', array($this, 'UPIP_draw_options_panel'));
+    add_menu_page('IssuePress Options', 'IssuePress', 'manage_options', 'issuepress-options', array($this, 'UPIP_draw_options_panel'), false, 140);
   }
 
 
@@ -98,11 +98,11 @@ class UPIP_admin {
 
       <p class="submit">
         <input type="submit" class="button-primary" value="<?php _e('Save Changes'); ?>" />
-      </p>  
+      </p>
     </form>
   </div>
 
-<?php 
+<?php
   }
 }
 new UPIP_admin();
