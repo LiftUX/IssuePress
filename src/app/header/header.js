@@ -1,11 +1,23 @@
 
-angular.module('header', [])
+angular.module('header', ['user'])
 
-.controller('HeaderCtrl', ['$scope', '$location', '$route',
-  function ($scope, $location, $route) {
-  $scope.location = $location;
+.directive('ipHeader', function() {
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: IP_PATH + '/app/header/header.tpl.html',
+  }
+})
+
+.controller('HeaderCtrl', ['$scope', '$location', 'IPUser',
+function ($scope, $location, IPUser) {
+  $scope.user = IPUser.user;
+  $scope.login_link = IPUser.login_link;
+  $scope.logout = IPUser.logout; 
+
+  $scope.loc = $location.$$url;
 
   $scope.isNavbarActive = function (navBarPath) {
-    return navBarPath === $scope.location.$$url;
+    return navBarPath === $scope.loc;
   };
 }]);

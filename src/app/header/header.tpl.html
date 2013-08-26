@@ -1,18 +1,16 @@
-<header>
+<header ng-controller="HeaderCtrl">
   <a class="logo" href="#/dashboard">IssuePress</a>
   <nav>
     <ul>
       <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
       <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
-      <li class="account">
-      <a href=""><div data-gravatar-image email="anthony.garand@liftux.com" s="300"></div>Anthony Garand</a>
+      <li class="account active-user" data-ng-show="user">
+      <a href=""><div data-gravatar-image email="{{user.email}}" s="300"></div>{{user.display_name}}</a>
       <ul>
-        <li><a href="#/dashboard">Dashboard</a></li>
-        <li><a href="#/sections">Support Sections</a></li>
-        <li><a href="#/create">Create New Issue</a></li>
-        <li><a href="#/logout">Logout</a></li>
+        <li><a data-ng-click="logout()">Logout</a></li>
       </ul>
       </li>
+      <li class="account" data-ng-hide="user"><a ng-href="{{login_link}}">Log in</a></li>
     </ul>
   </nav>
 </header>

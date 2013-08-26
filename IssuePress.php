@@ -136,16 +136,18 @@ class UP_IssuePress {
     wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
 
     // The IP Angular app modules
+    wp_register_script('ip_app_state', plugins_url('src/app/app-state/app-state.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_header', plugins_url('src/app/header/header.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_dashboard', plugins_url('src/app/dashboard/dashboard.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_sections', plugins_url('src/app/sections/sections.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_repo', plugins_url('src/app/repo/repo.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_issue', plugins_url('src/app/issue/issue.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_create_issue', plugins_url('src/app/create-issue/create-issue.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_user', plugins_url('src/app/user/user.js', __FILE__), array(), '0.0.1', true);
 
     // The IP Angular app components
     wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', __FILE__), array(), '0.0.1', true);
@@ -161,12 +163,14 @@ class UP_IssuePress {
       array(
         'ip_angular',
 
+        'ip_app_state',
         'ip_header',
         'ip_dashboard',
         'ip_sections',
         'ip_repo',
         'ip_issue',
         'ip_create_issue',
+        'ip_user',
 
         'ip_c_message',
         'ip_c_breadcrumbs',
@@ -223,6 +227,35 @@ class UP_IssuePress {
    */
   public function get_IP_path(){
     return plugins_url('src', __FILE__);
+  }
+
+  /* Utility function to output current user data safely
+   * @return json_encoded objec
+   */
+  public function get_IP_user() {
+    $user = wp_get_current_user();
+
+    if( !($user instanceof WP_User) || $user->data == null )
+      return 'null';
+    
+    $IP_user = array(
+      'username' => $user->user_login,
+      'email' => $user->user_email,
+      'firstname' => $user->user_firstname,
+      'lastname' => $user->user_lastname,
+      'display_name' => $user->display_name,
+      'ID' => $user->ID,
+    );
+
+
+    return json_encode($IP_user);
+  }
+
+  /* Utility function to pass login page to angular app
+   * @return string
+   */
+  public function get_IP_login(){
+    return wp_login_url(site_url( '/'.$this->get_IP_root().'/'));
   }
 
 
