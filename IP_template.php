@@ -18,11 +18,14 @@ Template Name: IssuePress
 
 <script>
   var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
-  var IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
-  var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
-  var IP_user = <?php echo UP_IssuePress::get_IP_user(); ?>;
-  var IP_login = "<?php echo UP_IssuePress::get_IP_login(); ?>";
-  var IP_logout = "<?php echo UP_IssuePress::get_IP_logout(); ?>";
+
+  var IP_Vars = {};
+  IP_Vars.IP_API_PATH = "<?php echo UP_IssuePress::get_IP_API_path(); ?>";
+  IP_Vars.IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
+  IP_Vars.IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
+  IP_Vars.IP_user = <?php echo UP_IssuePress::get_IP_user(); ?>;
+  IP_Vars.IP_login = "<?php echo UP_IssuePress::get_IP_login(); ?>";
+  IP_Vars.IP_logout = "<?php echo UP_IssuePress::get_IP_logout(); ?>";
 </script>
 
 <div class="content">

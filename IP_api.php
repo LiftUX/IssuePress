@@ -71,11 +71,11 @@ class UPIP_api{
     // Add API endpoints
 
     // IP, Repo & Issue
-    add_rewrite_rule('^issuepress/api/([^/]*)/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
+    add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
     // IP & Repo
-    add_rewrite_rule('^issuepress/api/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]','top');
+    add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]','top');
     // IP
-    add_rewrite_rule('^issuepress/api/?','index.php?__ip_api=1','top');
+    add_rewrite_rule('^' . IP_API_PATH .'?','index.php?__ip_api=1','top');
 
     // Add app rewrites for valid urls
 //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)/([^/]*)/new(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]&issue=$matches[2]$is_new=true','top');

@@ -1,5 +1,4 @@
 var IP = angular.module('issuepress', [
-  'AppState',
   'header',
   'dashboard',
   'sections',
