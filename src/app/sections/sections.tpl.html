@@ -1,19 +1,20 @@
-
 <div data-ng-controller="SectionsCtrl">
 
-  <h3>Sections</h3>
-
-  <div>
-    <ul data-ng-show="sections">
-      <li data-ng-repeat="section in sections">
-        <h3><a href="#/{{section.name}}">{{section.name}}</a></h3>
-      </li>
-    </ul>
+  <div class="section-title">Sections</div>
+  
+  <section class="support-sections">
+  
+    <div data-ng-show="sections">
+      <a data-ng-repeat="section in sections" href="#/{{section.name}}" class="support-section">
+        <div class="support-section-title">{{section.name}}</div>
+      </a>
+    </div> 
 
     <p data-ng-hide="sections">
       <strong>No sections have been added yet, inform your administrator! </strong><br>
       <a href="#/dashboard">Back to the dashboard</a>
     </p>
-  </div>
+  </section>
 
+  
 </div>

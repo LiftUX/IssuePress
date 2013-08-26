@@ -441,6 +441,11 @@ section {
       font-size:.9em;
     }
   }
+  
+  /* add a bottom border to Section Repo only when it is in the left column */
+  .left-column & .support-section {
+	  border-bottom: .15em solid #c5c5c5;
+  }
 
   .support-section {
     display:block;
