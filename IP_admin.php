@@ -9,12 +9,23 @@ class UPIP_admin {
 
   public function UPIP_init(){
     register_setting('upip_options', 'upip_options');
+
+    // retrieve our license key from the DB
+    $license_key  = get_option( 'upip_license_key' );
+
+    // setup the updater
+    $ip_updater = new IP_Plugin_Updater( IP_STORE_URL, __FILE__, array(
+        'version'   => plugin_name_get_version(),     // current version number
+        'license'   => $license_key,  // license key (used get_option above to retrieve from DB)
+        'item_name' => IP_ITEM_NAME,  // name of this plugin
+        'author'    => 'UpThemes'  // author of this plugin
+      )
+    );
   }
 
   public function UPIP_add_menu() {
-    add_menu_page('IssuePress Options', 'IssuePress', 'manage_options', 'issuepress-options', array($this, 'UPIP_draw_options_panel'), false, 140);
+    add_menu_page('IssuePress Options', 'IssuePress', 'manage_options', 'issuepress-options', array($this, 'UPIP_draw_options_panel'), plugins_url("/assets/img/issuepress-wordpress-icon-32x32.png", __FILE__ ), 140);
   }
-
 
   public function UPIP_draw_options_panel() { ?>
 

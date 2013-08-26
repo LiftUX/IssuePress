@@ -14,13 +14,13 @@ require_once 'IP_api.php';
 require_once 'IP_license_admin.php';
 require_once 'widgets/load.php';
 
-if( !class_exists( 'IP_SL_Plugin_Updater' ) ) {
+if( !class_exists( 'IP_Plugin_Updater' ) ) {
   // load our custom updater if it doesn't already exist
-  include( dirname( __FILE__ ) . '/IP_SL_Plugin_Updater.php' );
+  include( dirname( __FILE__ ) . '/IP_Plugin_Updater.php' );
 }
 
-define( 'IP_SL_STORE_URL', 'http://issuepress.co' );
-define( 'IP_SL_ITEM_NAME', 'IssuePress' );
+define( 'IP_STORE_URL', 'http://issuepress.co' );
+define( 'IP_ITEM_NAME', 'IssuePress' );
 
 class UP_IssuePress {
 
@@ -38,22 +38,13 @@ class UP_IssuePress {
 
     add_action('init', array($this, 'register_IP_scripts'), 0);
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
+    add_action('admin_print_styles', array($this, 'resize_icon'), 20);
 
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
 
-    // retrieve our license key from the DB
-    $license_key  = get_option( 'upip_license_key' );
+    add_action('admin_init', array($this, 'set_plugin_version', 0));
 
-    // setup the updater
-    $ip_updater = new EDD_SL_Plugin_Updater( IP_SL_STORE_URL, __FILE__, array(
-        'version'   => '0.1',     // current version number
-        'license'   => $license_key,  // license key (used get_option above to retrieve from DB)
-        'item_name'     => IP_SL_ITEM_NAME,  // name of this plugin
-        'author'  => 'UpThemes'  // author of this plugin
-      )
-    );
   }
-
 
   /* Overwrite the default template with IssuePress Backbone App
    * @return void
@@ -291,5 +282,15 @@ class UP_IssuePress {
     return str_replace('&amp;', '&', $url);
   }
 
+  public function resize_icon(){
+    echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; }</style>';
+  }
+
 }
 new UP_IssuePress();
+
+function plugin_name_get_version() {
+  $plugin_data = get_plugin_data( __FILE__ );
+  $plugin_version = $plugin_data['Version'];
+  return $plugin_version;
+}
