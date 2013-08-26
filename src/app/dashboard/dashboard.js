@@ -1,5 +1,9 @@
-angular.module('dashboard', [])
+angular.module('dashboard', ['AppState'])
 
-.controller('DashboardCtrl', ['$scope', '$location', function($scope, $location) {
+.controller('DashboardCtrl', ['$scope', '$location', '$routeParams', function($scope, $location, $routeParams) {
   
+  console.log($location.path());
+
+  console.log($routeParams);
+
 }]);
