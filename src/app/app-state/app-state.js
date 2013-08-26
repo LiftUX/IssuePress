@@ -1,6 +1,9 @@
 angular.module('AppState', [])
 
-.factory('IPAppState', function(){
+.factory('IPAppState', ['$location', function($location){
+
+  console.log($location.path());
+  console.log($location.url());
 
   var appState = {
     breadcrumbs:
@@ -21,4 +24,4 @@ angular.module('AppState', [])
   };
 
   return appState;
-});
+}]);
