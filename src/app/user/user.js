@@ -1,16 +1,13 @@
 angular.module('user', [
-  'ui.gravatar'
+  'AppState'
 ])
 
-.factory('IPUser', function(){
+.factory('IPUser', ['IPAppState', function(IPAppState){
 
   user = {};
-  
-  user.data = window.IP_user;
-  
-  user.login_link = window.IP_login;
-
-  user.logout_link = window.IP_logout;
+  user.data = IPAppState.IP_user;
+  user.login_link = IPAppState.IP_login;
+  user.logout_link = IPAppState.IP_logout;
 
   logout = function() {
     console.log(user.data);
@@ -18,7 +15,6 @@ angular.module('user', [
     user.data = null;
     console.log(user.data);
   }
-
 
   return { 
     user: user.data,
@@ -28,5 +24,5 @@ angular.module('user', [
       return logout(c_user); 
     }
   }
-})
+}]);
 

@@ -8,6 +8,13 @@ Author: Upthemes
 Author URI: http://upthemes.com/ 
 */
 
+if(!defined('IP_API_PATH'))
+  define('IP_API_PATH', 'issuepress/api/');
+
+$ip_api_url = site_url(IP_API_PATH);
+if(!defined('IP_API_URL'))
+  define('IP_API_URL', $ip_api_url);
+
 require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
 require_once 'IP_api.php';
@@ -234,6 +241,13 @@ class UP_IssuePress {
     return plugins_url('src', __FILE__);
   }
 
+  /* Utility function to pass the IP API base endpoint to angular app
+   * @return string
+   */
+  public function get_IP_API_path(){
+    return IP_API_URL;
+  }
+
   /* Utility function to output current user data safely
    * @return json_encoded objec
    */
@@ -270,6 +284,5 @@ class UP_IssuePress {
     $url = wp_logout_url(site_url( '/'.$this->get_IP_root().'/'));
     return str_replace('&amp;', '&', $url);
   }
-
 }
 new UP_IssuePress();
