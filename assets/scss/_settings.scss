@@ -10,7 +10,10 @@
 
 $max-width:980px;
 $primary:#b92b6b;
+$body-copy-color: #222;
+$border-color: #c5c5c5;
 $outline-color:#6cbce6;
+$message-color: #fefdf5;
 $error-color:#d74343;
 $font:"Source Sans Pro";
 $icon:"icons";
@@ -19,7 +22,7 @@ body,
 input,
 textarea {
   font-family:$font;
-  color:#222;
+  color: $body-copy-color;
 }
 
 .wrap-content {

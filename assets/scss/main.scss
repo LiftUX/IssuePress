@@ -3,6 +3,14 @@
 @import "base";
 @import "settings";
 
+a {
+	color: $primary;
+	
+	&:hover {
+		color: lighten($primary,15%);	
+	}
+}
+
 body {
   background:#e2e2e2;
 }
@@ -23,7 +31,7 @@ body {
     font-size:1.3em;
     font-weight:600;
     padding-bottom:.7em;
-    border-bottom:.15em solid #c5c5c5;
+    border-bottom:.15em solid $border-color;
   }
 }
 
@@ -35,21 +43,21 @@ body {
   .section-title {
     font-size:1.2em;
     font-weight:600;
-    color:#666;
+    color:lighten($body-copy-color,25%);
     padding-bottom:.7em;
-    border-bottom:.2em solid #c5c5c5;
+    border-bottom:.2em solid $border-color;
   }
 }
 
 header {
-  border-bottom:.2em solid #c5c5c5;
+  border-bottom:.2em solid $border-color;
   margin-bottom:2.5em;
   z-index:1;
   padding:2em 0;
 
   .logo {
     text-decoration:none;
-    color:#666;
+    color:lighten($body-copy-color,25%);
     font-size:2.2em;
     line-height:1em;
     margin-right:.5em;
@@ -115,7 +123,7 @@ header {
           &:after {
             content:"";
             display:inline-block;
-            border-top:.3125em solid #999;
+            border-top:.3125em solid lighten($body-copy-color,40%);
             border-left:.3125em solid transparent;
             border-right:.3125em solid transparent;
             width:0;
@@ -152,7 +160,7 @@ header {
 
     a {
       text-decoration:none;
-      color:#999;
+      color:lighten($body-copy-color,40%);
       font-weight:600;
       display:block;
       padding:.5em 1em;
@@ -174,7 +182,7 @@ header {
       &:before {
         content:"";
         display:inline-block;
-        border-left:.3125em solid #999;
+        border-left:.3125em solid lighten($body-copy-color,40%);
         border-top:.3125em solid transparent;
         border-bottom:.3125em solid transparent;
         height:0;
@@ -215,7 +223,7 @@ form {
 
 .textbox {
   border-radius:.3em;
-  border:.15em solid #c5c5c5;
+  border:.15em solid $border-color;
   display:block;
   width:100%;
   padding:.7em 1em;
@@ -256,12 +264,12 @@ section {
 }
 
 .message {
-  background:#fefdf5;
+  background: $message-color;
   border-radius:.3em;
-  border:.15em solid #f4efc3;
+  border:.15em solid darken($message-color,10%);
   padding:1.4em;
   text-align:center;
-  color:#59564f;
+  color: $body-copy-color;
 
   .message-title {
     font-size:1.2em;
@@ -274,7 +282,7 @@ section {
 
   .recent-activity-item {
     overflow:hidden;
-    border-bottom:.15em solid #c5c5c5;
+    border-bottom:.15em solid $border-color;
     padding:.8em 0;
     vertical-align:middle;
 
@@ -305,7 +313,7 @@ section {
       p {
         margin:0;
         font-size:.9em;
-        color:#666;
+        color:lighten($body-copy-color,25%);
       }
     }
 
@@ -317,7 +325,7 @@ section {
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      color:#222;
+      color:$body-copy-color;
 
       & + .recent-activity-meta {
         margin:.5em 0 .5em 0;
@@ -326,13 +334,13 @@ section {
 
     .recent-activity-meta {
       margin:0 0 .5em 0;
-      color:#666;
+      color:lighten($body-copy-color,25%);
     }
 
     .recent-activity-timeago {
       display:block;
       font-size:.7em;
-      color:#999;
+      color: lighten($body-copy-color,40%);
       position:absolute;
       right:0;
       top:50%;
@@ -341,7 +349,7 @@ section {
   }
 
   a {
-    color:$primary;
+    //color:$primary;
     font-weight:600;
     text-decoration:none;
   }
@@ -366,17 +374,17 @@ section {
 
   .live-search-results {
     margin-top:-.15em;
-    background:#f5f5f5;
+    background-color: lighten($border-color,20%);
     border-radius:0 0 .3em .3em;
-    border:.15em solid #c5c5c5;
+    border:.15em solid $border-color;
     display:block;
     width:100%;
     display:none;
 
     .live-search-results-header {
       padding:.7em 1em;
-      border-top:.15em solid #c5c5c5;
-      border-bottom:.15em solid #c5c5c5;
+      border-top:.15em solid $border-color;
+      border-bottom:.15em solid $border-color;
       background:#fff;
       font-weight:600;
       font-size:1.1em;
@@ -395,7 +403,7 @@ section {
       font-size:.9em;
 
       & + .issue-list-item {
-        border-top:.15em solid #c5c5c5;
+        border-top:.15em solid $border-color;
       }
 
       .issue-title {
@@ -409,13 +417,13 @@ section {
 
       .issue-date {
         float:left;
-        color:#999;
+        color:lighten($body-copy-color,40%);
         font-size:.9em;
       }
 
       .issue-link {
         border-radius:.3em;
-        background:$primary;
+        background-color:$primary;
         color:#fff;
         padding:.7em 1em;
         font-size:.9em;
@@ -432,10 +440,10 @@ section {
   .section-nav {
 
     a {
-      color:#222;
+      color:$body-copy-color;
       text-decoration:none;
       display:inline-block;
-      border-bottom:.1em solid #999;
+      border-bottom:.1em solid lighten($body-copy-color,40%);
       font-weight:600;
       margin:1em 1em .5em 0;
       font-size:.9em;
@@ -444,7 +452,7 @@ section {
   
   /* add a bottom border to Section Repo only when it is in the left column */
   .left-column & .support-section {
-	  border-bottom: .15em solid #c5c5c5;
+	  border-bottom: .15em solid $border-color;
   }
 
   .support-section {
@@ -453,19 +461,19 @@ section {
     padding:.7em 0;
 
     .support-section-title {
-      color:$primary;
+      //color:$primary;
       font-weight:600;
     }
 
     .support-section-date {
-      color:#666;
+      color: lighten($body-copy-color,25%);
       font-size:.8em;
     }
 
     .support-section-following {
       float:right;
       border-radius:.3em;
-      background:$primary;
+      background-color:$primary;
       color:#fff;
       padding:.7em 1em;
       font-size:.9em;
@@ -480,25 +488,25 @@ section {
   .ticket {
     display:block;
     text-decoration:none;
-    border-bottom:.15em solid #c5c5c5;
+    border-bottom:.15em solid $border-color;
     padding:1em 0;
 
     .ticket-title {
-      color:$primary;
+      //color:$primary;
       font-weight:600;
       display:block;
       margin-bottom:.3em;
     }
 
     .ticket-meta {
-      color:#999;
+      color:lighten($body-copy-color,40%);
       display:block;
       font-size:.9em;
       margin-bottom:.3em;
     }
 
     .ticket-comment {
-      color:#444;
+      color: lighten($body-copy-color,15%);
       display:block;
       font-size:.9em;
     }
@@ -575,20 +583,20 @@ section {
 
     .author-action {
       top:1em;
-      color:#222;
+      color:$body-copy-color;
     }
 
     .comment-timeago {
       float:right;
       top:1em;
-      color:#999;
+      color:lighten($body-copy-color,40%);
       text-decoration:none;
     }
 
     .comment-content {
       border-radius:.3em;
       background:#fafafa;
-      border:.15em solid #c5c5c5;
+      border:.15em solid $border-color;
       padding:.4em 1.4em;
       margin-left:4em;
     }
@@ -617,7 +625,7 @@ section {
       &:before {
         content:"\e70c";
         font-family:$icon;
-        color:#c5c5c5;
+        color:$border-color;
         top:.1em;
         position:relative;
         margin-right:.8em;
@@ -628,7 +636,7 @@ section {
       position:absolute;
       bottom:-.15em;
       right:-.15em;
-      color:#222;
+      color:$body-copy-color;
       font-weight:600;
       font-size:.9em;
       text-decoration:none;
@@ -643,11 +651,11 @@ section {
 }
 
 .issue-list {
-  border-bottom:.15em solid #c5c5c5;
+  border-bottom:.15em solid $border-color;
 
   .issue-list-item {
     padding:1.4em 0;
-    border-top:.15em solid #c5c5c5;
+    border-top:.15em solid $border-color;
 
     .issue-title {
       font-size:1.3em;
@@ -657,13 +665,13 @@ section {
     }
 
     .issue-date {
-      color:#999;
+      color:lighten($body-copy-color,40%);
       font-size:.9em;
       margin-bottom:.6em;
     }
 
     .issue-description {
-      color:#444;
+      color: lighten($body-copy-color,15%);
       margin-bottom:1em;
     }
 
