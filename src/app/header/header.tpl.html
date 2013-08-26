@@ -7,7 +7,7 @@
       <li class="account active-user" data-ng-show="user">
       <a href=""><div data-gravatar-image email="{{user.email}}" s="300"></div>{{user.display_name}}</a>
       <ul>
-        <li><a data-ng-click="logout()">Logout</a></li>
+        <li><a ng-href="{{logout_link}}">Logout</a></li>
       </ul>
       </li>
       <li class="account" data-ng-hide="user"><a ng-href="{{login_link}}">Log in</a></li>

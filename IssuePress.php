@@ -258,6 +258,13 @@ class UP_IssuePress {
     return wp_login_url(site_url( '/'.$this->get_IP_root().'/'));
   }
 
+  /* Utility function to pass nonce to angular app
+   * @return string
+   */
+  public function get_IP_logout(){
+    $url = wp_logout_url(site_url( '/'.$this->get_IP_root().'/'));
+    return str_replace('&amp;', '&', $url);
+  }
 
 }
 new UP_IssuePress();

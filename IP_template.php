@@ -17,15 +17,12 @@ Template Name: IssuePress
 
 
 <script>
-  var IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
-
-  var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
-
   var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
-
+  var IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
+  var IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
   var IP_user = <?php echo UP_IssuePress::get_IP_user(); ?>;
-
   var IP_login = "<?php echo UP_IssuePress::get_IP_login(); ?>";
+  var IP_logout = "<?php echo UP_IssuePress::get_IP_logout(); ?>";
 </script>
 
 <div class="content">
