@@ -1,14 +1,8 @@
 <div class="recent-activity-item">
   <div class="recent-activity-content">
     <div class="recent-activity-message">
-      <a href="" class="recent-activity-title" data-ng-if="title">
-        {{title}}
-      </a>
-      <div class="recent-activity-meta" data-ng-if="meta">
-        {{meta}}
-      </div>
       <div data-ng-transclude></div>
     </div>
   </div>
-  <a href="" class="recent-activity-timeago" data-ng-if="timeago">{{timeago}}</a>
+  <a href="{{href}}" class="recent-activity-timeago" data-ng-if="timeago">{{timeago | timeago}}</a>
 </div>
