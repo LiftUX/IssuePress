@@ -94,11 +94,11 @@ function upip_sample_activate_license() {
 		$api_params = array(
 			'edd_action'=> 'activate_license',
 			'license' 	=> $license,
-			'item_name' => urlencode( IP_SL_ITEM_NAME ) // the name of our product in EDD
+			'item_name' => urlencode( IP_ITEM_NAME ) // the name of our product in EDD
 		);
 
 		// Call the custom API.
-		$response = wp_remote_get( add_query_arg( $api_params, IP_SL_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
+		$response = wp_remote_get( add_query_arg( $api_params, IP_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
 
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) )
@@ -138,11 +138,11 @@ function upip_sample_deactivate_license() {
 		$api_params = array(
 			'edd_action'=> 'deactivate_license',
 			'license' 	=> $license,
-			'item_name' => urlencode( IP_SL_ITEM_NAME ) // the name of our product in EDD
+			'item_name' => urlencode( IP_ITEM_NAME ) // the name of our product in EDD
 		);
 
 		// Call the custom API.
-		$response = wp_remote_get( add_query_arg( $api_params, IP_SL_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
+		$response = wp_remote_get( add_query_arg( $api_params, IP_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
 
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) )
@@ -177,11 +177,11 @@ function upip_sample_check_license() {
 	$api_params = array(
 		'edd_action' => 'check_license',
 		'license' => $license,
-		'item_name' => urlencode( IP_SL_ITEM_NAME )
+		'item_name' => urlencode( IP_ITEM_NAME )
 	);
 
 	// Call the custom API.
-	$response = wp_remote_get( add_query_arg( $api_params, IP_SL_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
+	$response = wp_remote_get( add_query_arg( $api_params, IP_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
 
 
 	if ( is_wp_error( $response ) )
