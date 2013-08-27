@@ -11,7 +11,7 @@ Author URI: http://upthemes.com/
 if(!defined('IP_API_PATH'))
   define('IP_API_PATH', 'issuepress/api/');
 
-$ip_api_url = site_url(IP_API_PATH);
+$ip_api_url = home_url(IP_API_PATH);
 if(!defined('IP_API_URL'))
   define('IP_API_URL', $ip_api_url);
 
@@ -182,6 +182,7 @@ class UP_IssuePress {
     wp_register_script('ip_u_md5', plugins_url('src/util/md5/md5.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_u_gravatar', plugins_url('src/util/gravatar/gravatar.js', __FILE__), array('ip_u_md5'), '0.0.1', true);
     wp_register_script('ip_u_breadcrumbs', plugins_url('src/util/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_u_timeago', plugins_url('src/util/timeago.js', __FILE__), array(), '0.0.1', true);
 
     // The IP Angular app bootstrap file
     wp_register_script(
@@ -206,6 +207,7 @@ class UP_IssuePress {
         'ip_c_issue_thread',
 
         'ip_u_gravatar',
+        'ip_u_timeago',
       ),
       '0.0.1',
       true);
@@ -290,7 +292,6 @@ class UP_IssuePress {
       'display_name' => $user->display_name,
       'ID' => $user->ID,
     );
-
 
     return json_encode($IP_user);
   }

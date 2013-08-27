@@ -11,6 +11,7 @@ var IP = angular.module('issuepress', [
   'components.ticketList',
   'components.issueThread',
   'ui.gravatar',
+  'ui.timeago',
 ]);
 
 
