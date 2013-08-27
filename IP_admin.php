@@ -30,7 +30,7 @@ class UPIP_admin {
   public function UPIP_draw_options_panel() { ?>
 
   <div class="wrap">
-    <h2>IssuePress Options Panel</h2>
+    <h2><img src="<?php echo plugins_url("/assets/img/mark.svg", __FILE__ ); ?>" style="vertical-align:middle; top: -2px; position: relative;" width="32" height="32" alt=""> IssuePress Options Panel</h2>
     <form action="options.php" method="post">
       <?php settings_fields('upip_options'); ?>
       <?php $options = get_option('upip_options'); ?>

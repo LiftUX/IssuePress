@@ -19,6 +19,7 @@ require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
 require_once 'IP_api.php';
 require_once 'IP_helpers.php';
+require_once 'IP_license_admin.php';
 require_once 'widgets/load.php';
 
 if( !class_exists( 'IP_Plugin_Updater' ) ) {
@@ -31,13 +32,15 @@ define( 'IP_ITEM_NAME', 'IssuePress' );
 
 class UP_IssuePress {
 
-  /** Print Scripts?
-   *  @var
-   */
+  /**
+  * Print Scripts?
+  * @var $print_scripts
+  */
   private $print_scripts = false;
 
 
-  /** Hook WordPress
+  /**
+  * Hook WordPress
   * @return void
   */
   public function __construct(){
@@ -53,9 +56,10 @@ class UP_IssuePress {
   }
 
 
-  /* Overwrite the default template with IssuePress Backbone App
-   * @return void
-   */
+  /**
+  * Overwrite the default template with IssuePress Backbone App
+  * @return void
+  */
   public function load_IP_template(){
 
     // Check if we've got work to do.
@@ -79,9 +83,10 @@ class UP_IssuePress {
   }
 
 
-  /* Actually load our template instead of the requested page
-   * @return void
-   */
+  /**
+  * Actually load our template instead of the requested page
+  * @return void
+  */
   private function do_theme_direct($url){
     global $post, $wp_query;
     if(have_posts()){
@@ -93,9 +98,10 @@ class UP_IssuePress {
   }
 
 
-  /* Register the IP sidebars
-   * @return void
-   */
+  /**
+  * Register the IP sidebars
+  * @return void
+  */
   public function register_IP_sidebars() {
 
     // Build out the various sidebar detail in an array for easy registering...
@@ -138,9 +144,10 @@ class UP_IssuePress {
   }
 
 
-  /* Register scripts for IP
-   * @return void
-   */
+  /**
+  * Register scripts for IP
+  * @return void
+  */
   public function register_IP_scripts(){
 
     // IP Styles
@@ -205,9 +212,10 @@ class UP_IssuePress {
   }
 
 
-  /* Print out our scripts
-   * @return void
-   */
+  /**
+  * Print out our scripts
+  * @return void
+  */
   public function print_IP_scripts(){
     if($this->print_scripts == false)
       return;
@@ -219,9 +227,10 @@ class UP_IssuePress {
   }
 
 
-  /* Fetch the github repos IP tracks to initialize BB
-   * @return [json] $IP_repos;
-   */
+  /**
+  * Fetch the github repos IP tracks to initialize BB
+  * @return [json] $IP_repos;
+  */
   public function get_IP_repo_json(){
 
     $options =  get_option('upip_options');
@@ -237,32 +246,36 @@ class UP_IssuePress {
   }
 
 
-  /* Fetches the slug for the support page
-   * @return string
-   */
+  /**
+  * Fetches the slug for the support page
+  * @return string
+  */
   public function get_IP_root(){
     $options =  get_option('upip_options');
     return sanitize_title(get_the_title($options['landing']));
   }
 
 
-  /* Utility function to output URL path of IP angular app for easy partials reference
-   * @return string
-   */
+  /**
+  * Utility function to output URL path of IP angular app for easy partials reference
+  * @return string
+  */
   public function get_IP_path(){
     return plugins_url('src', __FILE__);
   }
 
-  /* Utility function to pass the IP API base endpoint to angular app
-   * @return string
-   */
+  /**
+  * Utility function to pass the IP API base endpoint to angular app
+  * @return string
+  */
   public function get_IP_API_path(){
     return IP_API_URL;
   }
 
-  /* Utility function to output current user data safely
-   * @return json_encoded objec
-   */
+  /**
+  * Utility function to output current user data safely
+  * @return json_encoded objec
+  */
   public function get_IP_user() {
     $user = wp_get_current_user();
 
@@ -282,26 +295,28 @@ class UP_IssuePress {
     return json_encode($IP_user);
   }
 
-  /* Utility function to pass login page to angular app
-   * @return string
-   */
+  /**
+  * Utility function to pass login page to angular app
+  * @return string
+  */
   public function get_IP_login(){
     return wp_login_url(site_url( '/'.$this->get_IP_root().'/'));
   }
 
-  /* Utility function to pass nonce to angular app
-   * @return string
-   */
+  /**
+  * Utility function to pass nonce to angular app
+  * @return string
+  */
   public function get_IP_logout(){
     $url = wp_logout_url(site_url( '/'.$this->get_IP_root().'/'));
     return str_replace('&amp;', '&', $url);
   }
 
-  /* Resizes the IssuePress menu icon (retina icon hack)
-   *
-   */
+  /**
+  * Resizes the IssuePress menu icon (retina icon hack)
+  */
   public function resize_icon(){
-    echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; }</style>';
+    echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; margin-top: -2px; }</style>';
   }
 }
 new UP_IssuePress();
