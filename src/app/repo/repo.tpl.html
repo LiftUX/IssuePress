@@ -52,8 +52,17 @@
     </form>
   </section>
 
-  <div data-ip-message title="Welcome to UpThemes Support">
-    Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper.
+
+
+  <div data-ip-recent-activity title=" Activity Title">
+    
+    <div data-ng-repeat="item in activity" data-ip-recent-activity-item 
+      href="{{item.issue.number}}"
+      timeago="{{item.created_at}}">
+      <div data-ip-recent-activity-item-meta><a href="">{{item.actor.login}}</a> {{item.event}} an issue in <a href="">{{repo.name}}</a></div>
+      <div data-ip-recent-activity-item-title>{{item.issue.title}}</div>
+    </div>
+
   </div>
 
   <section class="recent-activity">
