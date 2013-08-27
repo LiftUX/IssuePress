@@ -16,7 +16,7 @@ function upip_license_page() {
 	$status 	= get_option( 'upip_license_status' );
 	?>
 	<div class="wrap">
-		<h2><?php _e('Plugin License Options'); ?></h2>
+		<h2><img src="<?php echo plugins_url("/assets/img/mark.svg", __FILE__ ); ?>" style="vertical-align:middle; top: -2px; position: relative;" width="32" height="32" alt=""> <?php _e('IssuePress License Key'); ?></h2>
 		<form method="post" action="options.php">
 
 			<?php settings_fields('upip_license'); ?>
