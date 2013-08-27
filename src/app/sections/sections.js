@@ -1,9 +1,9 @@
 
-angular.module('sections', [])
+angular.module('sections', ['AppState'])
 
-.controller('SectionsCtrl', ['$scope', '$location', function($scope, $location) {
+.controller('SectionsCtrl', ['$scope', '$location', 'IPAppState', function($scope, $location, IPAppState) {
   
-  if(IP_repos !== 'undefined')
-    $scope.sections = IP_repos;
+  if(IPAppState.IP_repos !== 'undefined')
+    $scope.sections = IPAppState.IP_repos;
 
 }]);

@@ -1,17 +1,24 @@
 <?php
 /*
 Plugin Name: IssuePress
-Plugin URI: http://issuepress.co
+Plugin URI: http://upthemes.com/plugins/issuepress
 Description: Github Issues integration with WP - for support stuff
-Version: 0.1
-Author: UpThemes
-Author URI: http://issuepress.co
+Version: 0.0.1
+Author: Upthemes
+Author URI: http://upthemes.com/
 */
+
+if(!defined('IP_API_PATH'))
+  define('IP_API_PATH', 'issuepress/api/');
+
+$ip_api_url = site_url(IP_API_PATH);
+if(!defined('IP_API_URL'))
+  define('IP_API_URL', $ip_api_url);
 
 require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
 require_once 'IP_api.php';
-require_once 'IP_license_admin.php';
+require_once 'IP_helpers.php';
 require_once 'widgets/load.php';
 
 if( !class_exists( 'IP_Plugin_Updater' ) ) {
@@ -38,13 +45,13 @@ class UP_IssuePress {
 
     add_action('init', array($this, 'register_IP_scripts'), 0);
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
+
     add_action('admin_print_styles', array($this, 'resize_icon'), 20);
-
-    add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
-
     add_action('admin_init', array($this, 'set_plugin_version', 0));
 
+    add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
   }
+
 
   /* Overwrite the default template with IssuePress Backbone App
    * @return void
@@ -159,14 +166,15 @@ class UP_IssuePress {
 
     // The IP Angular app components
     wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs/breadcrumbs.js', __FILE__), array('ip_u_breadcrumbs'), '0.0.1', true);
 
     // Util Angular modules
     wp_register_script('ip_u_md5', plugins_url('src/util/md5/md5.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_u_gravatar', plugins_url('src/util/gravatar/gravatar.js', __FILE__), array('ip_u_md5'), '0.0.1', true);
+    wp_register_script('ip_u_breadcrumbs', plugins_url('src/util/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
 
     // The IP Angular app bootstrap file
     wp_register_script(
@@ -245,6 +253,13 @@ class UP_IssuePress {
     return plugins_url('src', __FILE__);
   }
 
+  /* Utility function to pass the IP API base endpoint to angular app
+   * @return string
+   */
+  public function get_IP_API_path(){
+    return IP_API_URL;
+  }
+
   /* Utility function to output current user data safely
    * @return json_encoded objec
    */
@@ -282,15 +297,11 @@ class UP_IssuePress {
     return str_replace('&amp;', '&', $url);
   }
 
+  /* Resizes the IssuePress menu icon (retina icon hack)
+   *
+   */
   public function resize_icon(){
     echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; }</style>';
   }
-
 }
 new UP_IssuePress();
-
-function plugin_name_get_version() {
-  $plugin_data = get_plugin_data( __FILE__ );
-  $plugin_version = $plugin_data['Version'];
-  return $plugin_version;
-}
