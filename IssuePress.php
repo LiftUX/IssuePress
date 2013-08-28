@@ -183,6 +183,8 @@ class UP_IssuePress {
     wp_register_script('ip_u_gravatar', plugins_url('src/util/gravatar/gravatar.js', __FILE__), array('ip_u_md5'), '0.0.1', true);
     wp_register_script('ip_u_breadcrumbs', plugins_url('src/util/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
     wp_register_script('ip_u_timeago', plugins_url('src/util/timeago.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_u_marked', plugins_url('src/util/marked/marked.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_u_markdown', plugins_url('src/util/marked/markdown.js', __FILE__), array('ip_u_marked'), '0.0.1', true);
 
     // The IP Angular app bootstrap file
     wp_register_script(
@@ -208,6 +210,7 @@ class UP_IssuePress {
 
         'ip_u_gravatar',
         'ip_u_timeago',
+        'ip_u_markdown',
       ),
       '0.0.1',
       true);
@@ -314,10 +317,20 @@ class UP_IssuePress {
   }
 
   /**
+   * Utility function to pass authenticated github username to angular app
+   * @return string
+   */
+  public function get_IP_auth_user(){
+    $options =  get_option('upip_options');
+    return json_encode($options['u']);
+  }
+
+  /**
   * Resizes the IssuePress menu icon (retina icon hack)
   */
   public function resize_icon(){
     echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; margin-top: -2px; }</style>';
   }
+
 }
 new UP_IssuePress();

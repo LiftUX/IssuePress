@@ -26,6 +26,7 @@ Template Name: IssuePress
   IP_Vars.IP_user = <?php echo UP_IssuePress::get_IP_user(); ?>;
   IP_Vars.IP_login = "<?php echo UP_IssuePress::get_IP_login(); ?>";
   IP_Vars.IP_logout = "<?php echo UP_IssuePress::get_IP_logout(); ?>";
+  IP_Vars.IP_Auth_user = <?php echo UP_IssuePress::get_IP_auth_user(); ?>;
 </script>
 
 <div class="content">
