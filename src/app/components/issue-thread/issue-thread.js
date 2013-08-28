@@ -1,5 +1,5 @@
 
-angular.module('components.issueThread', [])
+angular.module('components.issueThread', ['AppState', 'user'])
 
 
 .directive('ipIssueComment', function() {
@@ -10,25 +10,29 @@ angular.module('components.issueThread', [])
     scope: {
       'title': '@title',
       'author': '@author',
-      'authorEmail': '@authorEmail',
-      'staff': '@staff',
+      'gravatarHash': '@gravatarHash',
       'action': '@action',
       'timeago': '@timeago',
       'meta': '@meta',
       'follow': '@follow',
       'tags': '@tags',
     },
+    controller: ['$scope', 'IPAppState', function($scope, IPAppState) {
+      if($scope.author == IPAppState.IP_Auth_user)
+         $scope.staff = true;
+    }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-comment.tpl.html'
   }
 })
 
-.directive('ipIssueForm', function() {
+.directive('ipIssueForm', function(IPUser) {
   return {
     restrict: 'A',
     replace: true,
-    scope: {
-      'user': '@user',
-    },
+    scope: {},
+    controller: ['$scope', 'IPUser', function($scope, IPUser) {
+      $scope.user = IPUser.user;
+    }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-form.tpl.html'
   }
 })
