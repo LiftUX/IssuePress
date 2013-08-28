@@ -2,13 +2,25 @@
 
 angular.module('ui.gravatar', ['md5'])
 
-.directive('gravatarImage', ['md5', function (md5) {
+.factory('gravatar', ['md5', function(md5){
+
+  var gravatarService = {};
+
+  gravatarService.getEmailHash = function(email) {
+    return md5.createHash(email.toLowerCase());
+  }
+
+  return gravatarService;
+
+}])
+
+.directive('gravatarImage', function () {
   return {
     restrict:"A",
     replace: true,
     scope: {
       secure: '@secure',
-      email: '@email',
+      gravatarHash: '@gravatarHash',
       s: '@s',
       r: '@r',
       d: '@d'
@@ -16,8 +28,8 @@ angular.module('ui.gravatar', ['md5'])
     template: '<img ng-show="src" src="{{src}}" />',
     controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs){
 
-      if(typeof $scope.email !== 'undefined')
-        var emailHash = md5.createHash($scope.email.toLowerCase());
+      if(typeof $scope.gravatarHash !== 'undefined')
+        var emailHash = $scope.gravatarHash;
       else
         var emailHash = '00000000000000000000000000000000';
 
@@ -37,4 +49,4 @@ angular.module('ui.gravatar', ['md5'])
     }],
 
   };
-}]);
+});
