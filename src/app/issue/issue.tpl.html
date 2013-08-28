@@ -3,48 +3,29 @@
 
   <div data-ip-breadcrumbs></div>
 
-  <!-- 
-    {{params.repo}} - {{params.issue}}
-  -->
-
   <section class="issue-thread">
     <div data-ip-issue-comment
-         author="garand"
-         author-email="garand@gmail.com"
+         author="{{issue.user.login}}"
+         gravatar-hash="{{issue.user.gravatar_id}}"
          action="created an issue"
-         timeago="1 month ago"
+         timeago="{{issue.created_at}}"
          follow="true"
-         title="Music Player won't work">
-      <p>Vestibulum id ligula porta felis euismod semper. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+         title="{{issue.title}}">
+         <!--  <markdown>{{issue.body}}</markdown> -->
+         {{issue.body}}
     </div>
          
 
     <div data-ip-issue-comment
-         author="garand"
-         author-email="garand@gmail.com"
+         data-ng-repeat="comment in comments"
+         author="{{comment.user.login}}"
+         gravatar-hash="{{comment.user.gravatar_id}}"
          action="said"
-         timeago="1 month ago">
-      <p>Vestibulum id ligula porta felis euismod semper. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+         timeago="{{comment.updated_at}}">
+         {{comment.body}}
     </div>
 
-    <div data-ip-issue-comment
-         author="garand"
-         author-email="garand@gmail.com"
-         action="said"
-         staff="true"
-         timeago="1 month ago">
-      <p>Vestibulum id ligula porta felis euismod semper. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-    </div>
-
-    <div data-ip-issue-comment
-         author="garand"
-         author-email="garand@gmail.com"
-         action="said"
-         timeago="1 month ago">
-      <p>Vestibulum id ligula porta felis euismod semper. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-    </div>
-
-    <div data-ip-issue-form user="garand"></div>
+    <div data-ip-issue-form user="{{user}}"></div>
   </section>
 
 </div>
