@@ -1,13 +1,15 @@
 angular.module('user', [
-  'AppState'
+  'AppState',
+  'ui.gravatar',
 ])
 
-.factory('IPUser', ['IPAppState', function(IPAppState){
+.factory('IPUser', ['IPAppState', 'gravatar', function(IPAppState, gravatar){
 
   user = {};
   user.data = IPAppState.IP_user;
   user.login_link = IPAppState.IP_login;
   user.logout_link = IPAppState.IP_logout;
+  user.data.gravatar_id = gravatar.getEmailHash(user.data.email);
 
   logout = function() {
     console.log(user.data);
