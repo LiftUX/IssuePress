@@ -1,37 +1,38 @@
 
-angular.module('components.issueThread', ['AppState', 'user'])
+angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
 
 
-.directive('ipIssueComment', function() {
+.directive('ipIssueComment', ['marked', function(marked) {
   return {
     restrict: 'A',
-    replace: false,
-    transclude: true,
     scope: {
-      'title': '@title',
+      'title': '@ctitle',
+      'body': '@body',
       'author': '@author',
-      'gravatarHash': '@gravatarHash',
       'action': '@action',
       'timeago': '@timeago',
       'meta': '@meta',
       'follow': '@follow',
-      'tags': '@tags',
+      'labels': '@labels',
+      'gravatarHash': '@gravatarHash',
     },
-    controller: ['$scope', 'IPAppState', function($scope, IPAppState) {
-      if($scope.author == IPAppState.IP_Auth_user)
+    controller: ['$scope', '$element', '$attrs', 'IPAppState', function($scope, $element, $attrs, IPAppState) {
+      console.log($scope.body);
+      if($scope.author !== IPAppState.IP_Auth_user)
          $scope.staff = true;
     }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-comment.tpl.html'
   }
-})
+}])
 
-.directive('ipIssueForm', function(IPUser) {
+.directive('ipIssueForm', function() {
   return {
     restrict: 'A',
     replace: true,
     scope: {},
-    controller: ['$scope', 'IPUser', function($scope, IPUser) {
-      $scope.user = IPUser.user;
+    controller: ['$scope', function($scope) {
+      $scope.user = $scope.$parent.user;
+      $scope.login_link = $scope.$parent.login_link;
     }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-form.tpl.html'
   }

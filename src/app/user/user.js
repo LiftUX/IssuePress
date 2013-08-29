@@ -9,7 +9,9 @@ angular.module('user', [
   user.data = IPAppState.IP_user;
   user.login_link = IPAppState.IP_login;
   user.logout_link = IPAppState.IP_logout;
-  user.data.gravatar_id = gravatar.getEmailHash(user.data.email);
+
+  if(IPAppState.IP_user)
+    user.data.gravatar_id = gravatar.getEmailHash(IPAppState.IP_user.email);
 
   logout = function() {
     console.log(user.data);

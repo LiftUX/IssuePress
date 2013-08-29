@@ -4,6 +4,9 @@ angular.module('issue', ['AppState', 'user', 'ui.gravatar'])
 .controller('IssueCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAppState', 'IPUser', 'gravatar',
 function($scope, $location, $routeParams, $http, IPAppState, IPUser, gravatar) {
 
+  $scope.logMe = function(val) {
+    console.log(val);
+  };
   $scope.user = IPUser.user;
   $scope.login_link = IPUser.login_link;
   $scope.logout_link = IPUser.logout_link;
@@ -23,6 +26,7 @@ function($scope, $location, $routeParams, $http, IPAppState, IPUser, gravatar) {
     }
     console.log("Success");
     console.log(data);
+//    console.log($scope.issue.body);
   }).error(function(data, status, headers, config){
     console.log("Fail");
     console.log(data);

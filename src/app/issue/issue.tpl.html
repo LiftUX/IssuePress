@@ -9,21 +9,16 @@
          gravatar-hash="{{issue.user.gravatar_id}}"
          action="created an issue"
          timeago="{{issue.created_at}}"
-         follow="true"
-         title="{{issue.title}}">
-         <!--  <markdown>{{issue.body}}</markdown> -->
-         {{issue.body}}
-    </div>
-         
+         ctitle="{{issue.title}}"
+         body="{{issue.body}}"></div>
 
     <div data-ip-issue-comment
          data-ng-repeat="comment in comments"
          author="{{comment.user.login}}"
          gravatar-hash="{{comment.user.gravatar_id}}"
          action="said"
-         timeago="{{comment.updated_at}}">
-         {{comment.body}}
-    </div>
+         timeago="{{comment.updated_at}}"
+         body="{{comment.body}}"></div>
 
     <div data-ip-issue-form user="{{user}}"></div>
   </section>

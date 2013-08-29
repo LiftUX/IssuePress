@@ -22,6 +22,7 @@ Template Name: IssuePress
   var IP_Vars = {};
   IP_Vars.IP_API_PATH = "<?php echo UP_IssuePress::get_IP_API_path(); ?>";
   IP_Vars.IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
+  IP_Vars.IP_data = <?php echo UP_IssuePress::get_IP_data(); ?>;
   IP_Vars.IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
   IP_Vars.IP_user = <?php echo UP_IssuePress::get_IP_user(); ?>;
   IP_Vars.IP_login = "<?php echo UP_IssuePress::get_IP_login(); ?>";

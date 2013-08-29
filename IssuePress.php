@@ -233,10 +233,29 @@ class UP_IssuePress {
 
 
   /**
-  * Fetch the github repos IP tracks to initialize BB
+  * Fetch the github repos IP tracks to initialize
   * @return [json] $IP_repos;
   */
   public function get_IP_repo_json(){
+
+    $options =  get_option('upip_options');
+
+    if(!array_key_exists('r', $options))
+      return 'undefined';
+
+    foreach($options['r'] as $index => $item) {
+      $IP_repos[]['name'] = $item;
+    }
+
+    return json_encode($IP_repos);
+  }
+
+
+  /**
+  * Fetch the github IP data
+  * @return [json] $IP_repos;
+  */
+  public function get_IP_data(){
 
     $options =  get_option('upip_options');
 
