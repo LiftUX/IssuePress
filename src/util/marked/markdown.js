@@ -7,18 +7,21 @@ angular.module('ui.markdown', [])
 
 }])
 
-.directive('markdown', ['marked', function(marked) {
+.directive('markdown', ['marked', function(marked){
   return {
-    restrict: 'EACM',
-    replace: true,
-    scope: {},
-    transclude: true,
-    template: '<div class="rendered-markdown">{{content}}</div>',
-    controller: ['$scope', '$element', '$attrs', '$transclude', 'marked', function($scope, $element, $attrs, $transclude, marked) {
-      marked($transclude, function(err, content){
-        if(err) throw err;
-        $scope.content = content;
-      });
-    }],
-  }
+      restrict: 'A',
+      replace: true,
+      scope: {
+        'body': '@body',
+      },
+      link: function(scope, element, attrs) {
+        scope.$watch('body', function(newVal, oldVal) {
+          if(newVal !== oldVal){ 
+            element.html( marked(newVal) );
+          }
+        }, true);
+      },
+      template: '<div class="rendered-markdown"></div>'
+    }
 }]);
+
