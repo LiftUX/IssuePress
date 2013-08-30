@@ -25,7 +25,7 @@ angular.module('ui.gravatar', ['md5'])
       r: '@r',
       d: '@d'
     },
-    template: '<img ng-show="src" src="{{src}}" />',
+    template: '<img ng-show="src" data-ng-attr-src="{{src}}" />',
     controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs){
 
       if(typeof $scope.gravatarHash !== 'undefined')
