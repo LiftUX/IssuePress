@@ -16,7 +16,7 @@
     </div>
     <div class="comment-content">
       <div class="comment-title" data-ng-if="title">{{issue.title}}</div>
-      <div class="comment-body">{{issue.body}}</div>
+      <div class="comment-body"><div data-markdown body="{{issue.body}}"></div></div>
       <div class="comment-tags" data-ng-show="issue.labels">
         <a data-ng-repeat="label in issue.labels" href="">{{label.name}}</a>
       </div>
@@ -42,10 +42,10 @@
           <span class="author-name">{{comment.user.login}}</span>
           <span class="author-action">said</span>
         </a>
-        <a href="" class="comment-timeago">{{comment.updated_at}}</a>
+        <a href="" class="comment-timeago">{{comment.updated_at | timeago}}</a>
       </div>
       <div class="comment-content">
-        <div class="comment-body">{{comment.body}}</div>
+        <div class="comment-body"><div data-markdown body="{{comment.body}}"></div></div>
       </div>
     </div>
     
