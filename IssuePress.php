@@ -50,7 +50,6 @@ class UP_IssuePress {
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
 
     add_action('admin_print_styles', array($this, 'resize_icon'), 20);
-    add_action('admin_init', array($this, 'set_plugin_version', 0));
 
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
   }
@@ -349,6 +348,7 @@ class UP_IssuePress {
   */
   public function resize_icon(){
     echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; margin-top: -2px; }</style>';
+    return;
   }
 
 }
