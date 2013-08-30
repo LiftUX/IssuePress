@@ -17,7 +17,6 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
       'gravatarHash': '@gravatarHash',
     },
     controller: ['$scope', '$element', '$attrs', 'IPAppState', function($scope, $element, $attrs, IPAppState) {
-      console.log($scope.body);
       if($scope.author !== IPAppState.IP_Auth_user)
          $scope.staff = true;
     }],

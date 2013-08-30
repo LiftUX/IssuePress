@@ -4,12 +4,16 @@ angular.module('issue', ['AppState', 'user', 'ui.gravatar'])
 .controller('IssueCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAppState', 'IPUser', 'gravatar',
 function($scope, $location, $routeParams, $http, IPAppState, IPUser, gravatar) {
 
-  $scope.logMe = function(val) {
-    console.log(val);
-  };
   $scope.user = IPUser.user;
   $scope.login_link = IPUser.login_link;
   $scope.logout_link = IPUser.logout_link;
+
+  $scope.isStaff = function(login) {
+    if(login !== IPAppState.IP_Auth_user)
+      return true;
+    else
+      return false;
+  };
 
 
   var ipUrl = IPAppState.IP_API_PATH;
