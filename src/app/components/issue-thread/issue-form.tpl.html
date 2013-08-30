@@ -1,15 +1,17 @@
 <div>
 
-  <div class="comment" data-ng-if="!user"><h3>You must <a href="#">login</a> to comment!</h3></div>
+  <div class="comment" data-ng-if="!user"><h3>You must <a href="{{login_link}}">login</a> to comment!</h3></div>
 
   <form class="comment new-comment" data-ng-if="user">
     <div class="comment-meta">
       <a href="" class="author">
-        <img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
+        <div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="300"></div>
         <span class="author-action">Logged in as</span>
-        <span class="author-name">{{user}}</span>
+        <span class="author-name">{{user.display_name}}</span>
       </a>
-      <a href="" class="comment-timeago">Logout</a>
+      <!--
+      <a href="{{logout_link}}" class="comment-timeago">Logout</a>
+      -->
     </div>
     <div class="textarea-wrap">
       <textarea placeholder="Leave a comment"></textarea>

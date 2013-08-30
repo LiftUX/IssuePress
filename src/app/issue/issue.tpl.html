@@ -3,48 +3,64 @@
 
   <div data-ip-breadcrumbs></div>
 
-  <!-- 
-    {{params.repo}} - {{params.issue}}
+  <section class="issue-thread">
+
+  <div class="comment" data-ng-class="{staff:isStaff(issue.user.login)}">
+    <div class="comment-meta">
+      <a href="" class="author">
+        <div data-gravatar-image gravatar-hash="{{issue.user.gravatar_id}}" s="300"></div>
+        <span class="author-name">{{issue.user.login}}</span>
+        <span class="author-action">created an issue</span>
+      </a>
+      <a href="" class="comment-timeago">{{issue.created_at | timeago}}</a>
+    </div>
+    <div class="comment-content">
+      <div class="comment-title" data-ng-if="title">{{issue.title}}</div>
+      <div class="comment-body"><div data-markdown body="{{issue.body}}"></div></div>
+      <div class="comment-tags" data-ng-show="issue.labels">
+        <a data-ng-repeat="label in issue.labels" href="">{{label.name}}</a>
+      </div>
+      <!--
+      <a href="" class="follow-thread" data-ng-if="follow">Follow Thread</a>
+      -->
+    </div>
+  </div>
+  <!--
+    <div data-ip-issue-comment
+         author="{{issue.user.login}}"
+         gravatar-hash="{{issue.user.gravatar_id}}"
+         action="created an issue"
+         timeago="{{issue.created_at}}"
+         ctitle="{{issue.title}}"
+         body="{{issue.body}}"></div>
   -->
 
-  <section class="issue-thread">
-    <div data-ip-issue-comment
-         author="garand"
-         author-email="garand@gmail.com"
-         action="created an issue"
-         timeago="1 month ago"
-         follow="true"
-         title="Music Player won't work">
-      <p>Vestibulum id ligula porta felis euismod semper. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+    <div data-ng-repeat="comment in comments" class="comment" data-ng-class="{staff:isStaff(comment.user.login)}">
+      <div class="comment-meta">
+        <a href="" class="author">
+          <div data-gravatar-image gravatar-hash="{{comment.user.gravatar_id}}" s="300"></div>
+          <span class="author-name">{{comment.user.login}}</span>
+          <span class="author-action">said</span>
+        </a>
+        <a href="" class="comment-timeago">{{comment.updated_at | timeago}}</a>
+      </div>
+      <div class="comment-content">
+        <div class="comment-body"><div data-markdown body="{{comment.body}}"></div></div>
+      </div>
     </div>
-         
-
+    
+    <!-- 
     <div data-ip-issue-comment
-         author="garand"
-         author-email="garand@gmail.com"
+         data-ng-repeat="comment in comments"
+         author="{{comment.user.login}}"
+         gravatar-hash="{{comment.user.gravatar_id}}"
          action="said"
-         timeago="1 month ago">
-      <p>Vestibulum id ligula porta felis euismod semper. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-    </div>
+         timeago="{{comment.updated_at}}"
+         body="{{comment.body}}"></div>
+    -->
 
-    <div data-ip-issue-comment
-         author="garand"
-         author-email="garand@gmail.com"
-         action="said"
-         staff="true"
-         timeago="1 month ago">
-      <p>Vestibulum id ligula porta felis euismod semper. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-    </div>
 
-    <div data-ip-issue-comment
-         author="garand"
-         author-email="garand@gmail.com"
-         action="said"
-         timeago="1 month ago">
-      <p>Vestibulum id ligula porta felis euismod semper. Maecenas sed diam eget risus varius blandit sit amet non magna. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-    </div>
-
-    <div data-ip-issue-form user="garand"></div>
+    <div data-ip-issue-form user="{{user}}"></div>
   </section>
 
 </div>

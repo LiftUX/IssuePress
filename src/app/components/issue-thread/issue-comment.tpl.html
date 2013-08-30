@@ -1,19 +1,17 @@
 <div class="comment" data-ng-class="{staff:staff}">
   <div class="comment-meta">
     <a href="" class="author">
-      <img src="https://secure.gravatar.com/avatar/4e7025ec1de9ec52b819278def51a13a?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
+      <div data-gravatar-image gravatar-hash="{{gravatarHash}}" s="300"></div>
       <span class="author-name">{{author}}</span>
+      <span class="author-action">{{action}}</span>
     </a>
-    <span class="author-action">{{action}}</span>
     <a href="" class="comment-timeago">1 month ago</a>
   </div>
   <div class="comment-content">
     <div class="comment-title" data-ng-if="title">{{title}}</div>
-    <div data-ng-transclude></div>
-    <div class="comment-tags" data-ng-if="tags">
-      <a href="">Music</a>
-      <a href="">Player</a>
-      <a href="">Pissed</a>
+    <div class="comment-body"><div data-markdown body="{{body}}"></div></div>
+    <div class="comment-tags" data-ng-show="labels">
+      <a data-ng-repeat="label in labels" href="">{{label.name}}</a>
     </div>
     <a href="" class="follow-thread" data-ng-if="follow">Follow Thread</a>
   </div>
