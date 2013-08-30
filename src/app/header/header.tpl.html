@@ -5,7 +5,7 @@
       <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
       <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
       <li class="account active-user" data-ng-show="user">
-      <a href=""><div data-gravatar-image email="{{user.email}}" s="300"></div>{{user.display_name}}</a>
+      <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="300"></div>{{user.display_name}}</a>
       <ul>
         <li><a ng-href="{{logout_link}}">Logout</a></li>
       </ul>

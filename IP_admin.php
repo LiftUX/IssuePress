@@ -65,7 +65,7 @@ class UPIP_admin {
 
     $client = new Github\Client();
     $client->authenticate($options['u'], $options['p'], Github\Client::AUTH_HTTP_PASSWORD);
-    $gh_repos = $client->api('current_user')->repositories();
+    $gh_repos = $client->api('current_user')->repositories(array('per_page' => 100));
 
     $current_repos = array();
     if(!empty($options['r']))
@@ -80,6 +80,7 @@ class UPIP_admin {
                 <td>Open Issues</td>
                 <td>Private</td>
               </thead>
+              <tr><td span="3"><?php echo count($gh_repos); ?></td></tr>
 
   <?php foreach($gh_repos as $index => $item) {
 
