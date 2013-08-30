@@ -224,38 +224,60 @@ class UPIP_api{
   * @return object
   */
   private function get_repo($repoName){
-    // Github API call to get data for a particular repo ($repoName)
-    $client = $this->get_client();
-    $repo = $client->api('repo')->show($this->user, $repoName);
-    return $repo;
+    $cacheKey = $repoName . '-repo';
+
+    $cache = $this->ip_cache_get($cacheKey);
+    if($cache === FALSE) {
+      $client = $this->get_client();
+      $cache = $this->ip_cache_set($client->api('repo')->show($this->user, $repoName)); 
+    }
+
+    return $cache;
   }
 
-  /** github API call to get all issue data from repo
+  /** github API call to get all issues data from repo
   * @return array of objects
   */
   private function get_issues($repoName){
-    // Github API call to get issues in particular repo ($repoName)
-    $client = $this->get_client();
-    $issues = $client->api('issue')->all($this->user, $repoName, array('state' => 'open'));
-    return $issues;
+    $cacheKey = $repoName . '-issues';
+
+    $cache = $this->ip_cache_get($cacheKey);
+    if($cache === FALSE) {
+      $client = $this->get_client();
+      $cache = $this->ip_cache_set($client->api('issue')->all($this->user, $repoName, array('state' => 'open'))); 
+    }
+
+    return $cache;
   }
 
   /** github API call to get releases of a repo
    * * @return array of objects
    */
   private function get_repo_releases($repoName){
-    $client = $this->get_client();
-    $releases = $client->api('repo')->releases()->all($this->user, $repoName);
-    return $releases;
+    $cacheKey = $repoName . '-releases';
+
+    $cache = $this->ip_cache_get($cacheKey);
+    if($cache === FALSE) {
+      $client = $this->get_client();
+      $cache = $this->ip_cache_set($client->api('repo')->releases()->all($this->user, $repoName)); 
+    }
+
+    return $cache;
   }
 
   /** github API call to get recent activity of a repo
    * * @return array of objects
    */
   private function get_repo_activity($repoName){
-    $client = $this->get_client();
-    $activity = $client->api('issue')->events()->all($this->user, $repoName);
-    return $activity;
+    $cacheKey = $repoName . '-activity';
+
+    $cache = $this->ip_cache_get($cacheKey);
+    if($cache === FALSE) {
+      $client = $this->get_client();
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->events()->all($this->user, $repoName)); 
+    }
+
+    return $cache;
   }
 
   /** github API call to post new issue
@@ -327,7 +349,7 @@ class UPIP_api{
     if(!$this->cacheIsOn || $key == '')
       return false;
 
-    $cache = get_transient($key);
+    $cache = get_transient('ip-'.$key); // Note the prepending 'ip-'
     return $cache;
   }
 
@@ -344,7 +366,7 @@ class UPIP_api{
     if(!$this->cacheIsOn || $key == '')
       return false;
 
-    set_transient($key, $data, $this->cacheExpire);
+    set_transient('ip-'.$key, $data, $this->cacheExpire); // Note the prepending 'ip-'
     return $data;
   }
 
