@@ -15,6 +15,10 @@ class UPIP_api{
   private $client;
   private $user;
 
+  /* Cache vars */
+  private $cacheIsOn = TRUE;
+  private $cacheExpire = 480; // Expires every 8 mins: (60*8)
+
   /** Hook WordPress
   * @return void
   */
@@ -147,6 +151,8 @@ class UPIP_api{
 
     global $wp;
 
+
+
     // GET, POST, PUT, or DELETE
     $method = $_SERVER['REQUEST_METHOD'];
    
@@ -272,21 +278,30 @@ class UPIP_api{
   * @return string
   */
   private function get_issue($issue, $repoName){
-    // Github API call to get a particular issue ($issue) in particular repo ($repoName)
-    // $issue = $client->api('issue')->show($this->user, 'php-github-api', 1);
-    $client = $this->get_client();
-    $issue = $client->api('issue')->show($this->user, $repoName, $issue);
+    $cacheKey = $repoName . '-issue-' . $issue;
 
-    return $issue;
+    $cache = $this->ip_cache_get($cacheKey);
+    if($cache === FALSE) {
+      $client = $this->get_client();
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->show($this->user, $repoName, $issue));
+    }
+
+    return $cache;
   }
 
   /** github API call to get an issue's comments
    * @return string
    */
   private function get_issue_comments($issue, $repoName){
-    $client = $this->get_client();
-    $comments = $client->api('issue')->comments()->all($this->user, $repoName, $issue);
-    return $comments;
+    $cacheKey = $repoName . '-comments-' . $issue;
+
+    $cache = $this->ip_cache_get($cacheKey);
+    if($cache === FALSE) {
+      $client = $this->get_client();
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->comments()->all($this->user, $repoName, $issue)); 
+    }
+
+    return $cache;
   }
 
   /** github API call to post a new comment on issue in repo
@@ -297,6 +312,43 @@ class UPIP_api{
   }
 
   /*** END UPAPI refs to Github API ***/
+
+  /*** IP Cache Functions ***/
+
+  /** IP cache get
+   *
+   * Utility function wrapping the get_transient(),
+   * first checks if IP cache is enabled, proceeds if so.
+   *
+   * @param $key STRING
+   * @return cache OBJ or FALSE if cache empty or disabled
+   */
+  private function ip_cache_get($key='') {
+    if(!$this->cacheIsOn || $key == '')
+      return false;
+
+    $cache = get_transient($key);
+    return $cache;
+  }
+
+  /** IP cache set
+   *
+   * Utility function wrapping the set_transient(),
+   * first checks if IP cache is enabled, proceeds if so.
+   *
+   * @param $key STRING
+   * @param $data OBJECT
+   * @return $data OBJECT
+   */
+  private function ip_cache_set($key, $data){
+    if(!$this->cacheIsOn || $key == '')
+      return false;
+
+    set_transient($key, $data, $this->cacheExpire);
+    return $data;
+  }
+
+  /*** END IP Cache Functions ***/
 
 }
 new UPIP_api();
