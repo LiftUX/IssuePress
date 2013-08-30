@@ -15,20 +15,23 @@ $ip_api_url = home_url(IP_API_PATH);
 if(!defined('IP_API_URL'))
   define('IP_API_URL', $ip_api_url);
 
+if(!defined('IP_STORE_URL'))
+  define( 'IP_STORE_URL', 'http://issuepress.co' );
+
+if(!defined('IP_ITEM_NAME'))
+  define( 'IP_ITEM_NAME', 'IssuePress' );
+
 require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
+require_once 'IP_license_admin.php';
 require_once 'IP_api.php';
 require_once 'IP_helpers.php';
-require_once 'IP_license_admin.php';
 require_once 'widgets/load.php';
 
 if( !class_exists( 'IP_Plugin_Updater' ) ) {
-  // load our custom updater if it doesn't already exist
+  // load our custom updater
   include( dirname( __FILE__ ) . '/IP_Plugin_Updater.php' );
 }
-
-define( 'IP_STORE_URL', 'http://issuepress.co' );
-define( 'IP_ITEM_NAME', 'IssuePress' );
 
 class UP_IssuePress {
 
@@ -52,8 +55,17 @@ class UP_IssuePress {
     add_action('admin_print_styles', array($this, 'resize_icon'), 20);
 
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
+
+    add_action('admin_init', array($this, 'theme_updater'),1);
+
   }
 
+
+  public function get_version(){
+    $plugin_data = get_plugin_data( __FILE__ );
+    $plugin_version = $plugin_data['Version'];
+    return $plugin_version;
+  }
 
   /**
   * Overwrite the default template with IssuePress Backbone App
@@ -349,6 +361,24 @@ class UP_IssuePress {
   public function resize_icon(){
     echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; margin-top: -2px; }</style>';
     return;
+  }
+
+  public function theme_updater(){
+
+    // retrieve our license key from the DB
+    $license_key = trim( get_option( 'edd_sample_license_key' ) );
+
+    $version_number = $this->get_version();
+
+    // setup the updater
+    $edd_updater = new IP_Plugin_Updater( IP_STORE_URL, __FILE__, array(
+        'version'   => $version_number, // current version number
+        'license'   => $license_key,      // license key (used get_option above to retrieve from DB)
+        'item_name' => IP_ITEM_NAME,  // name of this plugin
+        'author'  => 'Lift'       // author of this plugin
+      )
+    );
+
   }
 
 }
