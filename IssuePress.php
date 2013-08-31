@@ -21,6 +21,8 @@ if(!defined('IP_STORE_URL'))
 if(!defined('IP_ITEM_NAME'))
   define( 'IP_ITEM_NAME', 'IssuePress' );
 
+define('IP_MAIN_PLUGIN_FILE', __FILE__ );
+
 require_once 'vendor/autoload.php';
 require_once 'IP_admin.php';
 require_once 'IP_license_admin.php';
@@ -30,7 +32,7 @@ require_once 'widgets/load.php';
 
 if( !class_exists( 'IP_Plugin_Updater' ) ) {
   // load our custom updater
-  include( dirname( __FILE__ ) . '/IP_Plugin_Updater.php' );
+  include( dirname( IP_MAIN_PLUGIN_FILE ) . '/IP_Plugin_Updater.php' );
 }
 
 class UP_IssuePress {
@@ -56,13 +58,12 @@ class UP_IssuePress {
 
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
 
-    add_action('admin_init', array($this, 'theme_updater'),1);
+    add_action('admin_init', array($this, 'theme_updater'),0);
 
   }
 
-
   public function get_version(){
-    $plugin_data = get_plugin_data( __FILE__ );
+    $plugin_data = get_plugin_data( IP_MAIN_PLUGIN_FILE );
     $plugin_version = $plugin_data['Version'];
     return $plugin_version;
   }
@@ -77,7 +78,7 @@ class UP_IssuePress {
     if( !get_query_var("pagename") && !get_query_var("page_id") )
       return false;
 
-    $IP_dir = dirname(__FILE__);
+    $IP_dir = dirname(IP_MAIN_PLUGIN_FILE);
     $IP_options = get_option('upip_options');
     $IP_landing_id = $IP_options['landing'];
     $IP_landing_name = sanitize_title(get_the_title($IP_landing_id));
@@ -164,7 +165,7 @@ class UP_IssuePress {
     // IP Styles
     wp_register_style(
       'issuepress-css',
-      plugins_url('assets/css/main.css', __FILE__),
+      plugins_url('assets/css/main.css', IP_MAIN_PLUGIN_FILE),
       array(),
       '0.0.1',
       'all');
@@ -173,34 +174,34 @@ class UP_IssuePress {
     wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
 
     // The IP Angular app modules
-    wp_register_script('ip_app_state', plugins_url('src/app/app-state/app-state.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_header', plugins_url('src/app/header/header.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_dashboard', plugins_url('src/app/dashboard/dashboard.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_sections', plugins_url('src/app/sections/sections.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_repo', plugins_url('src/app/repo/repo.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_issue', plugins_url('src/app/issue/issue.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_create_issue', plugins_url('src/app/create-issue/create-issue.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_user', plugins_url('src/app/user/user.js', __FILE__), array(), '0.0.1', true);
+    wp_register_script('ip_app_state', plugins_url('src/app/app-state/app-state.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_header', plugins_url('src/app/header/header.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_dashboard', plugins_url('src/app/dashboard/dashboard.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_sections', plugins_url('src/app/sections/sections.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_repo', plugins_url('src/app/repo/repo.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_issue', plugins_url('src/app/issue/issue.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_create_issue', plugins_url('src/app/create-issue/create-issue.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_user', plugins_url('src/app/user/user.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
 
     // The IP Angular app components
-    wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs/breadcrumbs.js', __FILE__), array('ip_u_breadcrumbs'), '0.0.1', true);
+    wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs/breadcrumbs.js', IP_MAIN_PLUGIN_FILE), array('ip_u_breadcrumbs'), '0.0.1', true);
 
     // Util Angular modules
-    wp_register_script('ip_u_md5', plugins_url('src/util/md5/md5.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_u_gravatar', plugins_url('src/util/gravatar/gravatar.js', __FILE__), array('ip_u_md5'), '0.0.1', true);
-    wp_register_script('ip_u_breadcrumbs', plugins_url('src/util/breadcrumbs.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_u_timeago', plugins_url('src/util/timeago.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_u_marked', plugins_url('src/util/marked/marked.js', __FILE__), array(), '0.0.1', true);
-    wp_register_script('ip_u_markdown', plugins_url('src/util/marked/markdown.js', __FILE__), array('ip_u_marked'), '0.0.1', true);
+    wp_register_script('ip_u_md5', plugins_url('src/util/md5/md5.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_u_gravatar', plugins_url('src/util/gravatar/gravatar.js', IP_MAIN_PLUGIN_FILE), array('ip_u_md5'), '0.0.1', true);
+    wp_register_script('ip_u_breadcrumbs', plugins_url('src/util/breadcrumbs.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_u_timeago', plugins_url('src/util/timeago.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_u_marked', plugins_url('src/util/marked/marked.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_u_markdown', plugins_url('src/util/marked/markdown.js', IP_MAIN_PLUGIN_FILE), array('ip_u_marked'), '0.0.1', true);
 
     // The IP Angular app bootstrap file
     wp_register_script(
       'issuepress',
-      plugins_url('src/app/issuepress.js', __FILE__),
+      plugins_url('src/app/issuepress.js', IP_MAIN_PLUGIN_FILE),
       array(
         'ip_angular',
 
@@ -296,7 +297,7 @@ class UP_IssuePress {
   * @return string
   */
   public function get_IP_path(){
-    return plugins_url('src', __FILE__);
+    return plugins_url('src', IP_MAIN_PLUGIN_FILE);
   }
 
   /**
@@ -365,21 +366,44 @@ class UP_IssuePress {
 
   public function theme_updater(){
 
-    // retrieve our license key from the DB
-    $license_key = trim( get_option( 'edd_sample_license_key' ) );
+    global $pagenow;
 
-    $version_number = $this->get_version();
+    $license_status = get_option('upip_license_status');
 
-    // setup the updater
-    $edd_updater = new IP_Plugin_Updater( IP_STORE_URL, __FILE__, array(
-        'version'   => $version_number, // current version number
-        'license'   => $license_key,      // license key (used get_option above to retrieve from DB)
-        'item_name' => IP_ITEM_NAME,  // name of this plugin
-        'author'  => 'Lift'       // author of this plugin
-      )
-    );
+    if( $license_status == 'valid' ){
+      // retrieve our license key from the DB
+      $license_key = trim( get_option( 'upip_license_key' ) );
+
+      $version_number = $this->get_version();
+
+      // setup the updater
+      $edd_updater = new IP_Plugin_Updater( IP_STORE_URL, IP_MAIN_PLUGIN_FILE, array(
+          'version'   => $version_number, // current version number
+          'license'   => $license_key,      // license key (used get_option above to retrieve from DB)
+          'item_name' => IP_ITEM_NAME,  // name of this plugin
+          'author'  => 'Lift'       // author of this plugin
+        )
+      );
+    } else {
+
+      if( $pagenow == 'admin.php' && ( $_GET['page'] == 'issuepress-options' || $_GET['page'] == 'issuepress-license' ) )
+        add_action( 'admin_notices', array( $this, 'license_invalid') );
+
+    }
 
   }
 
+  public function license_invalid() { ?>
+        <?php if( $_GET['page'] == 'issuepress-license' ): ?>
+        <div class="updated">
+          <p>Your IssuePress license has not been activated. Please enter/activate your license key or <a href="http://issuepress.co">renew your subscription</a> to enable automatic updates and support.</p>
+        </div>
+        <?php else: ?>
+        <div class="error">
+          <p>Your IssuePress license has not been activated. Please <a href="<?php echo admin_url('admin.php?page=issuepress-license'); ?>">enter/activate your license key</a> or <a href="http://issuepress.co">renew your subscription</a> to enable automatic updates and support.</p>
+        </div>
+        <?php endif; ?>
+  <?php
+  }
 }
 new UP_IssuePress();
