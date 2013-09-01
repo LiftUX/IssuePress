@@ -1,10 +1,10 @@
 <?php
 
-/* 
+/*
  * In this file, we create the RESTful api that we use for the backbone app.
- * The api endpoint will reside at: 
+ * The api endpoint will reside at:
  * {domain}/{slug of landing page}/issuepress/api
- * 
+ *
  * See the handle_request() method of api implementation.
  *
  *
@@ -23,36 +23,41 @@ class UPIP_api{
   * @return void
   */
   public function __construct(){
-    $this->client = $this->new_client();
-    $this->user = $this->get_user();
+    $options = get_option('upip_options');
+    if( isset( $options['oauth_key'] ) && $options['oauth_key'] ){
+      $this->client = $this->new_client( $options['oauth_key'] );
+      $this->user = $this->get_user();
 
-    add_filter('query_vars', array($this, 'add_query_vars'), 0);
-    add_action('parse_request', array($this, 'check_requests'), 0);
-    add_action('init', array($this, 'add_endpoint'), 0);
+      add_filter('query_vars', array($this, 'add_query_vars'), 0);
+      add_action('parse_request', array($this, 'check_requests'), 0);
+      add_action('init', array($this, 'add_endpoint'), 0);
+    }
   }
 
-  public function new_client() {
-    $options = get_option('upip_options');    
+  public function new_client($oauth_key) {
     $client = new Github\Client();
-    $client->authenticate($options['u'], $options['p'], Github\Client::AUTH_HTTP_PASSWORD);
+    $client->authenticate($oauth_key, null, Github\Client::AUTH_HTTP_TOKEN);
     return $client;
   }
 
-  public function get_Client() {
+  public function get_client() {
     return $this->client;
   }
 
   private function get_user() {
-    $options = get_option('upip_options');    
-    if($options['u'])
-      return $options['u'];
+    $client = $this->get_client();
+    if( $client ){
+      $user = $client->api('current_user')->show();
+    }
+    if( $user )
+      return $user;
     else
       return '';
   }
 
   /** Add public query vars
   * @param array $vars List of current public query vars
-  * @return array $vars 
+  * @return array $vars
   */
   public function add_query_vars($vars){
     $vars[] = '__ip_api';
@@ -62,7 +67,7 @@ class UPIP_api{
     $vars[] = 'is_new';
     return $vars;
   }
-  
+
   /** Add API Endpoint
   * This is where the magic happens - brush up on your regex skillz
   * @return void
@@ -100,10 +105,10 @@ class UPIP_api{
       exit;
     }
   }
-  
+
   /** Handle Requests
   * This is where we handle the request according to API
-  * @return void 
+  * @return void
   */
   protected function handle_request(){
 
@@ -125,7 +130,7 @@ class UPIP_api{
     *
     * get_issue_num()
     * /[landing]/[repo name]/[issue number]
-    * GET - {repo} 
+    * GET - {repo}
     * GET - {issue}
     *
     *
@@ -136,7 +141,7 @@ class UPIP_api{
     * post_issue()
     * /[landing]/[repo name]/new
     * POST - {repo}
-    * 
+    *
     *
     *
     * Edit an Issue
@@ -155,12 +160,12 @@ class UPIP_api{
 
     // GET, POST, PUT, or DELETE
     $method = $_SERVER['REQUEST_METHOD'];
-   
+
 
     // Get the vars in variables if they exist
-    if(isset($wp->query_vars['repo'])) 
+    if(isset($wp->query_vars['repo']))
       $repo = json_encode($wp->query_vars['repo']);
-    if(isset($wp->query_vars['issue'])) 
+    if(isset($wp->query_vars['issue']))
       $issue = json_encode($wp->query_vars['issue']);
 
     if($method === 'POST')
@@ -201,7 +206,7 @@ class UPIP_api{
     $this->send_response('200 OK', $data);
 
   }
-  
+
   /** Response Handler
   * This sends a JSON response to the browser
   */
@@ -229,7 +234,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($client->api('repo')->show($this->user, $repoName)); 
+      $cache = $this->ip_cache_set($client->api('repo')->show($this->user, $repoName));
     }
 
     return $cache;
@@ -244,7 +249,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($client->api('issue')->all($this->user, $repoName, array('state' => 'open'))); 
+      $cache = $this->ip_cache_set($client->api('issue')->all($this->user, $repoName, array('state' => 'open')));
     }
 
     return $cache;
@@ -259,7 +264,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($client->api('repo')->releases()->all($this->user, $repoName)); 
+      $cache = $this->ip_cache_set($client->api('repo')->releases()->all($this->user, $repoName));
     }
 
     return $cache;
@@ -274,7 +279,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->events()->all($this->user, $repoName)); 
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->events()->all($this->user, $repoName));
     }
 
     return $cache;
@@ -320,7 +325,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->comments()->all($this->user, $repoName, $issue)); 
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->comments()->all($this->user, $repoName, $issue));
     }
 
     return $cache;
@@ -373,4 +378,4 @@ class UPIP_api{
   /*** END IP Cache Functions ***/
 
 }
-new UPIP_api();
+$ip_github = new UPIP_api();
