@@ -42,13 +42,14 @@ class UPIP_admin {
       <?php settings_fields('upip_options'); ?>
       <?php $options = get_option('upip_options'); ?>
       <table class="form-table">
-        <tr valign="top"><th scope="row">Github Username</th>
-          <td><input type="text" name="upip_options[u]" value="<?php echo $options['u']; ?>" /></td>
+        <tr valign="top"><th scope="row">Github Access Token:</th>
+          <td><input type="text" name="upip_options[oauth_key]" value="<?php echo $options['oauth_key']; ?>" />
+          <?php if( !$options['oauth_key'] ){ ?>
+           <p><a target="_blank" href="https://github.com/settings/tokens/new">Generate an access token</a> and paste it here. We recommend setting up an IssuePress-specific Github account (with proper access to your repositories) for most installations.</p>
+           <?php } ?>
+          </td>
         </tr>
-        <tr valign="top"><th scope="row">Github Password</th>
-          <td><input type="password" name="upip_options[p]" value="<?php echo $options['p']; ?>" /></td>
-        </tr>
-        <tr valign="top"><th scope="row">Support Landing Page</th>
+        <tr valign="top"><th scope="row">Support Landing Page:</th>
           <td>
             <select id="upip_options" name="upip_options[landing]">
             <option value="">Select Page</option>
@@ -114,10 +115,11 @@ class UPIP_admin {
 
           <td>
         </tr>
-  <?php if(!empty($options['u']) && !empty($options['p'])) {
+  <?php if( !empty($options['oauth_key']) ) {
 
     $client = new Github\Client();
-    $client->authenticate($options['u'], $options['p'], Github\Client::AUTH_HTTP_PASSWORD);
+    $client->authenticate($options['oauth_key'], null, Github\Client::AUTH_HTTP_TOKEN);
+
     $gh_repos = $client->api('current_user')->repositories(array('per_page' => 100));
 
     $current_repos = array();

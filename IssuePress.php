@@ -24,11 +24,11 @@ if(!defined('IP_ITEM_NAME'))
 define('IP_MAIN_PLUGIN_FILE', __FILE__ );
 
 require_once 'vendor/autoload.php';
-require_once 'IP_admin.php';
-require_once 'IP_license_admin.php';
 require_once 'IP_api.php';
 require_once 'IP_helpers.php';
 require_once 'widgets/load.php';
+require_once 'IP_admin.php';
+require_once 'IP_license_admin.php';
 
 if( !class_exists( 'IP_Plugin_Updater' ) ) {
   // load our custom updater
