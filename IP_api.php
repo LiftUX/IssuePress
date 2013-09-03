@@ -195,7 +195,7 @@ class UPIP_api{
     } else if($method === "GET" && isset($repo) && !isset($issue)){
       $data['repo'] = $this->get_repo(json_decode($repo));
       $data['issues'] = $this->get_issues(json_decode($repo));
-      $data['releases'] = $this->get_repo_releases(json_decode($repo));
+//      $data['releases'] = $this->get_repo_releases(json_decode($repo));
       $data['activity'] = $this->get_repo_activity(json_decode($repo));
     } else if($method === "POST" && isset($repo) && !isset($issue)){
       $data['response'] = $this->post_issue(json_decode($repo));
@@ -234,7 +234,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($client->api('repo')->show($this->user, $repoName));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->show($this->user, $repoName)); 
     }
 
     return $cache;
@@ -249,7 +249,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($client->api('issue')->all($this->user, $repoName, array('state' => 'open')));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($this->user, $repoName, array('state' => 'open'))); 
     }
 
     return $cache;
@@ -264,7 +264,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($client->api('repo')->releases()->all($this->user, $repoName));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->releases()->all($this->user, $repoName)); 
     }
 
     return $cache;
