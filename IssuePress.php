@@ -368,8 +368,11 @@ class UP_IssuePress {
    * @return string
    */
   public function get_IP_auth_user(){
-    $options =  get_option('upip_options');
-    return json_encode($options['u']);
+    $user = get_transient('ip-user');
+    if($user)
+      return json_encode($user['login']);
+    else
+      return 'undefined';
   }
 
   /**

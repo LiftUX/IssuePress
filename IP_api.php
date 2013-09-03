@@ -27,8 +27,12 @@ class UPIP_api{
   public function __construct(){
     $options = get_option('upip_options');
     if( isset( $options['oauth_key'] ) && $options['oauth_key'] ){
-      $this->client = $this->new_client( $options['oauth_key'] );
-      $this->user = $this->get_user();
+      $client = $this->new_client( $options['oauth_key'] );
+      $this->client = $client;
+
+      $user = $client->api('current_user')->show();
+      $this->set_user($user);
+      $this->user = $user;
 
       add_filter('query_vars', array($this, 'add_query_vars'), 0);
       add_action('parse_request', array($this, 'check_requests'), 0);
@@ -47,6 +51,9 @@ class UPIP_api{
   }
 
   private function get_user() {
+
+    $user = get_transient('ip-user');
+
     $client = $this->get_client();
     if( $client ){
       $user = $client->api('current_user')->show();
@@ -55,6 +62,11 @@ class UPIP_api{
       return $user;
     else
       return '';
+  }
+
+  private function set_user($user) {
+    set_transient('ip-user', $user);
+    return;
   }
 
   /** 
