@@ -39,6 +39,7 @@ class UP_IssuePress {
 
   /**
   * Print Scripts?
+  *
   * @var $print_scripts
   */
   private $print_scripts = false;
@@ -46,6 +47,7 @@ class UP_IssuePress {
 
   /**
   * Hook WordPress
+  *
   * @return void
   */
   public function __construct(){
@@ -70,6 +72,7 @@ class UP_IssuePress {
 
   /**
   * Overwrite the default template with IssuePress Backbone App
+  *
   * @return void
   */
   public function load_IP_template(){
@@ -97,6 +100,7 @@ class UP_IssuePress {
 
   /**
   * Actually load our template instead of the requested page
+  *
   * @return void
   */
   private function do_theme_direct($url){
@@ -112,6 +116,7 @@ class UP_IssuePress {
 
   /**
   * Register the IP sidebars
+  *
   * @return void
   */
   public function register_IP_sidebars() {
@@ -158,6 +163,7 @@ class UP_IssuePress {
 
   /**
   * Register scripts for IP
+  *
   * @return void
   */
   public function register_IP_scripts(){
@@ -231,6 +237,7 @@ class UP_IssuePress {
 
   /**
   * Print out our scripts
+  *
   * @return void
   */
   public function print_IP_scripts(){
@@ -246,6 +253,7 @@ class UP_IssuePress {
 
   /**
   * Fetch the github repos IP tracks to initialize
+  *
   * @return [json] $IP_repos;
   */
   public function get_IP_repo_json(){
@@ -265,6 +273,7 @@ class UP_IssuePress {
 
   /**
   * Fetch the github IP data
+  *
   * @return [json] $IP_repos;
   */
   public function get_IP_data(){
@@ -284,6 +293,7 @@ class UP_IssuePress {
 
   /**
   * Fetches the slug for the support page
+  *
   * @return string
   */
   public function get_IP_root(){
@@ -294,6 +304,7 @@ class UP_IssuePress {
 
   /**
   * Utility function to output URL path of IP angular app for easy partials reference
+  *
   * @return string
   */
   public function get_IP_path(){
@@ -302,6 +313,7 @@ class UP_IssuePress {
 
   /**
   * Utility function to pass the IP API base endpoint to angular app
+  *
   * @return string
   */
   public function get_IP_API_path(){
@@ -310,6 +322,7 @@ class UP_IssuePress {
 
   /**
   * Utility function to output current user data safely
+  *
   * @return json_encoded objec
   */
   public function get_IP_user() {
@@ -332,6 +345,7 @@ class UP_IssuePress {
 
   /**
   * Utility function to pass login page to angular app
+  *
   * @return string
   */
   public function get_IP_login(){
@@ -340,6 +354,7 @@ class UP_IssuePress {
 
   /**
   * Utility function to pass nonce to angular app
+  *
   * @return string
   */
   public function get_IP_logout(){
@@ -349,6 +364,7 @@ class UP_IssuePress {
 
   /**
    * Utility function to pass authenticated github username to angular app
+   *
    * @return string
    */
   public function get_IP_auth_user(){
@@ -358,6 +374,8 @@ class UP_IssuePress {
 
   /**
   * Resizes the IssuePress menu icon (retina icon hack)
+  *
+  * @return void
   */
   public function resize_icon(){
     echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; margin-top: -2px; }</style>';
