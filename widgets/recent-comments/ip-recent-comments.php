@@ -1,15 +1,15 @@
 <?php
-if(!class_exists('ip_sections')){
-  class ip_sections extends IP_Widget{
+if(!class_exists('ip_recent_comments')){
+  class ip_recent_comments extends IP_Widget{
     protected $fields = array(
       'title' => 'Title',
     );
 
     public function __construct(){
       parent::__construct(
-        'ip_sections',
-        'IP Sections',
-        array('description' => __('Displays the list of IP Sections. For use on IssuePress Sidebars only.', 'IssuePress'))
+        'ip_recent_comments',
+        'IP Recent Comment Activity',
+        array('description' => __('Displays a "context aware" list of recent IP Comment Activity. For use on IssuePress Sidebars only.', 'IssuePress'))
       );
     }
 
@@ -52,5 +52,5 @@ if(!class_exists('ip_sections')){
       echo $form;
     }
   }
-  add_action('widgets_init', create_function('', 'register_widget( "ip_sections" );'));
+  add_action('widgets_init', create_function('', 'register_widget( "ip_recent_comments" );'));
 }

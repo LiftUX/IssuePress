@@ -2,8 +2,8 @@
 if(!class_exists('ip_message')){
   class ip_message extends IP_Widget{
     protected $fields = array(
-      'msg-title' => 'Message Title',
-      'msg-body'  => 'Message Body'
+      'title' => 'Title',
+      'msg'  => 'Message'
     );
 
     public function __construct(){
@@ -45,7 +45,7 @@ if(!class_exists('ip_message')){
 
         $form .= "<p><label for='$field_id'>$label</label>";
 
-        if($id == 'msg-title')
+        if($id == 'title')
           $form .= "<input class='widefat' id='$field_id' name='$field_name' type='text' value=\"$instance_var\">";
         else
           $form .= "<textarea class='widefat' id='$field_id' name='$field_name'>$instance_var</textarea>";
