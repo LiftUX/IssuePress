@@ -139,9 +139,14 @@ class UP_IssuePress {
         'Control the content in the IssuePress "Sections" page\'s sidebar',
       ),
       array(
-        'IssuePress Repo Sidebar',
-        'ip-repo-side',
-        'Control the content in the IssuePress "Repo" page\'s sidebar',
+        'IssuePress Section Main',
+        'ip-section-main',
+        'Control the content in the IssuePress "Section" page.',
+      ),
+      array(
+        'IssuePress Section Sidebar',
+        'ip-section-side',
+        'Control the content in the IssuePress "Section" page\'s sidebar',
       ),
       array(
         'IssuePress Issue Sidebar',
