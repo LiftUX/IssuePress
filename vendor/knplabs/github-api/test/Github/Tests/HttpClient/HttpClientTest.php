@@ -2,6 +2,7 @@
 
 namespace Github\Tests\HttpClient;
 
+use Github\Client;
 use Github\HttpClient\HttpClient;
 use Github\HttpClient\Message\Request;
 use Github\HttpClient\Message\Response;
@@ -34,6 +35,29 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @dataProvider getAuthenticationFullData
+     */
+    public function shouldAuthenticateUsingAllGivenParameters($login, $password, $method)
+    {
+        $client = new TestHttpClient();
+        $client->authenticate($login, $password, $method);
+
+        $this->assertCount(2, $client->listeners);
+        $this->assertInstanceOf('Github\HttpClient\Listener\AuthListener', $client->listeners['Github\HttpClient\Listener\AuthListener']);
+    }
+
+    public function getAuthenticationFullData()
+    {
+        return array(
+            array('login', 'password', Client::AUTH_HTTP_PASSWORD),
+            array('token', null, Client::AUTH_HTTP_TOKEN),
+            array('token', null, Client::AUTH_URL_TOKEN),
+            array('client_id', 'client_secret', Client::AUTH_URL_CLIENT_ID),
+        );
+    }
+
+    /**
+     * @test
      */
     public function shouldDoGETRequest()
     {
@@ -60,6 +84,23 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
 
         $httpClient = new HttpClient(array(), $client);
         $httpClient->post($path, $parameters, $headers);
+
+        $this->assertEquals('{"a":"b"}', $httpClient->getLastRequest()->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoPOSTRequestWithoutContent()
+    {
+        $path       = '/some/path';
+
+        $client = $this->getBrowserMock();
+
+        $httpClient = new HttpClient(array(), $client);
+        $httpClient->post($path);
+
+        $this->assertEmpty($httpClient->getLastRequest()->getContent());
     }
 
     /**
@@ -186,15 +227,22 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $httpClient->get($path, $parameters, $headers);
     }
 
-    protected function getBrowserMock()
+    protected function getBrowserMock(array $methods = array())
     {
-        return $this->getMock('Buzz\Client\ClientInterface', array('setTimeout', 'setVerifyPeer', 'send'));
+        return $this->getMock(
+            'Buzz\Client\ClientInterface',
+            array_merge(
+                array('setTimeout', 'setVerifyPeer', 'send'),
+                $methods
+            )
+        );
     }
 }
 
 class TestHttpClient extends HttpClient
 {
     public $fakeResponse;
+    public $listeners;
 
     public function getOption($name, $default = null)
     {

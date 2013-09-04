@@ -8,7 +8,6 @@ use Github\Api\Repository\Commits;
 use Github\Api\Repository\Contents;
 use Github\Api\Repository\DeployKeys;
 use Github\Api\Repository\Downloads;
-use Github\Api\Repository\Releases;
 use Github\Api\Repository\Forks;
 use Github\Api\Repository\Hooks;
 use Github\Api\Repository\Labels;
@@ -39,6 +38,20 @@ class Repo extends AbstractApi
     }
 
     /**
+     * List all repositories for an organization
+     * @link http://developer.github.com/v3/repos/#list-organization-repositories
+     *
+     * @param  string $organization     the name of the organization
+     * @param  array  $params
+     *
+     * @return array                    list of organization repositories
+     */
+    public function org($organization, array $params = array())
+    {
+        return $this->get('orgs/'.$organization.'/repos', array_merge(array('start_page' => 1), $params));
+    }
+
+    /**
      * Get extended information about a repository by its username and repository name
      * @link http://developer.github.com/v3/repos/
      *
@@ -56,24 +69,49 @@ class Repo extends AbstractApi
      * Create repository
      * @link http://developer.github.com/v3/repos/
      *
-     * @param  string  $name             name of the repository
-     * @param  string  $description      repository description
-     * @param  string  $homepage         homepage url
-     * @param  boolean $public           `true` for public, `false` for private
-     * @param  null|string $organization username of organization if applicable
+     * @param  string      $name             name of the repository
+     * @param  string      $description      repository description
+     * @param  string      $homepage         homepage url
+     * @param  boolean     $public           `true` for public, `false` for private
+     * @param  null|string $organization     username of organization if applicable
+     * @param  boolean     $hasIssues        `true` to enable issues for this repository, `false` to disable them
+     * @param  boolean     $hasWiki          `true` to enable the wiki for this repository, `false` to disable it
+     * @param  boolean     $hadDownloads     `true` to enable downloads for this repository, `false` to disable them
+     * @param  integer     $teamId           The id of the team that will be granted access to this repository. This is only valid when creating a repo in an organization.
+     * @param  boolean     $autoInit         `true` to create an initial commit with empty README, `false` for no initial commit
      *
      * @return array                     returns repository data
      */
-    public function create($name, $description = '', $homepage = '', $public = true, $organization = null)
-    {
+    public function create(
+        $name,
+        $description = '',
+        $homepage = '',
+        $public = true,
+        $organization = null,
+        $hasIssues = false,
+        $hasWiki = false,
+        $hasDownloads = false,
+        $teamId = null,
+        $autoInit = false
+    ) {
         $path = null !== $organization ? 'orgs/'.$organization.'/repos' : 'user/repos';
 
-        return $this->post($path, array(
-            'name'        => $name,
-            'description' => $description,
-            'homepage'    => $homepage,
-            'private'     => !$public
-        ));
+        $parameters = array(
+            'name'          => $name,
+            'description'   => $description,
+            'homepage'      => $homepage,
+            'private'       => !$public,
+            'has_issues'    => $hasIssues,
+            'has_wiki'      => $hasWiki,
+            'has_downloads' => $hasDownloads,
+            'auto_init'     => $autoInit
+        );
+
+        if ($organization && $teamId) {
+            $parameters['team_id'] = $teamId;
+        }
+
+        return $this->post($path, $parameters);
     }
 
     /**
@@ -158,17 +196,6 @@ class Repo extends AbstractApi
     public function downloads()
     {
         return new Downloads($this->client);
-    }
-
-    /**
-     * Manage the releases of a repository (Currently Undocumented)
-     * @link http://developer.github.com/v3/repos/ 
-     *
-     * @return Releases
-     */
-    public function releases()
-    {
-        return new Releases($this->client);
     }
 
     /**
@@ -316,6 +343,27 @@ class Repo extends AbstractApi
     {
         return $this->get('repos/'.urlencode($username).'/'.urlencode($repository).'/watchers', array(
             'page' => $page
+        ));
+    }
+
+    /**
+     * Perform a merge
+     * @link http://developer.github.com/v3/repos/merging/
+     *
+     * @param  string      $username
+     * @param  string      $repository
+     * @param  string      $base        The name of the base branch that the head will be merged into.
+     * @param  string      $head        The head to merge. This can be a branch name or a commit SHA1.
+     * @param  string      $message     Commit message to use for the merge commit. If omitted, a default message will be used.
+     *
+     * @return array|null
+     */
+    public function merge($username, $repository, $base, $head, $message = null)
+    {
+        return $this->post('repos/'.urlencode($username).'/'.urlencode($repository).'/merges', array(
+            'base'           => $base,
+            'head'           => $head,
+            'commit_message' => $message
         ));
     }
 }
