@@ -1,16 +1,15 @@
 <?php
-if(!class_exists('ip_message')){
-  class ip_message extends IP_Widget{
+if(!class_exists('ip_release')){
+  class ip_release extends IP_Widget{
     protected $fields = array(
       'title' => 'Title',
-      'msg'  => 'Message'
     );
 
     public function __construct(){
       parent::__construct(
-        'ip_message',
-        'IP Message Box',
-        array('description' => __('Displays an IP Notification Message Box. For use on IssuePress Sidebars only.', 'IssuePress'))
+        'ip_release',
+        'IP Recent Release',
+        array('description' => __('Displays the most recent release for each section, or if placed in a section, specifically for that section. For use on IssuePress Sidebars only.', 'IssuePress'))
       );
     }
 
@@ -45,10 +44,7 @@ if(!class_exists('ip_message')){
 
         $form .= "<p><label for='$field_id'>$label</label>";
 
-        if($id == 'title')
-          $form .= "<input class='widefat' id='$field_id' name='$field_name' type='text' value=\"$instance_var\">";
-        else
-          $form .= "<textarea class='widefat' id='$field_id' name='$field_name'>$instance_var</textarea>";
+        $form .= "<input class='widefat' id='$field_id' name='$field_name' type='text' value=\"$instance_var\">";
 
         $form .= "</p>";
 
@@ -56,5 +52,5 @@ if(!class_exists('ip_message')){
       echo $form;
     }
   }
-  add_action('widgets_init', create_function('', 'register_widget( "ip_message" );'));
+  add_action('widgets_init', create_function('', 'register_widget( "ip_release" );'));
 }

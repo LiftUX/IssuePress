@@ -25,8 +25,10 @@ class UPIP_admin {
   }
 
   function UPIP_admin_scripts($hook) {
-      if( 'admin.php' != $hook && $_GET['page'] != 'issuepress-options' )
+
+      if( !isset($_GET['page']) || ('admin.php' != $hook && $_GET['page'] != 'issuepress-options' ) )
           return;
+
       wp_enqueue_style( 'ip-admin', plugins_url('/assets/css/admin.css', __FILE__) );
   }
 
