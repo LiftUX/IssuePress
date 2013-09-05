@@ -81,9 +81,9 @@ class CurrentUser extends AbstractApi
      *
      * @return array
      */
-    public function repositories()
+    public function repositories( $params=array() )
     {
-        return $this->get('user/repos');
+        return $this->get('user/repos', $params);
     }
 
     /**
