@@ -81,7 +81,7 @@ class CurrentUser extends AbstractApi
      *
      * @return array
      */
-    public function repositories($params = array())
+    public function repositories( $params=array() )
     {
         return $this->get('user/repos', $params);
     }
@@ -97,6 +97,16 @@ class CurrentUser extends AbstractApi
     public function watched($page = 1)
     {
         return $this->get('user/watched', array(
+            'page' => $page
+        ));
+    }
+    
+    /**
+     *  @link http://developer.github.com/changes/2012-9-5-watcher-api/
+     */
+    public function starred($page = 1)
+    {
+        return $this->get('user/starred', array(
             'page' => $page
         ));
     }

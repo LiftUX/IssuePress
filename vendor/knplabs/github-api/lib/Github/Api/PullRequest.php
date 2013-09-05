@@ -21,12 +21,20 @@ class PullRequest extends AbstractApi
      * @param  string $repository        the repository
      * @param  string $state             the state of the fetched pull requests.
      *                                   The API seems to automatically default to 'open'
+     * @param integer $page              the page
+     * @param integer $perPage           the per page
      *
      * @return array                     array of pull requests for the project
      */
-    public function all($username, $repository, $state = null)
+    public function all($username, $repository, $state = null, $page = 1, $perPage = 30)
     {
-        return $this->get('repos/'.urlencode($username).'/'.urlencode($repository).'/pulls', array('state' => $state));
+        $parameters = array(
+            'page' => $page,
+            'per_page' => $perPage,
+            'state' => $state,
+        );
+
+        return $this->get('repos/'.urlencode($username).'/'.urlencode($repository).'/pulls', $parameters);
     }
 
     /**
@@ -94,13 +102,13 @@ class PullRequest extends AbstractApi
         return $this->post('repos/'.urlencode($username).'/'.urlencode($repository).'/pulls', $params);
     }
 
-    public function update($username, $repository, array $params)
+    public function update($username, $repository, $id, array $params)
     {
         if (isset($params['state']) && !in_array($params['state'], array('open', 'closed'))) {
             $params['state'] = 'open';
         }
 
-        return $this->patch('repos/'.urlencode($username).'/'.urlencode($repository).'/pulls', $params);
+        return $this->patch('repos/'.urlencode($username).'/'.urlencode($repository).'/pulls/'.urlencode($id), $params);
     }
 
     public function merged($username, $repository, $id)

@@ -45,8 +45,8 @@ class UPIP_admin {
       <?php $options = get_option('upip_options'); ?>
       <table class="form-table">
         <tr valign="top"><th scope="row">Github Access Token:</th>
-          <td><input type="text" name="upip_options[oauth_key]" value="<?php echo $options['oauth_key']; ?>" />
-          <?php if( !$options['oauth_key'] ){ ?>
+          <td><input type="text" name="upip_options[oauth_key]" value="<?php if( isset($options['oauth_key']) ) echo $options['oauth_key']; ?>" />
+          <?php if( !isset($options['oauth_key']) ){ ?>
            <p><a target="_blank" href="https://github.com/settings/tokens/new">Generate an access token</a> and paste it here. We recommend setting up an IssuePress-specific Github account (with proper access to your repositories) for most installations.</p>
            <?php } ?>
           </td>

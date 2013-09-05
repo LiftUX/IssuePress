@@ -9,7 +9,6 @@ use Github\Api\ApiInterface;
 use Github\Exception\InvalidArgumentException;
 use Github\HttpClient\HttpClient;
 use Github\HttpClient\HttpClientInterface;
-use Github\HttpClient\Listener\AuthListener;
 
 /**
  * Simple yet very cool PHP GitHub client
@@ -73,7 +72,9 @@ class Client
      */
     public function __construct(HttpClientInterface $httpClient = null)
     {
-        $this->httpClient = $httpClient ?: new HttpClient($this->options);
+        if (null !== $httpClient) {
+            $this->httpClient = $httpClient;
+        }
     }
 
     /**
@@ -133,8 +134,13 @@ class Client
                 $api = new Api\User($this);
                 break;
 
+            case 'authorization':
+            case 'authorizations':
+                $api = new Api\Authorizations($this);
+                break;
+
             default:
-                throw new InvalidArgumentException();
+                throw new InvalidArgumentException(sprintf('Undefined api instance called: "%s"', $name));
         }
 
         return $api;
@@ -144,20 +150,23 @@ class Client
      * Authenticate a user for all next requests
      *
      * @param string      $tokenOrLogin  GitHub private token/username/client ID
-     * @param null|string $password      GitHub password/secret
+     * @param null|string $password      GitHub password/secret (optionally can contain $authMethod)
      * @param null|string $authMethod    One of the AUTH_* class constants
+     *
+     * @throws InvalidArgumentException  If no authentication method was given
      */
     public function authenticate($tokenOrLogin, $password = null, $authMethod = null)
     {
-        $this->httpClient->addListener(
-            new AuthListener(
-                $authMethod,
-                array(
-                    'tokenOrLogin' => $tokenOrLogin,
-                    'password'     => $password
-                )
-            )
-        );
+        if (null === $password && null === $authMethod) {
+            throw new InvalidArgumentException('You need to specify authentication method!');
+        }
+
+        if (null === $authMethod && in_array($password, array(self::AUTH_URL_TOKEN, self::AUTH_URL_CLIENT_ID, self::AUTH_HTTP_PASSWORD, self::AUTH_HTTP_TOKEN))) {
+            $authMethod = $password;
+            $password   = null;
+        }
+
+        $this->getHttpClient()->authenticate($tokenOrLogin, $password, $authMethod);
     }
 
     /**
@@ -165,6 +174,10 @@ class Client
      */
     public function getHttpClient()
     {
+        if (null === $this->httpClient) {
+            $this->httpClient = new HttpClient($this->options);
+        }
+
         return $this->httpClient;
     }
 
@@ -181,7 +194,7 @@ class Client
      */
     public function clearHeaders()
     {
-        $this->httpClient->clearHeaders();
+        $this->getHttpClient()->clearHeaders();
     }
 
     /**
@@ -189,7 +202,7 @@ class Client
      */
     public function setHeaders(array $headers)
     {
-        $this->httpClient->setHeaders($headers);
+        $this->getHttpClient()->setHeaders($headers);
     }
 
     /**
