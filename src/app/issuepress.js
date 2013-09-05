@@ -43,4 +43,14 @@ IP.run(function($rootScope, $templateCache) {
   $rootScope.$on('$viewContentLoaded', function() {
     $templateCache.removeAll();
   });
+
+  $rootScope.$on('$routeChangeSuccess', function(scope, current, pre) {
+    console.log('current templateUrl');
+    console.log(current.loadedTemplateUrl);
+
+//    $rootScope.sidebar = current.loadedTemplateUrl;
+
+    console.log($rootScope);
+  });
 });
+
