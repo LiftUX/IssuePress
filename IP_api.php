@@ -261,7 +261,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->show($this->user, $repoName)); 
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->show($this->user['login'], $repoName)); 
     }
 
     return $cache;
@@ -278,7 +278,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($this->user, $repoName, array('state' => 'open'))); 
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($this->user['login'], $repoName, array('state' => 'open'))); 
     }
 
     return $cache;
@@ -295,7 +295,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->releases()->all($this->user, $repoName)); 
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->releases()->all($this->user['login'], $repoName)); 
     }
 
     return $cache;
@@ -312,7 +312,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->events()->all($this->user, $repoName));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->events()->all($this->user['login'], $repoName));
     }
 
     return $cache;
@@ -325,7 +325,7 @@ class UPIP_api{
    */
   private function post_issue($repoName){
     // Github API call to post a new issue in particular repo ($repoName)
-    // $client->api('issue')->create($this->user, 'php-github-api', array('title' => 'The issue title', 'body' => 'The issue body');
+    // $client->api('issue')->create($this->user['login'], 'php-github-api', array('title' => 'The issue title', 'body' => 'The issue body');
   }
 
   /** 
@@ -335,7 +335,7 @@ class UPIP_api{
    */
   private function put_issue($issue, $repoName){
     // Github API call to update a particular issue ($issue) in particular repo ($repoName)
-    // $client->api('issue')->update($this->user, 'php-github-api', 4, array('body' => 'The new issue body'));
+    // $client->api('issue')->update($this->user['login'], 'php-github-api', 4, array('body' => 'The new issue body'));
   }
 
   /** 
@@ -349,7 +349,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->show($this->user, $repoName, $issue));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->show($this->user['login'], $repoName, $issue));
     }
 
     return $cache;
@@ -366,7 +366,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->comments()->all($this->user, $repoName, $issue));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue));
     }
 
     return $cache;
@@ -378,7 +378,7 @@ class UPIP_api{
    * @return string (response)
    */
   private function post_comment($issue, $repoName){
-    // $client->api('issue')->comments()->create($this->user, 'php-github-api', 4, array('body' => 'My new comment'));
+    // $client->api('issue')->comments()->create($this->user['login'], 'php-github-api', 4, array('body' => 'My new comment'));
   }
 
   /*** END UPAPI refs to Github API ***/

@@ -2,6 +2,7 @@ Navigation
 ==========
 
 APIs:
+* [Authorizations](authorizations.md)
 * [Commits](commits.md)
 * [Gists](gists.md)
 * [Issues](issues.md)
@@ -17,6 +18,7 @@ APIs:
 
 Additional features:
 
+* [Pagination support](result_pager.md)
 * [Authentication & Security](security.md)
 * [Request any Route](request_any_route.md)
 * [Customize `php-github-api` and testing](customize.md)

@@ -9,6 +9,7 @@ use Buzz\Listener\ListenerInterface;
 
 use Github\Exception\ErrorException;
 use Github\Exception\RuntimeException;
+use Github\HttpClient\Listener\AuthListener;
 use Github\HttpClient\Listener\ErrorListener;
 use Github\HttpClient\Message\Request;
 use Github\HttpClient\Message\Response;
@@ -54,7 +55,8 @@ class HttpClient implements HttpClientInterface
     public function __construct(array $options = array(), ClientInterface $client = null)
     {
         $client = $client ?: new Curl();
-        $client->setTimeout($this->options['timeout']);
+        $timeout = isset($options['timeout']) ? $options['timeout'] : $this->options['timeout'];
+        $client->setTimeout($timeout);
         $client->setVerifyPeer(false);
 
         $this->options = array_merge($this->options, $options);
@@ -63,6 +65,19 @@ class HttpClient implements HttpClientInterface
         $this->addListener(new ErrorListener($this->options));
 
         $this->clearHeaders();
+    }
+
+    public function authenticate($tokenOrLogin, $password, $authMethod)
+    {
+         $this->addListener(
+            new AuthListener(
+                $authMethod,
+                array(
+                     'tokenOrLogin' => $tokenOrLogin,
+                     'password'     => $password
+                )
+            )
+        );
     }
 
     /**
@@ -87,7 +102,8 @@ class HttpClient implements HttpClientInterface
     public function clearHeaders()
     {
         $this->headers = array(
-            sprintf('Accept: application/vnd.github.%s+json', $this->options['api_version'])
+            sprintf('Accept: application/vnd.github.%s+json', $this->options['api_version']),
+            sprintf('User-Agent: %s', $this->options['user_agent']),
         );
     }
 
@@ -148,11 +164,15 @@ class HttpClient implements HttpClientInterface
      */
     public function request($path, array $parameters = array(), $httpMethod = 'GET', array $headers = array())
     {
-        $path = trim($this->options['base_url'].$path, '/');
+        if (!empty($this->options['base_url']) && 0 !== strpos($path, $this->options['base_url'])) {
+            $path = trim($this->options['base_url'].$path, '/');
+        }
 
         $request = $this->createRequest($httpMethod, $path);
         $request->addHeaders($headers);
-        $request->setContent(json_encode($parameters));
+        if (count($parameters) > 0) {
+            $request->setContent(json_encode($parameters, JSON_FORCE_OBJECT));
+        }
 
         $hasListeners = 0 < count($this->listeners);
         if ($hasListeners) {
