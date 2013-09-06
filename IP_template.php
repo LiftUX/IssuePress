@@ -40,16 +40,16 @@ Template Name: IssuePress
   <div class="right-column" data-ng-switch="" on="sidebar">
 
     <div data-ng-switch-when="http://local.wp.com/wp-content/plugins/IssuePress/src/app/dashboard/dashboard.tpl.html"
-         data-ng-include=" ' ip-dashboard-side ' "></div>
+         data-ng-include=" 'ip-dashboard-side.html' "></div>
 
     <div data-ng-switch-when="http://local.wp.com/wp-content/plugins/IssuePress/src/app/sections/sections.tpl.html" 
-         ng-include=" 'ip-sections-side' "></div>
+         ng-include=" 'ip-sections-side.html' "></div>
 
     <div data-ng-switch-when="http://local.wp.com/wp-content/plugins/IssuePress/src/app/repo/repo.tpl.html" 
-         ng-include=" 'ip-section-side' "></div>
+         ng-include=" 'ip-section-side.html' "></div>
 
     <div data-ng-switch-when="http://local.wp.com/wp-content/plugins/IssuePress/src/app/issue/issue.tpl.html" 
-         ng-include=" 'ip-issue-side' "></div>
+         ng-include=" 'ip-issue-side.html' "></div>
 
     <!-- Note no create issue declaration, it will not have a sidebar. -->
 

@@ -184,7 +184,7 @@ class UP_IssuePress {
 
       $html .= '
 
-<script type="text/ng-template" id="'.$sidebar[1].'">
+<script type="text/ng-template" id="'.$sidebar[1].'.html">
   <h1>'.$sidebar[0].'</h1>
   <p>'.$sidebar[2].'</p>
 </script>
