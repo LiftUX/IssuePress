@@ -224,7 +224,7 @@ class UPIP_api{
     } else if($method === "GET" && isset($repo) && !isset($issue)){
       $data['repo'] = $this->get_repo(json_decode($repo));
       $data['issues'] = $this->get_issues(json_decode($repo));
-      //      $data['releases'] = $this->get_repo_releases(json_decode($repo));
+//      $data['releases'] = $this->get_repo_releases(json_decode($repo));  // Github undocumented releases API, currently taken down?
       $data['activity'] = $this->get_repo_activity(json_decode($repo));
     } else if($method === "POST" && isset($repo) && !isset($issue)){
       $data['response'] = $this->post_issue(json_decode($repo));
