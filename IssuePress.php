@@ -43,6 +43,7 @@ class UP_IssuePress {
   * @var $print_scripts
   */
   private $print_scripts = false;
+  private $widget_locs = null;
 
 
   /**
@@ -155,6 +156,8 @@ class UP_IssuePress {
       ),
     );
 
+    $this->widget_locs = $widget_locs;
+
     // Loop through our sidebar details and register them
     foreach($widget_locs as $widget_loc){
       register_sidebar(array(
@@ -163,6 +166,35 @@ class UP_IssuePress {
         'description' => __($widget_loc[2], 'IssuePress'),
       ));
     }
+  }
+
+  /**
+   * Get IP Sidebars
+   *
+   * Fetch the IP sidebars, which renders angular templates with configured IP widgets.
+   *
+   * @return STRING
+   */
+  public function get_IP_sidebars(){
+    $ip_sidebars = $this->widget_locs;
+
+    $html = '';
+
+    foreach($ip_sidebars as $sidebar){
+
+      $html .= '
+
+<script type="text/ng-template" id="'.$sidebar[1].'.html">
+  <h1>'.$sidebar[0].'</h1>
+  <p>'.$sidebar[2].'</p>
+</script>
+
+';
+      
+    }
+
+    return $html;
+
   }
 
 

@@ -54,13 +54,19 @@ class UPIP_api{
 
     $user = get_transient('ip-user');
 
+    if( $user )
+      return $user;
+
+
     $client = $this->get_client();
     if( $client ){
       $user = $client->api('current_user')->show();
     }
-    if( $user )
+
+    if( $user ) {
+      $this->set_user($user);
       return $user;
-    else
+    } else
       return '';
   }
 
