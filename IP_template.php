@@ -53,56 +53,7 @@ Template Name: IssuePress
 
     <!-- Note no create issue declaration, it will not have a sidebar. -->
 
-    <div data-ng-switch-default>
-
-      <section class="support-sections">
-        <div class="section-title">
-          All Support Sections
-        </div>
-        <div class="section-nav">
-          <a href="">Most Recent</a>
-          <a href="">All</a>
-        </div>
-        <a href="" class="support-section">
-          <div class="support-section-following">Follow</div>
-          <div class="support-section-title">GarageBand Theme</div>
-          <div class="support-section-date">December 27th, 2012</div>
-        </a>
-        <a href="" class="support-section">
-          <div class="support-section-following">Follow</div>
-          <div class="support-section-title">GarageBand Theme</div>
-          <div class="support-section-date">December 27th, 2012</div>
-        </a>
-        <a href="" class="support-section">
-          <div class="support-section-following">Following</div>
-          <div class="support-section-title">GarageBand Theme</div>
-          <div class="support-section-date">December 27th, 2012</div>
-        </a>
-        <a href="" class="support-section">
-          <div class="support-section-following">Following</div>
-          <div class="support-section-title">GarageBand Theme</div>
-          <div class="support-section-date">December 27th, 2012</div>
-        </a>
-      </section>
-
-      <div ip-ticket-list title="Tickets I'm Following">
-        <div ip-ticket-list-item
-             title="Issue with the Music Player for the homepage on Garage Band"
-             meta="imbradmiller said an hour ago"
-             href="#test-item">This is exactly the issue I'm having and I fixed it by</div>
-
-        <div ip-ticket-list-item
-             title="Issue with the Music Player for the homepage on Garage Band"
-             meta="imbradmiller said an hour ago"
-             href="#test-item">This is exactly the issue I'm having and I fixed it by</div>
-
-        <div ip-ticket-list-item
-             title="Issue with the Music Player for the homepage on Garage Band"
-             meta="imbradmiller said an hour ago"
-             href="#test-item">This is exactly the issue I'm having and I fixed it by</div>
-      </div>
-
-    </div>
+    <div data-ng-switch-default></div>
 
   </div>
 
