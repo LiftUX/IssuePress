@@ -1,3 +1,49 @@
-# Base
 
-This is the base document structure I use when starting new projects.
+## Official repo for the IssuePress plugin for Wordpress
+
+The plugin creates a page template that loads a backbone app that interacts with the github v3 api.
+
+## Note On Composer deps
+
+*You shouldn't ever need to edit anything in the `/vendor/` directory, use the [composter](http://getcomposer.org/) cli to update these packages should it be required. *
+
+
+### Request flow
+
+```
+/plugin-page/
+```
+Page template to list defined repositories.
+
+```
+/plugin-page/repo/
+```
+List Issues on that defined repository.
+
+```
+/plugin-page/repo/ID
+```
+List Defined Issue in defined repository.
+
+
+```
+/plugin-page/repo/new
+```
+Add a new issue to defined repo.
+
+
+### Wordpress Admin
+
+No github repo/issue data will be stored in wordpress db. We will however, need a user account to authenticate and select IssuePress active repos.
+
+We'll need: (for testing)
+- username
+- password
+
+Once we have that, we'll be able to send a request out and get a list of all their accessable repos, which, will allow us to let the WP admin select which will be Active to IP.
+
+- active\_repos  : Array()
+
+We'll be using OAUTH for actual release.
+
+
