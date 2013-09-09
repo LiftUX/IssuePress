@@ -182,11 +182,11 @@ class UP_IssuePress {
 
     foreach($ip_sidebars as $sidebar){
 
+      $sb = get_dynamic_sidebar($sidebar[1]);
       $html .= '
 
 <script type="text/ng-template" id="'.$sidebar[1].'.html">
-  <h1>'.$sidebar[0].'</h1>
-  <p>'.$sidebar[2].'</p>
+'. $sb .'
 </script>
 
 ';

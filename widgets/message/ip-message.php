@@ -14,17 +14,42 @@ if(!class_exists('ip_message')){
       );
     }
 
+//    public function ng_widget($args, $instance){
+//      extract($args);
+//      extract($instance);
+//
+//      $title = apply_filters('widget_title', $title);
+//      if(!$title)
+//        $title = '';
+//
+//      $msg = apply_filters('widget_msg', $msg);
+//      if(!$msg)
+//        $msg = '';
+//
+//      $ng_html =  '<div data-ip-message title="'. $title .'">'.
+//                    $msg .
+//                  '</div>';
+//
+//      echo $ng_html;
+//    }
+
     public function widget($args, $instance){
       extract($args);
       extract($instance);
 
-      echo $before_widget;
-
       $title = apply_filters('widget_title', $title);
-      if($title)
-        echo $before_title . $title . $after_title;
+      if(!$title)
+        $title = '';
 
-      echo $after_widget;
+      $msg = apply_filters('widget_msg', $msg);
+      if(!$msg)
+        $msg = '';
+
+      $ng_html =  '<div data-ip-message title="'. $title .'">'.
+                    $msg .
+                  '</div>';
+
+      echo $ng_html;
     }
 
     public function update($new_instance, $old_instance){
