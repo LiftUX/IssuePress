@@ -5,9 +5,9 @@
 
 a {
 	color: $primary;
-	
+
 	&:hover {
-		color: lighten($primary,15%);	
+		color: lighten($primary,15%);
 	}
 }
 
@@ -105,7 +105,7 @@ header {
           display:inline-block;
         }
 
-        &:hover {  
+        &:hover {
 
           > a {
             background:#fff;
@@ -430,6 +430,10 @@ section {
         text-decoration:none;
         display:inline-block;
         float:right;
+
+        &:hover {
+			background-color: lighten($primary,15%);
+		}
       }
     }
   }
@@ -449,7 +453,7 @@ section {
       font-size:.9em;
     }
   }
-  
+
   /* add a bottom border to Section Repo only when it is in the left column */
   .left-column & .support-section {
 	  border-bottom: .15em solid $border-color;
@@ -459,6 +463,14 @@ section {
     display:block;
     text-decoration:none;
     padding:.7em 0;
+
+    &:hover {
+
+
+      .support-section-following {
+	      background-color: lighten($primary,15%);
+      }
+    }
 
     .support-section-title {
       //color:$primary;
@@ -677,12 +689,25 @@ section {
 
     .issue-link {
       border-radius:.3em;
-      background:$primary;
+      background-color:$primary;
       color:#fff;
       padding:.7em 1em;
       font-size:.9em;
       text-decoration:none;
       display:inline-block;
+
+      &:hover {
+	      background-color: lighten($primary,15%);
+      }
     }
   }
 }
+
+
+/* .button {
+	background-color: fuchsia;
+
+	&:hover {
+		background-color: lighten($primary,15%) !important;
+	}
+} */

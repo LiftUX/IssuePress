@@ -2,3 +2,6 @@
 !/vendor/**/*
 vendor/.git
 **/*/.DS_Store
+*.sass-cache
+*.sublime-*
+.DS_Store
