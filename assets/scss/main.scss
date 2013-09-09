@@ -430,6 +430,10 @@ section {
         text-decoration:none;
         display:inline-block;
         float:right;
+        
+        &:hover {
+			background-color: lighten($primary,15%);
+		}
       }
     }
   }
@@ -459,6 +463,14 @@ section {
     display:block;
     text-decoration:none;
     padding:.7em 0;
+    
+    xh&:hover {
+	    
+      
+      .support-section-following {
+	      background-color: lighten($primary,15%);
+      }
+    }
 
     .support-section-title {
       //color:$primary;
@@ -677,12 +689,25 @@ section {
 
     .issue-link {
       border-radius:.3em;
-      background:$primary;
+      background-color:$primary;
       color:#fff;
       padding:.7em 1em;
       font-size:.9em;
       text-decoration:none;
       display:inline-block;
+      
+      &:hover {
+	      background-color: lighten($primary,15%);
+      }
     }
   }
 }
+
+
+/* .button {
+	background-color: fuchsia;
+	
+	&:hover {
+		background-color: lighten($primary,15%) !important;
+	}
+} */
