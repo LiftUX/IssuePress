@@ -98,7 +98,6 @@ class UP_IssuePress {
 
   }
 
-
   /**
   * Actually load our template instead of the requested page
   *
@@ -190,7 +189,7 @@ class UP_IssuePress {
 </script>
 
 ';
-      
+
     }
 
     return $html;
@@ -418,7 +417,7 @@ class UP_IssuePress {
   * @return void
   */
   public function resize_icon(){
-    echo '<style type="text/css">#toplevel_page_issuepress-options img{ width: 16px; height: 16px; margin-top: -2px; }</style>';
+    echo '<style type="text/css">#toplevel_page_issuepress_options img{ width: 16px; height: 16px; margin-top: 0; }</style>';
     return;
   }
 
