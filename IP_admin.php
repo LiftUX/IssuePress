@@ -175,38 +175,45 @@ class UPIP_admin {
 
   function github_repos_field(){
     $issuepress_options = get_option('issuepress_options');
-    $github_token = $issuepress_options['upip_gh_token'];
-    $selected_repos = $issuepress_options['upip_gh_repos'];
 
-    //print_r($github_repos);
-
-    if( !empty($github_token) ) {
-      try{
-        $client = new Github\Client();
-        $client->authenticate($github_token, null, Github\Client::AUTH_HTTP_TOKEN);
-        $gh_repos = $client->api('current_user')->repositories(array('per_page' => 100));
-
-        echo '<select data-placeholder="' . __('Select One or More Repositories ...','issuepress') . '" name="issuepress_options[upip_gh_repos][]" class="chosen chosen-multiple" multiple>';
-
-        foreach($gh_repos as $index => $repo)
-          echo '<option value="' . $repo['name'] . '"' . selected(in_array($repo['name'],$selected_repos),1). '>'.$repo['name'].'</option>';
-
-        echo '</select></td>';
-
-      } catch( Exception $e ){
-        echo "Cannot read repositories: " . $e->getMessage();
-      }
+    if(!empty($issuepress_options['upip_gh_token'])) {
+      $github_token = $issuepress_options['upip_gh_token'];
     } else {
       echo '<p>';
       _e("No Github token entered. Please enter a valid personal token above to select repositories.","issuepress");
       echo '</p>';
+      return;
     }
+
+    if(isset($issuepress_options['upip_gh_repos']))
+      $selected_repos = $issuepress_options['upip_gh_repos'];
+    else $selected_repos = array();
+
+    try {
+      $client = new Github\Client();
+      $client->authenticate($github_token, null, Github\Client::AUTH_HTTP_TOKEN);
+      $gh_repos = $client->api('current_user')->repositories(array('per_page' => 100));
+
+      echo '<select data-placeholder="' . __('Select One or More Repositories ...','issuepress') . '" name="issuepress_options[upip_gh_repos][]" class="chosen chosen-multiple" multiple>';
+
+      foreach($gh_repos as $index => $repo)
+        echo '<option value="' . $repo['name'] . '"' . selected(in_array($repo['name'],$selected_repos),1). '>'.$repo['name'].'</option>';
+
+      echo '</select></td>';
+
+    } catch( Exception $e ){
+      echo "Cannot read repositories: " . $e->getMessage();
+    }
+
   }
 
   function issuepress_options_validate($input) {
 
-    $github_token = $input['upip_gh_token'];
-    $github_repos = $input['upip_gh_repos'];
+    if(isset($input['upip_gh_token']))
+      $github_token = $input['upip_gh_token'];
+
+    if(isset($input['upip_gh_repos']))
+      $github_repos = $input['upip_gh_repos'];
 
     // Ensure page ID is an integer
     $input['upip_support_page_id'] = intval($input['upip_support_page_id']);
