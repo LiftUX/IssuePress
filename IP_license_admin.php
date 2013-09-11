@@ -10,7 +10,7 @@
 * @since 0.1
 */
 function upip_license_menu() {
-    add_submenu_page('issuepress-options','License Key', 'License Key', 'manage_options', 'issuepress-license', 'upip_license_page');
+    add_submenu_page('issuepress_options','License Key', 'License Key', 'manage_options', 'issuepress_license', 'upip_license_page');
 }
 add_action('admin_menu', 'upip_license_menu');
 

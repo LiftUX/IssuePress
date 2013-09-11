@@ -83,8 +83,8 @@ class UP_IssuePress {
       return false;
 
     $IP_dir = dirname(IP_MAIN_PLUGIN_FILE);
-    $IP_options = get_option('upip_options');
-    $IP_landing_id = $IP_options['landing'];
+    $IP_options = get_option('issuepress_options');
+    $IP_landing_id = $IP_options['upip_support_page_id'];
     $IP_landing_name = sanitize_title(get_the_title($IP_landing_id));
 
     // Check if the page being served matches the name or ID of the one set in options
@@ -294,12 +294,12 @@ class UP_IssuePress {
   */
   public function get_IP_repo_json(){
 
-    $options =  get_option('upip_options');
+    $options =  get_option('issuepress_options');
 
-    if(!array_key_exists('r', $options))
+    if(!array_key_exists('upip_gh_repos', $options))
       return 'undefined';
 
-    foreach($options['r'] as $index => $item) {
+    foreach($options['upip_gh_repos'] as $index => $item) {
       $IP_repos[]['name'] = $item;
     }
 
@@ -314,12 +314,12 @@ class UP_IssuePress {
   */
   public function get_IP_data(){
 
-    $options =  get_option('upip_options');
+    $options =  get_option('issuepress_options');
 
-    if(!array_key_exists('r', $options))
+    if(!array_key_exists('upip_gh_repos', $options))
       return 'undefined';
 
-    foreach($options['r'] as $index => $item) {
+    foreach($options['upip_gh_repos'] as $index => $item) {
       $IP_repos[]['name'] = $item;
     }
 
@@ -333,8 +333,8 @@ class UP_IssuePress {
   * @return string
   */
   public function get_IP_root(){
-    $options =  get_option('upip_options');
-    return sanitize_title(get_the_title($options['landing']));
+    $options =  get_option('issuepress_options');
+    return sanitize_title(get_the_title($options['upip_support_page_id']));
   }
 
 
@@ -443,7 +443,7 @@ class UP_IssuePress {
       );
     } else {
 
-      if( $pagenow == 'admin.php' && ( $_GET['page'] == 'issuepress-options' || $_GET['page'] == 'issuepress-license' ) )
+      if( $pagenow == 'admin.php' && ( $_GET['page'] == 'issuepress_options' || $_GET['page'] == 'issuepress_license' ) )
         add_action( 'admin_notices', array( $this, 'license_invalid') );
 
     }
@@ -451,13 +451,13 @@ class UP_IssuePress {
   }
 
   public function license_invalid() { ?>
-        <?php if( $_GET['page'] == 'issuepress-license' ): ?>
+        <?php if( $_GET['page'] == 'issuepress_license' ): ?>
         <div class="updated">
           <p>Your IssuePress license has not been activated. Please enter/activate your license key or <a href="http://issuepress.co">renew your subscription</a> to enable automatic updates and support.</p>
         </div>
         <?php else: ?>
         <div class="error">
-          <p>Your IssuePress license has not been activated. Please <a href="<?php echo admin_url('admin.php?page=issuepress-license'); ?>">enter/activate your license key</a> or <a href="http://issuepress.co">renew your subscription</a> to enable automatic updates and support.</p>
+          <p>Your IssuePress license has not been activated. Please <a href="<?php echo admin_url('admin.php?page=issuepress_license'); ?>">enter/activate your license key</a> or <a href="http://issuepress.co">renew your subscription</a> to enable automatic updates and support.</p>
         </div>
         <?php endif; ?>
   <?php

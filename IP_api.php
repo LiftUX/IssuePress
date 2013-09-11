@@ -19,15 +19,15 @@ class UPIP_api{
   private $cacheIsOn = TRUE;
   private $cacheExpire = 480; // Expires every 8 mins: (60*8)
 
-  /** 
+  /**
    * Hook WordPress
    *
    * @return void
    */
   public function __construct(){
-    $options = get_option('upip_options');
-    if( isset( $options['oauth_key'] ) && $options['oauth_key'] ){
-      $client = $this->new_client( $options['oauth_key'] );
+    $options = get_option('issuepress_options');
+    if( isset( $options['upip_gh_token'] ) && $options['upip_gh_token'] && !is_admin() ){
+      $client = $this->new_client( $options['upip_gh_token'] );
       $this->client = $client;
 
       $user = $client->api('current_user')->show();
@@ -75,7 +75,7 @@ class UPIP_api{
     return;
   }
 
-  /** 
+  /**
    * Add public query vars
    *
    * @param array $vars List of current public query vars
@@ -90,7 +90,7 @@ class UPIP_api{
     return $vars;
   }
 
-  /** 
+  /**
    * Add API Endpoint
    *
    * This is where the magic happens - brush up on your regex skillz
@@ -98,8 +98,8 @@ class UPIP_api{
    */
   public function add_endpoint(){
 
-    $IP_options = get_option('upip_options');
-    $IP_landing_name = sanitize_title(get_the_title($IP_options['landing']));
+    $IP_options = get_option('issuepress_options');
+    $IP_landing_name = sanitize_title(get_the_title($IP_options['upip_support_page_id']));
 
     // Add API endpoints
 
@@ -116,7 +116,7 @@ class UPIP_api{
     //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]','top');
   }
 
-  /** 
+  /**
    * Sniff Requests
    *
    * This is where we hijack all API requests
@@ -132,7 +132,7 @@ class UPIP_api{
     }
   }
 
-  /** 
+  /**
    * Handle Requests
    *
    * This is where we handle the request according to API
@@ -140,7 +140,7 @@ class UPIP_api{
    */
   protected function handle_request(){
 
-    /** 
+    /**
      * API Implementation:
      *
      * This is designed to be friendly with the github api for issues.
@@ -236,7 +236,7 @@ class UPIP_api{
 
   }
 
-  /** 
+  /**
    * Response Handler
    *
    * This sends a JSON response to the browser
@@ -256,7 +256,7 @@ class UPIP_api{
   /*** UPAPI refs to Github API ***/
 
 
-  /** 
+  /**
    * github API call to get repo
    *
    * @return object
@@ -267,13 +267,13 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->show($this->user['login'], $repoName)); 
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->show($this->user['login'], $repoName));
     }
 
     return $cache;
   }
 
-  /** 
+  /**
    * github API call to get all issues data from repo
    *
    * @return array of objects
@@ -284,13 +284,13 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($this->user['login'], $repoName, array('state' => 'open'))); 
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($this->user['login'], $repoName, array('state' => 'open')));
     }
 
     return $cache;
   }
 
-  /** 
+  /**
    * github API call to get releases of a repo
    *
    * * @return array of objects
@@ -301,13 +301,13 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->releases()->all($this->user['login'], $repoName)); 
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->releases()->all($this->user['login'], $repoName));
     }
 
     return $cache;
   }
 
-  /** 
+  /**
    * github API call to get recent activity of a repo
    *
    * @return array of objects
@@ -324,7 +324,7 @@ class UPIP_api{
     return $cache;
   }
 
-  /** 
+  /**
    * github API call to post new issue
    *
    * @return string (response)
@@ -334,7 +334,7 @@ class UPIP_api{
     // $client->api('issue')->create($this->user['login'], 'php-github-api', array('title' => 'The issue title', 'body' => 'The issue body');
   }
 
-  /** 
+  /**
    * github API call to put issue
    *
    * @return string
@@ -344,7 +344,7 @@ class UPIP_api{
     // $client->api('issue')->update($this->user['login'], 'php-github-api', 4, array('body' => 'The new issue body'));
   }
 
-  /** 
+  /**
    * github API call to get issue
    *
    * @return string
@@ -361,7 +361,7 @@ class UPIP_api{
     return $cache;
   }
 
-  /** 
+  /**
    * github API call to get an issue's comments
    *
    * @return string
@@ -378,7 +378,7 @@ class UPIP_api{
     return $cache;
   }
 
-  /** 
+  /**
    * github API call to post a new comment on issue in repo
    *
    * @return string (response)
@@ -391,7 +391,7 @@ class UPIP_api{
 
   /*** IP Cache Functions ***/
 
-  /** 
+  /**
    * IP cache get
    *
    * Utility function wrapping the get_transient(),
@@ -408,7 +408,7 @@ class UPIP_api{
     return $cache;
   }
 
-  /** 
+  /**
    * IP cache set
    *
    * Utility function wrapping the set_transient(),
