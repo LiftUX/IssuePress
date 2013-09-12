@@ -39,16 +39,16 @@ Template Name: IssuePress
 
   <div class="right-column" data-ng-switch="" on="sidebar">
 
-    <div data-ng-switch-when="http://localhost/content/plugins/issuepress/src/app/dashboard/dashboard.tpl.html"
+    <div data-ng-switch-when="dashboard.tpl.html"
          data-ng-include=" 'ip-dashboard-side.html' "></div>
 
-    <div data-ng-switch-when="http://localhost/content/plugins/issuepress/src/app/sections/sections.tpl.html"
+    <div data-ng-switch-when="sections.tpl.html"
          ng-include=" 'ip-sections-side.html' "></div>
 
-    <div data-ng-switch-when="http://localhost/content/plugins/issuepress/src/app/repo/repo.tpl.html"
+    <div data-ng-switch-when="repo.tpl.html"
          ng-include=" 'ip-section-side.html' "></div>
 
-    <div data-ng-switch-when="http://localhost/content/plugins/issuepress/src/app/issue/issue.tpl.html"
+    <div data-ng-switch-when="issue.tpl.html"
          ng-include=" 'ip-issue-side.html' "></div>
 
     <!-- Note no create issue declaration, it will not have a sidebar. -->

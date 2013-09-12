@@ -13,18 +13,41 @@ if(!class_exists('ip_recent_comments')){
       );
     }
 
+
     public function widget($args, $instance){
       extract($args);
       extract($instance);
 
-      echo $before_widget;
-
       $title = apply_filters('widget_title', $title);
-      if($title)
-        echo $before_title . $title . $after_title;
+      if(!$title)
+        $title = '';
 
-      echo $after_widget;
+      $ng_html =  '<div data-ip-recent-activity title="'. $title .'">'.
+                  '  <div data-ng-repeat="item in activity" data-ip-recent-activity-item '.
+                  '    href="#/{{repo}}/{{item.issue.number}}"'.
+                  '    timeago="{{item.created_at}}">'.
+                  '    <div data-ip-recent-activity-item-meta><a href="">{{item.actor.login}}</a> {{item.event}} an issue in <a href="">{{repo}}</a></div>'.
+                  '    <div data-ip-recent-activity-item-title href="#/{{repo}}/{{item.issue.number}}">{{item.issue.title}}</div>'.
+                  '  </div>'.
+                  '</div>';
+
+
+
+      echo $ng_html;
     }
+
+//    public function widget($args, $instance){
+//      extract($args);
+//      extract($instance);
+//
+//      echo $before_widget;
+//
+//      $title = apply_filters('widget_title', $title);
+//      if($title)
+//        echo $before_title . $title . $after_title;
+//
+//      echo $after_widget;
+//    }
 
     public function update($new_instance, $old_instance){
       return $new_instance;

@@ -45,7 +45,10 @@ IP.run(function($rootScope, $templateCache) {
 //  });
 
   $rootScope.$on('$routeChangeSuccess', function(scope, current, pre) {
-    $rootScope.sidebar = current.loadedTemplateUrl;
+    console.log(current.loadedTemplateUrl);
+    var tpl = current.loadedTemplateUrl.split("/");
+    var tplPart = tpl[tpl.length - 1];
+    $rootScope.sidebar = tplPart;
   });
 });
 

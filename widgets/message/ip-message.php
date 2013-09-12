@@ -14,7 +14,7 @@ if(!class_exists('ip_message')){
       );
     }
 
-    public function ng_widget($args, $instance){
+    public function widget($args, $instance){
       extract($args);
       extract($instance);
 
@@ -33,18 +33,18 @@ if(!class_exists('ip_message')){
       echo $ng_html;
     }
 
-    public function widget($args, $instance){
-      extract($args);
-      extract($instance);
-
-      echo $before_widget;
-
-      $title = apply_filters('widget_title', $title);
-      if($title)
-        echo $before_title . $title . $after_title;
-
-      echo $after_widget;
-    }
+//    public function widget($args, $instance){
+//      extract($args);
+//      extract($instance);
+//
+//      echo $before_widget;
+//
+//      $title = apply_filters('widget_title', $title);
+//      if($title)
+//        echo $before_title . $title . $after_title;
+//
+//      echo $after_widget;
+//    }
 
     public function update($new_instance, $old_instance){
       return $new_instance;
