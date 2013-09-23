@@ -57,7 +57,6 @@ Template Name: IssuePress
 
   </div>
 
-
 </div>
 
 </body>
