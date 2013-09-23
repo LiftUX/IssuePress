@@ -7,6 +7,7 @@ var IP = angular.module('issuepress', [
   'create-issue',
   'components.message',
   'components.sections',
+  'components.release',
   'components.breadcrumbs',
   'components.recentActivity',
   'components.ticketList',
