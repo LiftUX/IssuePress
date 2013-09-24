@@ -1,14 +1,14 @@
 <?php
-if(!class_exists('ip_section_activity')){
-  class ip_section_activity extends IP_Widget{
+if(!class_exists('ip_recent_activity')){
+  class ip_recent_activity extends IP_Widget{
     protected $fields = array(
       'title' => 'Title',
     );
 
     public function __construct(){
       parent::__construct(
-        'ip_section_activity',
-        'IP Recent Section Activity',
+        'ip_recent_activity',
+        'IP Recent Activity',
         array('description' => __('Displays a "context aware" list of recent IP Section Activity. For use on IssuePress Sidebars only.', 'IssuePress'))
       );
     }
@@ -17,14 +17,27 @@ if(!class_exists('ip_section_activity')){
       extract($args);
       extract($instance);
 
-      echo $before_widget;
-
       $title = apply_filters('widget_title', $title);
-      if($title)
-        echo $before_title . $title . $after_title;
+      if(!$title)
+        $title = '';
 
-      echo $after_widget;
+      $ng_html =  '<div data-ip-recent-activity title="'. $title .'"></div>';
+
+      echo $ng_html;
     }
+
+//    public function widget($args, $instance){
+//      extract($args);
+//      extract($instance);
+//
+//      echo $before_widget;
+//
+//      $title = apply_filters('widget_title', $title);
+//      if($title)
+//        echo $before_title . $title . $after_title;
+//
+//      echo $after_widget;
+//    }
 
     public function update($new_instance, $old_instance){
       return $new_instance;
@@ -52,5 +65,5 @@ if(!class_exists('ip_section_activity')){
       echo $form;
     }
   }
-  add_action('widgets_init', create_function('', 'register_widget( "ip_section_activity" );'));
+  add_action('widgets_init', create_function('', 'register_widget( "ip_recent_activity" );'));
 }
