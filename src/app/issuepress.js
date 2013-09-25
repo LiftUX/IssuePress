@@ -6,6 +6,8 @@ var IP = angular.module('issuepress', [
   'issue',
   'create-issue',
   'components.message',
+  'components.sections',
+  'components.release',
   'components.breadcrumbs',
   'components.recentActivity',
   'components.ticketList',
@@ -36,7 +38,6 @@ IP.config(function($routeProvider, $locationProvider) {
     .otherwise({
       redirectTo: "/dashboard"
     });
-
 });
 
 IP.run(function($rootScope, $templateCache) {
@@ -45,7 +46,10 @@ IP.run(function($rootScope, $templateCache) {
 //  });
 
   $rootScope.$on('$routeChangeSuccess', function(scope, current, pre) {
-    $rootScope.sidebar = current.loadedTemplateUrl;
+    console.log(current.loadedTemplateUrl);
+    var tpl = current.loadedTemplateUrl.split("/");
+    var tplPart = tpl[tpl.length - 1];
+    $rootScope.sidebar = tplPart;
   });
 });
 

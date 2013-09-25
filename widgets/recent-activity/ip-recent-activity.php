@@ -1,18 +1,17 @@
 <?php
-if(!class_exists('ip_recent_comments')){
-  class ip_recent_comments extends IP_Widget{
+if(!class_exists('ip_recent_activity')){
+  class ip_recent_activity extends IP_Widget{
     protected $fields = array(
       'title' => 'Title',
     );
 
     public function __construct(){
       parent::__construct(
-        'ip_recent_comments',
-        'IP Recent Comment Activity',
-        array('description' => __('Displays a "context aware" list of recent IP Comment Activity. For use on IssuePress Sidebars only.', 'IssuePress'))
+        'ip_recent_activity',
+        'IP Recent Activity',
+        array('description' => __('Displays a "context aware" list of recent IP Section Activity. For use on IssuePress Sidebars only.', 'IssuePress'))
       );
     }
-
 
     public function widget($args, $instance){
       extract($args);
@@ -22,16 +21,24 @@ if(!class_exists('ip_recent_comments')){
       if(!$title)
         $title = '';
 
-      $ng_html =  '<div data-ip-recent-activity title="'. $title .'">'.
-                  '  <div data-ng-repeat="item in activity" data-ip-recent-activity-item '.
-                  '    href="#/{{repo}}/{{item.issue.number}}"'.
-                  '    timeago="{{item.created_at}}">'.
-                  '    <div data-ip-recent-activity-item-meta><a href="">{{item.actor.login}}</a> {{item.event}} an issue in <a href="">{{repo}}</a></div>'.
-                  '    <div data-ip-recent-activity-item-title href="#/{{repo}}/{{item.issue.number}}">{{item.issue.title}}</div>'.
-                  '  </div>'.
+      $ng_html =  '<div data-ip-recent-activity title="'. $title .'">' .
+                    '<div data-ng-repeat="item in activities">' .
+                      '<div data-ip-recent-activity-item ng-switch="item.type">' .
+
+                        '<div data-ng-switch-when="issue_comment">'.
+                          '<div data-ip-recent-activity-item-title href="{{item.href}}">{{item.title}}</div>'.
+                          '<div data-ip-recent-activity-item-meta>{{item.meta}}</div>'.
+                          '<div>{{item.comment.body}}</div>'.
+                        '</div>'.
+
+                        '<div data-ng-switch-when="issue">'.
+                          '<div data-ip-recent-activity-item-meta>{{item.meta}}</div>'.
+                          '<div data-ip-recent-activity-item-title href="{{item.href}}">{{item.title}}</div>'.
+                        '</div>'.
+
+                      '</div>'.
+                    '</div>' .
                   '</div>';
-
-
 
       echo $ng_html;
     }
@@ -75,5 +82,5 @@ if(!class_exists('ip_recent_comments')){
       echo $form;
     }
   }
-  add_action('widgets_init', create_function('', 'register_widget( "ip_recent_comments" );'));
+  add_action('widgets_init', create_function('', 'register_widget( "ip_recent_activity" );'));
 }

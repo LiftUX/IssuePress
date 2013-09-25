@@ -17,14 +17,27 @@ if(!class_exists('ip_sections')){
       extract($args);
       extract($instance);
 
-      echo $before_widget;
-
       $title = apply_filters('widget_title', $title);
-      if($title)
-        echo $before_title . $title . $after_title;
+      if(!$title)
+        $title = '';
 
-      echo $after_widget;
+      $ng_html =  '<div data-ip-sections title="'. $title .'"></div>';
+
+      echo $ng_html;
     }
+
+//    public function widget($args, $instance){
+//      extract($args);
+//      extract($instance);
+//
+//      echo $before_widget;
+//
+//      $title = apply_filters('widget_title', $title);
+//      if($title)
+//        echo $before_title . $title . $after_title;
+//
+//      echo $after_widget;
+//    }
 
     public function update($new_instance, $old_instance){
       return $new_instance;
