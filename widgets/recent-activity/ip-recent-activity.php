@@ -21,7 +21,24 @@ if(!class_exists('ip_recent_activity')){
       if(!$title)
         $title = '';
 
-      $ng_html =  '<div data-ip-recent-activity title="'. $title .'"></div>';
+      $ng_html =  '<div data-ip-recent-activity title="'. $title .'">' .
+                    '<div data-ng-repeat="item in activities">' .
+                      '<div data-ip-recent-activity-item ng-switch="item.type">' .
+
+                        '<div data-ng-switch-when="issue_comment">'.
+                          '<div data-ip-recent-activity-item-title href="{{item.href}}">{{item.title}}</div>'.
+                          '<div data-ip-recent-activity-item-meta>{{item.meta}}</div>'.
+                          '<div>{{item.comment.body}}</div>'.
+                        '</div>'.
+
+                        '<div data-ng-switch-when="issue">'.
+                          '<div data-ip-recent-activity-item-meta>{{item.meta}}</div>'.
+                          '<div data-ip-recent-activity-item-title href="{{item.href}}">{{item.title}}</div>'.
+                        '</div>'.
+
+                      '</div>'.
+                    '</div>' .
+                  '</div>';
 
       echo $ng_html;
     }

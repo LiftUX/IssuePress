@@ -38,7 +38,6 @@ IP.config(function($routeProvider, $locationProvider) {
     .otherwise({
       redirectTo: "/dashboard"
     });
-
 });
 
 IP.run(function($rootScope, $templateCache) {
