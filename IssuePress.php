@@ -181,11 +181,11 @@ class UP_IssuePress {
 
     foreach($ip_sidebars as $sidebar){
 
+      $sb = get_dynamic_sidebar($sidebar[1]);
       $html .= '
 
 <script type="text/ng-template" id="'.$sidebar[1].'.html">
-  <h1>'.$sidebar[0].'</h1>
-  <p>'.$sidebar[2].'</p>
+'. $sb .'
 </script>
 
 ';
@@ -227,6 +227,8 @@ class UP_IssuePress {
 
     // The IP Angular app components
     wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_c_sections', plugins_url('src/app/components/sections/sections.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
+    wp_register_script('ip_c_release', plugins_url('src/app/components/release/release.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
     wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
     wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
     wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
@@ -257,6 +259,8 @@ class UP_IssuePress {
         'ip_user',
 
         'ip_c_message',
+        'ip_c_sections',
+        'ip_c_release',
         'ip_c_breadcrumbs',
         'ip_c_recent_activity',
         'ip_c_ticket_list',

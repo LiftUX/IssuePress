@@ -1,0 +1,16 @@
+<section class="support-sections">
+  <div class="section-title">
+    {{title}}
+  </div>
+
+  <div class="section-nav">
+    <a href="">Most Recent</a>
+    <a href="">All</a>
+  </div>
+
+  <a href="#/{{section.href}}" class="support-section" data-ng-repeat="section in sections">
+    <div class="support-section-title">{{section.title}}</div>
+    <div class="support-section-date">{{section.date}}</div>
+  </a>
+</section>
+
