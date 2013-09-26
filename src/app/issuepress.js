@@ -46,7 +46,10 @@ IP.run(function($rootScope, $templateCache) {
 //  });
 
   $rootScope.$on('$routeChangeSuccess', function(scope, current, pre) {
-    console.log(current.loadedTemplateUrl);
+
+    if(!current.loadedTemplateUrl)
+      return;
+
     var tpl = current.loadedTemplateUrl.split("/");
     var tplPart = tpl[tpl.length - 1];
     $rootScope.sidebar = tplPart;
