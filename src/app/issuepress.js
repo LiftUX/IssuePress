@@ -5,6 +5,7 @@ var IP = angular.module('issuepress', [
   'repo',
   'issue',
   'create-issue',
+  'components.search',
   'components.message',
   'components.sections',
   'components.release',
@@ -41,10 +42,6 @@ IP.config(function($routeProvider, $locationProvider) {
 });
 
 IP.run(function($rootScope, $templateCache) {
-//  $rootScope.$on('$viewContentLoaded', function() {
-//    $templateCache.removeAll();
-//  });
-
   $rootScope.$on('$routeChangeSuccess', function(scope, current, pre) {
 
     if(!current.loadedTemplateUrl)

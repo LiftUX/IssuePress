@@ -5,8 +5,11 @@
 
   <section class="issue-thread">
 
+    <div class="comment" data-ng-hide="issue.id">
+      <h2>Loading Data</h2>
+    </div>
 
-    <div class="comment" data-ng-class="{staff:isStaff(issue.user.login)}">
+    <div class="comment" data-ng-class="{staff:isStaff(issue.user.login)}" data-ng-show="issue.id">
       <div class="comment-meta">
         <a href="" class="author">
           <div data-gravatar-image gravatar-hash="{{issue.user.gravatar_id}}" s="300"></div>

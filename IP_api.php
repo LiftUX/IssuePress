@@ -26,7 +26,7 @@ class UPIP_api{
    */
   public function __construct(){
     $options = get_option('issuepress_options');
-    if( isset( $options['upip_gh_token'] ) && $options['upip_gh_token'] && !is_admin() ){
+    if( isset( $options['upip_gh_token'] ) && $options['upip_gh_token'] ){
       $client = $this->new_client( $options['upip_gh_token'] );
       $this->client = $client;
 
@@ -98,22 +98,11 @@ class UPIP_api{
    */
   public function add_endpoint(){
 
-    $IP_options = get_option('issuepress_options');
-    $IP_landing_name = sanitize_title(get_the_title($IP_options['upip_support_page_id']));
-
-    // Add API endpoints
-
-    // IP, Repo & Issue
+    // Add API endpoints 
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
-    // IP & Repo
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]','top');
-    // IP
     add_rewrite_rule('^' . IP_API_PATH .'?','index.php?__ip_api=1','top');
 
-    // Add app rewrites for valid urls
-    //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)/([^/]*)/new(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]&issue=$matches[2]$is_new=true','top');
-    //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)/([^/]*)(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]&issue=$matches[2]','top');
-    //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]','top');
   }
 
   /**
@@ -429,4 +418,4 @@ class UPIP_api{
   /*** END IP Cache Functions ***/
 
 }
-$ip_github = new UPIP_api();
+$ip_api = new UPIP_api();

@@ -18,7 +18,7 @@ angular.module('ui.markdown', [])
       link: function(scope, element, attrs) {
         var timeoutID = $timeout(function() {
           element.html(marked(element.text()));
-         }, 500);
+         }, 1000);
       },
       template: '<div class="rendered-markdown" data-ng-transclude></div>'
     }

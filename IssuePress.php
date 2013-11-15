@@ -23,12 +23,13 @@ if(!defined('IP_ITEM_NAME'))
 
 define('IP_MAIN_PLUGIN_FILE', __FILE__ );
 
-require_once 'vendor/autoload.php';
-require_once 'IP_api.php';
-require_once 'IP_helpers.php';
-require_once 'widgets/load.php';
-require_once 'IP_admin.php';
-require_once 'IP_license_admin.php';
+include_once 'vendor/autoload.php';
+include_once 'IP_api.php';
+include_once 'IP_helpers.php';
+include_once 'widgets/load.php';
+include_once 'IP_admin.php';
+include_once 'IP_license_admin.php';
+
 
 if( !class_exists( 'IP_Plugin_Updater' ) ) {
   // load our custom updater
@@ -214,6 +215,7 @@ class UP_IssuePress {
 
     // Google's Angular
     wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
+//    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js');
 
     // The IP Angular app modules
     wp_register_script('ip_app_state', plugins_url('src/app/app-state/app-state.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
@@ -226,6 +228,7 @@ class UP_IssuePress {
     wp_register_script('ip_user', plugins_url('src/app/user/user.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
 
     // The IP Angular app components
+    wp_register_script('ip_c_search', plugins_url('src/app/components/search/search.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
     wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
     wp_register_script('ip_c_sections', plugins_url('src/app/components/sections/sections.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
     wp_register_script('ip_c_release', plugins_url('src/app/components/release/release.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
@@ -258,6 +261,7 @@ class UP_IssuePress {
         'ip_create_issue',
         'ip_user',
 
+        'ip_c_search',
         'ip_c_message',
         'ip_c_sections',
         'ip_c_release',
