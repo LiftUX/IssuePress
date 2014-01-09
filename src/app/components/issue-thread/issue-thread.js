@@ -21,7 +21,7 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
          $scope.staff = true;
     }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-comment.tpl.html'
-  }
+  };
 }])
 
 .directive('ipIssueForm', function() {
@@ -34,5 +34,5 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
       $scope.login_link = $scope.$parent.login_link;
     }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-form.tpl.html'
-  }
-})
+  };
+});

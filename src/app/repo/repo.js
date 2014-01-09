@@ -6,7 +6,7 @@ angular.module('repo', ['AppState'])
   $scope.repo = $routeParams.repo;
 
   var handleData = function(data, status, headers, config){
-    if(status = 200) {
+    if(status == 200) {
       console.log(data);
       $scope.issues = data.data.issues;
       $scope.activity = data.data.activity;

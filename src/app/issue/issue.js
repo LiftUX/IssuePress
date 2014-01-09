@@ -20,7 +20,7 @@ function($scope, $location, $routeParams, $http, IPAppState, IPAPI, IPUser, grav
   $scope.comments = [];
 
   var handleData = function(data, status, headers, config){
-    if(status = 200) {
+    if(status == 200) {
       console.log(data);
       $scope.issue = data.data.issue;
       $scope.comments = data.data.comments;

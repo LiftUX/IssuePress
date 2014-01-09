@@ -185,7 +185,7 @@ class UP_IssuePress {
       $sb = get_dynamic_sidebar($sidebar[1]);
       $html .= '
 
-<script type="text/ng-template" id="'.$sidebar[1].'.html">
+<script type="text/ng-template" id="'.$sidebar[1].'">
 '. $sb .'
 </script>
 
@@ -217,65 +217,14 @@ class UP_IssuePress {
     wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
 //    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js');
 
-    // The IP Angular app modules
-    wp_register_script('ip_app_state', plugins_url('src/app/app-state/app-state.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_header', plugins_url('src/app/header/header.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_dashboard', plugins_url('src/app/dashboard/dashboard.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_sections', plugins_url('src/app/sections/sections.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_repo', plugins_url('src/app/repo/repo.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_issue', plugins_url('src/app/issue/issue.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_create_issue', plugins_url('src/app/create-issue/create-issue.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_user', plugins_url('src/app/user/user.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-
-    // The IP Angular app components
-    wp_register_script('ip_c_search', plugins_url('src/app/components/search/search.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_sections', plugins_url('src/app/components/sections/sections.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_release', plugins_url('src/app/components/release/release.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs/breadcrumbs.js', IP_MAIN_PLUGIN_FILE), array('ip_u_breadcrumbs'), '0.0.1', true);
-
-    // Util Angular modules
-    wp_register_script('ip_u_md5', plugins_url('src/util/md5/md5.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_u_gravatar', plugins_url('src/util/gravatar/gravatar.js', IP_MAIN_PLUGIN_FILE), array('ip_u_md5'), '0.0.1', true);
-    wp_register_script('ip_u_breadcrumbs', plugins_url('src/util/breadcrumbs.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_u_timeago', plugins_url('src/util/timeago.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_u_marked', plugins_url('src/util/marked/marked.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_u_markdown', plugins_url('src/util/marked/markdown.js', IP_MAIN_PLUGIN_FILE), array('ip_u_marked'), '0.0.1', true);
-
     // The IP Angular app bootstrap file
     wp_register_script(
       'issuepress',
-      plugins_url('src/app/issuepress.js', IP_MAIN_PLUGIN_FILE),
-      array(
-        'ip_angular',
-
-        'ip_app_state',
-        'ip_header',
-        'ip_dashboard',
-        'ip_sections',
-        'ip_repo',
-        'ip_issue',
-        'ip_create_issue',
-        'ip_user',
-
-        'ip_c_search',
-        'ip_c_message',
-        'ip_c_sections',
-        'ip_c_release',
-        'ip_c_breadcrumbs',
-        'ip_c_recent_activity',
-        'ip_c_ticket_list',
-        'ip_c_issue_thread',
-
-        'ip_u_gravatar',
-        'ip_u_timeago',
-        'ip_u_markdown',
-      ),
+      plugins_url('build/main.js', IP_MAIN_PLUGIN_FILE),
+      array('ip_angular'),
       '0.0.1',
-      true);
+      true
+    );
   }
 
 

@@ -9,5 +9,5 @@ angular.module('components.sections', []).directive('ipSections', function() {
 //    controller: function($scope, ipData) {
 //      $scope.sections = ipData.sections.getAll();
 //    }
-  }
+  };
 });

@@ -11,7 +11,7 @@ angular.module('components.ticketList', [])
       'title': '@title',
     },
     templateUrl: IP_PATH + '/app/components/ticket-list/ticket-list.tpl.html'
-  }
+  };
 })
 
 .directive('ipTicketListItem', function() {
@@ -26,5 +26,5 @@ angular.module('components.ticketList', [])
       'href': '@href'
     },
     templateUrl: IP_PATH + '/app/components/ticket-list/ticket-list-item.tpl.html'
-  }
+  };
 });

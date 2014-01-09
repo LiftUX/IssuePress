@@ -14,6 +14,6 @@ angular.module('components.release', []).directive('ipRelease', function() {
         date: "2013-08-24T12:36:13-07:00",
       };
     }
-  }
+  };
 });
 

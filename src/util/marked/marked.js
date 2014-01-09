@@ -38,10 +38,10 @@ block.list = replace(block.list)
   ('hr', /\n+(?=(?: *[-*_]){3,} *(?:\n+|$))/)
   ();
 
-block._tag = '(?!(?:'
-  + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code'
-  + '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo'
-  + '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|@)\\b';
+block._tag = '(?!(?:' + 
+  'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code' + 
+  '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo' + 
+  '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|@)\\b';
 
 block.html = replace(block.html)
   ('comment', /<!--[\s\S]*?-->/)
@@ -75,9 +75,9 @@ block.gfm = merge({}, block.normal, {
 });
 
 block.gfm.paragraph = replace(block.paragraph)
-  ('(?!', '(?!'
-    + block.gfm.fences.source.replace('\\1', '\\2') + '|'
-    + block.list.source.replace('\\1', '\\3') + '|')
+  ('(?!', '(?!' + 
+   block.gfm.fences.source.replace('\\1', '\\2') + '|' + 
+   block.list.source.replace('\\1', '\\3') + '|')
   ();
 
 /**
@@ -142,20 +142,21 @@ Lexer.prototype.lex = function(src) {
  */
 
 Lexer.prototype.token = function(src, top) {
-  var src = src.replace(/^ +$/gm, '')
-    , next
-    , loose
-    , cap
-    , bull
-    , b
-    , item
-    , space
-    , i
-    , l;
+  var next, 
+  loose, 
+  cap, 
+  bull, 
+  b, 
+  item, 
+  space, 
+  i, 
+  l; 
+  
+  src = src.replace(/^ +$/gm, '');
 
   while (src) {
     // newline
-    if (cap = this.rules.newline.exec(src)) {
+    if (cap == this.rules.newline.exec(src)) {
       src = src.substring(cap[0].length);
       if (cap[0].length > 1) {
         this.tokens.push({
@@ -165,20 +166,20 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // code
-    if (cap = this.rules.code.exec(src)) {
+    if (cap == this.rules.code.exec(src)) {
       src = src.substring(cap[0].length);
       cap = cap[0].replace(/^ {4}/gm, '');
       this.tokens.push({
         type: 'code',
-        text: !this.options.pedantic
-          ? cap.replace(/\n+$/, '')
-          : cap
+        text: !this.options.pedantic ? 
+          cap.replace(/\n+$/, '') : 
+          cap
       });
       continue;
     }
 
     // fences (gfm)
-    if (cap = this.rules.fences.exec(src)) {
+    if (cap == this.rules.fences.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'code',
@@ -189,7 +190,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // heading
-    if (cap = this.rules.heading.exec(src)) {
+    if (cap == this.rules.heading.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'heading',
@@ -200,7 +201,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // table no leading pipe (gfm)
-    if (top && (cap = this.rules.nptable.exec(src))) {
+    if (top && (cap == this.rules.nptable.exec(src))) {
       src = src.substring(cap[0].length);
 
       item = {
@@ -232,7 +233,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // lheading
-    if (cap = this.rules.lheading.exec(src)) {
+    if (cap == this.rules.lheading.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'heading',
@@ -243,7 +244,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // hr
-    if (cap = this.rules.hr.exec(src)) {
+    if (cap == this.rules.hr.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'hr'
@@ -252,7 +253,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // blockquote
-    if (cap = this.rules.blockquote.exec(src)) {
+    if (cap == this.rules.blockquote.exec(src)) {
       src = src.substring(cap[0].length);
 
       this.tokens.push({
@@ -274,7 +275,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // list
-    if (cap = this.rules.list.exec(src)) {
+    if (cap == this.rules.list.exec(src)) {
       src = src.substring(cap[0].length);
       bull = cap[2];
 
@@ -302,9 +303,9 @@ Lexer.prototype.token = function(src, top) {
         // list item contains. Hacky.
         if (~item.indexOf('\n ')) {
           space -= item.length;
-          item = !this.options.pedantic
-            ? item.replace(new RegExp('^ {1,' + space + '}', 'gm'), '')
-            : item.replace(/^ {1,4}/gm, '');
+          item = !this.options.pedantic ? 
+            item.replace(new RegExp('^ {1,' + space + '}', 'gm'), '') : 
+            item.replace(/^ {1,4}/gm, '');
         }
 
         // Determine whether the next list item belongs here.
@@ -327,9 +328,9 @@ Lexer.prototype.token = function(src, top) {
         }
 
         this.tokens.push({
-          type: loose
-            ? 'loose_item_start'
-            : 'list_item_start'
+          type: loose ? 
+            'loose_item_start' : 
+            'list_item_start'
         });
 
         // Recurse.
@@ -348,12 +349,12 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // html
-    if (cap = this.rules.html.exec(src)) {
+    if (cap == this.rules.html.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
-        type: this.options.sanitize
-          ? 'paragraph'
-          : 'html',
+        type: this.options.sanitize ? 
+          'paragraph' : 
+          'html',
         pre: cap[1] === 'pre' || cap[1] === 'script' || cap[1] === 'style',
         text: cap[0]
       });
@@ -405,19 +406,19 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // top-level paragraph
-    if (top && (cap = this.rules.paragraph.exec(src))) {
+    if (top && (cap == this.rules.paragraph.exec(src))) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'paragraph',
-        text: cap[1].charAt(cap[1].length - 1) === '\n'
-          ? cap[1].slice(0, -1)
-          : cap[1]
+        text: cap[1].charAt(cap[1].length - 1) === '\n' ? 
+          cap[1].slice(0, -1) : 
+          cap[1]
       });
       continue;
     }
 
     // text
-    if (cap = this.rules.text.exec(src)) {
+    if (cap == this.rules.text.exec(src)) {
       // Top-level should never reach here.
       src = src.substring(cap[0].length);
       this.tokens.push({
@@ -551,64 +552,64 @@ InlineLexer.output = function(src, links, options) {
  */
 
 InlineLexer.prototype.output = function(src) {
-  var out = ''
-    , link
-    , text
-    , href
-    , cap;
+  var out = '', 
+  link, 
+  text, 
+  href, 
+  cap;
 
   while (src) {
     // escape
-    if (cap = this.rules.escape.exec(src)) {
+    if (cap == this.rules.escape.exec(src)) {
       src = src.substring(cap[0].length);
       out += cap[1];
       continue;
     }
 
     // autolink
-    if (cap = this.rules.autolink.exec(src)) {
+    if (cap == this.rules.autolink.exec(src)) {
       src = src.substring(cap[0].length);
       if (cap[2] === '@') {
-        text = cap[1].charAt(6) === ':'
-          ? this.mangle(cap[1].substring(7))
-          : this.mangle(cap[1]);
+        text = cap[1].charAt(6) === ':' ? 
+          this.mangle(cap[1].substring(7)) : 
+          this.mangle(cap[1]);
         href = this.mangle('mailto:') + text;
       } else {
         text = escape(cap[1]);
         href = text;
       }
-      out += '<a href="'
-        + href
-        + '">'
-        + text
-        + '</a>';
+      out += '<a href="' + 
+        href + 
+        '">' + 
+        text + 
+        '</a>';
       continue;
     }
 
     // url (gfm)
-    if (cap = this.rules.url.exec(src)) {
+    if (cap == this.rules.url.exec(src)) {
       src = src.substring(cap[0].length);
       text = escape(cap[1]);
       href = text;
-      out += '<a href="'
-        + href
-        + '">'
-        + text
-        + '</a>';
+      out += '<a href="' + 
+        href + 
+        '">' + 
+        text + 
+        '</a>';
       continue;
     }
 
     // tag
-    if (cap = this.rules.tag.exec(src)) {
+    if (cap == this.rules.tag.exec(src)) {
       src = src.substring(cap[0].length);
-      out += this.options.sanitize
-        ? escape(cap[0])
-        : cap[0];
+      out += this.options.sanitize ? 
+        escape(cap[0]) : 
+        cap[0];
       continue;
     }
 
     // link
-    if (cap = this.rules.link.exec(src)) {
+    if (cap == this.rules.link.exec(src)) {
       src = src.substring(cap[0].length);
       out += this.outputLink(cap, {
         href: cap[2],
@@ -618,8 +619,7 @@ InlineLexer.prototype.output = function(src) {
     }
 
     // reflink, nolink
-    if ((cap = this.rules.reflink.exec(src))
-        || (cap = this.rules.nolink.exec(src))) {
+    if ((cap == this.rules.reflink.exec(src)) || (cap = this.rules.nolink.exec(src))) {
       src = src.substring(cap[0].length);
       link = (cap[2] || cap[1]).replace(/\s+/g, ' ');
       link = this.links[link.toLowerCase()];
@@ -633,50 +633,50 @@ InlineLexer.prototype.output = function(src) {
     }
 
     // strong
-    if (cap = this.rules.strong.exec(src)) {
+    if (cap == this.rules.strong.exec(src)) {
       src = src.substring(cap[0].length);
-      out += '<strong>'
-        + this.output(cap[2] || cap[1])
-        + '</strong>';
+      out += '<strong>' + 
+        this.output(cap[2] || cap[1]) + 
+        '</strong>';
       continue;
     }
 
     // em
-    if (cap = this.rules.em.exec(src)) {
+    if (cap == this.rules.em.exec(src)) {
       src = src.substring(cap[0].length);
-      out += '<em>'
-        + this.output(cap[2] || cap[1])
-        + '</em>';
+      out += '<em>' + 
+        this.output(cap[2] || cap[1]) + 
+        '</em>';
       continue;
     }
 
     // code
-    if (cap = this.rules.code.exec(src)) {
+    if (cap == this.rules.code.exec(src)) {
       src = src.substring(cap[0].length);
-      out += '<code>'
-        + escape(cap[2], true)
-        + '</code>';
+      out += '<code>' + 
+        escape(cap[2], true) + 
+        '</code>';
       continue;
     }
 
     // br
-    if (cap = this.rules.br.exec(src)) {
+    if (cap == this.rules.br.exec(src)) {
       src = src.substring(cap[0].length);
       out += '<br>';
       continue;
     }
 
     // del (gfm)
-    if (cap = this.rules.del.exec(src)) {
+    if (cap == this.rules.del.exec(src)) {
       src = src.substring(cap[0].length);
-      out += '<del>'
-        + this.output(cap[1])
-        + '</del>';
+      out += '<del>' + 
+        this.output(cap[1]) + 
+        '</del>';
       continue;
     }
 
     // text
-    if (cap = this.rules.text.exec(src)) {
+    if (cap == this.rules.text.exec(src)) {
       src = src.substring(cap[0].length);
       out += escape(this.smartypants(cap[0]));
       continue;
@@ -697,29 +697,21 @@ InlineLexer.prototype.output = function(src) {
 
 InlineLexer.prototype.outputLink = function(cap, link) {
   if (cap[0].charAt(0) !== '!') {
-    return '<a href="'
-      + escape(link.href)
-      + '"'
-      + (link.title
-      ? ' title="'
-      + escape(link.title)
-      + '"'
-      : '')
-      + '>'
-      + this.output(cap[1])
-      + '</a>';
+    return '<a href="' + escape(link.href) + '"' + (link.title ? 
+      ' title="' + escape(link.title) + '"' : 
+      '') + '>' + this.output(cap[1]) + '</a>';
   } else {
-    return '<img src="'
-      + escape(link.href)
-      + '" alt="'
-      + escape(cap[1])
-      + '"'
-      + (link.title
-      ? ' title="'
-      + escape(link.title)
-      + '"'
-      : '')
-      + '>';
+    return '<img src="' + 
+      escape(link.href) + 
+      '" alt="' + 
+      escape(cap[1]) + 
+      '"' + 
+      (link.title ? 
+       ' title="' + 
+       escape(link.title) + 
+       '"' : 
+       '') + 
+       '>';
   }
 };
 
@@ -749,10 +741,10 @@ InlineLexer.prototype.smartypants = function(text) {
  */
 
 InlineLexer.prototype.mangle = function(text) {
-  var out = ''
-    , l = text.length
-    , i = 0
-    , ch;
+  var out = '' , 
+  l = text.length , 
+  i = 0 , 
+  ch;
 
   for (; i < l; i++) {
     ch = text.charCodeAt(i);
@@ -805,7 +797,7 @@ Parser.prototype.parse = function(src) {
  */
 
 Parser.prototype.next = function() {
-  return this.token = this.tokens.pop();
+  return (this.token = this.tokens.pop());
 };
 
 /**
@@ -843,20 +835,20 @@ Parser.prototype.tok = function() {
       return '<hr>\n';
     }
     case 'heading': {
-      return '<h'
-        + this.token.depth
-        + ' id="'
-        + this.token.text.toLowerCase().replace(/[^\w]+/g, '-')
-        + '">'
-        + this.inline.output(this.token.text)
-        + '</h'
-        + this.token.depth
-        + '>\n';
+      return '<h' + 
+        this.token.depth + 
+        ' id="' + 
+        this.token.text.toLowerCase().replace(/[^\w]+/g, '-') + 
+        '">' + 
+        this.inline.output(this.token.text) + 
+        '</h' + 
+        this.token.depth + 
+        '>\n';
     }
     case 'code': {
       if (this.options.highlight) {
         var code = this.options.highlight(this.token.text, this.token.lang);
-        if (code != null && code !== this.token.text) {
+        if (code !== null && code !== this.token.text) {
           this.token.escaped = true;
           this.token.text = code;
         }
@@ -866,24 +858,24 @@ Parser.prototype.tok = function() {
         this.token.text = escape(this.token.text, true);
       }
 
-      return '<pre><code'
-        + (this.token.lang
-        ? ' class="'
-        + this.options.langPrefix
-        + this.token.lang
-        + '"'
-        : '')
-        + '>'
-        + this.token.text
-        + '</code></pre>\n';
+      return '<pre><code' + 
+        (this.token.lang ? 
+         ' class="' + 
+         this.options.langPrefix + 
+         this.token.lang + 
+         '"' : 
+         '') + 
+         '>' + 
+         this.token.text + 
+         '</code></pre>\n';
     }
     case 'table': {
-      var body = ''
-        , heading
-        , i
-        , row
-        , cell
-        , j;
+      var body = '' , 
+      heading , 
+      i , 
+      row , 
+      cell , 
+      j;
 
       // header
       body += '<thead>\n<tr>\n';
@@ -898,7 +890,8 @@ Parser.prototype.tok = function() {
       body += '</tr>\n</thead>\n';
 
       // body
-      body += '<tbody>\n'
+      body += '<tbody>\n';
+
       for (i = 0; i < this.token.cells.length; i++) {
         row = this.token.cells[i];
         body += '<tr>\n';
@@ -914,75 +907,75 @@ Parser.prototype.tok = function() {
       }
       body += '</tbody>\n';
 
-      return '<table>\n'
-        + body
-        + '</table>\n';
+      return '<table>\n' + 
+        body + 
+        '</table>\n';
     }
     case 'blockquote_start': {
-      var body = '';
+      body = '';
 
       while (this.next().type !== 'blockquote_end') {
         body += this.tok();
       }
 
-      return '<blockquote>\n'
-        + body
-        + '</blockquote>\n';
+      return '<blockquote>\n' + 
+        body + 
+        '</blockquote>\n';
     }
     case 'list_start': {
-      var type = this.token.ordered ? 'ol' : 'ul'
-        , body = '';
+      var type = this.token.ordered ? 'ol' : 'ul';
+      body = '';
 
       while (this.next().type !== 'list_end') {
         body += this.tok();
       }
 
-      return '<'
-        + type
-        + '>\n'
-        + body
-        + '</'
-        + type
-        + '>\n';
+      return '<' + 
+        type + 
+        '>\n' + 
+        body + 
+        '</' + 
+        type + 
+        '>\n';
     }
     case 'list_item_start': {
-      var body = '';
+      body = '';
 
       while (this.next().type !== 'list_item_end') {
-        body += this.token.type === 'text'
-          ? this.parseText()
-          : this.tok();
+        body += this.token.type === 'text' ? 
+          this.parseText() : 
+          this.tok();
       }
 
-      return '<li>'
-        + body
-        + '</li>\n';
+      return '<li>' + 
+        body + 
+        '</li>\n';
     }
     case 'loose_item_start': {
-      var body = '';
+      body = '';
 
       while (this.next().type !== 'list_item_end') {
         body += this.tok();
       }
 
-      return '<li>'
-        + body
-        + '</li>\n';
+      return '<li>' + 
+        body + 
+        '</li>\n';
     }
     case 'html': {
-      return !this.token.pre && !this.options.pedantic
-        ? this.inline.output(this.token.text)
-        : this.token.text;
+      return !this.token.pre && !this.options.pedantic ? 
+        this.inline.output(this.token.text) : 
+        this.token.text;
     }
     case 'paragraph': {
-      return '<p>'
-        + this.inline.output(this.token.text)
-        + '</p>\n';
+      return '<p>' + 
+        this.inline.output(this.token.text) + 
+        '</p>\n';
     }
     case 'text': {
-      return '<p>'
-        + this.parseText()
-        + '</p>\n';
+      return '<p>' + 
+        this.parseText() + 
+        '</p>\n';
     }
   }
 };
@@ -1016,9 +1009,9 @@ function noop() {}
 noop.exec = noop;
 
 function merge(obj) {
-  var i = 1
-    , target
-    , key;
+  var i = 1 , 
+  target , 
+  key;
 
   for (; i < arguments.length; i++) {
     target = arguments[i];
@@ -1045,13 +1038,13 @@ function marked(src, opt, callback) {
 
     opt = merge({}, marked.defaults, opt || {});
 
-    var highlight = opt.highlight
-      , tokens
-      , pending
-      , i = 0;
+    var highlight = opt.highlight , 
+    tokens , 
+    pending , 
+    i = 0;
 
     try {
-      tokens = Lexer.lex(src, opt)
+      tokens = Lexer.lex(src, opt);
     } catch (e) {
       return callback(e);
     }
@@ -1069,9 +1062,9 @@ function marked(src, opt, callback) {
 
       opt.highlight = highlight;
 
-      return err
-        ? callback(err)
-        : callback(null, out);
+      return err ? 
+        callback(err) : 
+        callback(null, out);
     };
 
     if (!highlight || highlight.length < 3) {
@@ -1088,7 +1081,7 @@ function marked(src, opt, callback) {
           return --pending || done();
         }
         return highlight(token.text, token.lang, function(err, code) {
-          if (code == null || code === token.text) {
+          if (code === null || code === token.text) {
             return --pending || done();
           }
           token.text = code;

@@ -12,5 +12,5 @@ angular.module('components.message', []).directive('ipMessage', function() {
         '<div class="message-title">{{title}}</div>' +
         '<div class="message-content" data-ng-transclude></div>' + 
       '</section>'
-  }
+  };
 });

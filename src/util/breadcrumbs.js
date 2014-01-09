@@ -49,7 +49,7 @@ angular.module('ui.breadcrumbs', [])
     }
 
     return bcArray;
-  }
+  };
 
   // Init with 
   var breadcrumbs = setBreadcrumbs();
