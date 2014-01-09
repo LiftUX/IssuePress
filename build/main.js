@@ -1970,10 +1970,6 @@ var IP = angular.module('issuepress', [
 ]);
 
 
-console.log(IP_PATH);
-
-
-
 IP.config(function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/dashboard', {
