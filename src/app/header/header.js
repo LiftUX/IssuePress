@@ -6,7 +6,7 @@ angular.module('header', ['user'])
     restrict: 'A',
     replace: true,
     templateUrl: IP_PATH + '/app/header/header.tpl.html',
-  }
+  };
 })
 
 .controller('HeaderCtrl', ['$scope', '$location', 'IPUser',

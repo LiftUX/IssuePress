@@ -18,7 +18,7 @@ angular.module('user', [
     console.log("logged out");
     user.data = null;
     console.log(user.data);
-  }
+  };
 
   return { 
     user: user.data,
@@ -27,6 +27,6 @@ angular.module('user', [
     logout: function(c_user){
       return logout(c_user); 
     }
-  }
+  };
 }]);
 

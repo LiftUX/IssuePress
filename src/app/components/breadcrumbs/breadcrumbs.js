@@ -7,6 +7,6 @@ angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadc
     controller: function($scope, breadcrumbs) {
       $scope.breadcrumbs = breadcrumbs.getAll();
     }
-  }
+  };
 });
 

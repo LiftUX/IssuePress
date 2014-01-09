@@ -9,5 +9,5 @@ angular.module('components.search', []).directive('ipSearch', function() {
 //    controller: function($scope, ipData) {
 //      $scope.sections = ipData.sections.getAll();
 //    }
-  }
+  };
 });
