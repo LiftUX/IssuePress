@@ -16,7 +16,7 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      all: ['src/app/**/*.js']
+      all: ['src/app/**/*.js', 'Gruntfile.js']
     },
 
     concat: {
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      my_target: {
+      target: {
         options: {
           mangle: false
         },
@@ -43,8 +43,8 @@ module.exports = function(grunt) {
         tasks: ['compass']
       },
       scripts: {
-        files: ['public/assets/js/app/**/*.js', ],
-        tasks: ['jshint', 'concat', 'uglify'],
+        files: ['src/app/**/*.js', 'Gruntfile.js' ],
+        tasks: ['jshint', 'concat'], //, 'uglify'],
         options: {
           interrupt: true,
         }
@@ -59,5 +59,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.registerTask('default',['watch']);
   grunt.registerTask('lint',['jshint']);
+  grunt.registerTask('build',['concat']);
 
 };
