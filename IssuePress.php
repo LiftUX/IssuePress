@@ -214,14 +214,15 @@ class UP_IssuePress {
       'all');
 
     // Google's Angular
-    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
-//    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js');
+    //wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
+    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js');
+    wp_register_script('ip_angular_route', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js', array('ip_angular'));
 
     // The IP Angular app bootstrap file
     wp_register_script(
       'issuepress',
       plugins_url('build/main.js', IP_MAIN_PLUGIN_FILE),
-      array('ip_angular'),
+      array('ip_angular_route'),
       '0.0.1',
       true
     );

@@ -1,4 +1,5 @@
 var IP = angular.module('issuepress', [
+  'ngRoute',
   'header',
   'dashboard',
   'sections',

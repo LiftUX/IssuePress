@@ -1950,6 +1950,7 @@ function($scope, $location, $routeParams, $http, IPAppState, IPAPI, IPUser, grav
 }]);
 
 var IP = angular.module('issuepress', [
+  'ngRoute',
   'header',
   'dashboard',
   'sections',

@@ -52,7 +52,7 @@ Template Name: IssuePress
     <div data-ng-switch-when="issue.tpl.html"
          ng-include=" 'ip-issue-side' "></div>
 
-    <!-- Note no create issue declaration, it will not have a sidebar. -->
+    <!-- Note: no create issue declaration, it will not have a sidebar. -->
 
     <div data-ng-switch-default></div>
 
