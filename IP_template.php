@@ -40,17 +40,21 @@ Template Name: IssuePress
 
   <div class="right-column" data-ng-switch="" on="sidebar">
 
-    <div data-ng-switch-when="dashboard.tpl.html"
-         data-ng-include=" 'ip-dashboard-side' "></div>
+    <div data-ng-switch-when="dashboard.tpl.html">
+      <div data-ng-include=" 'ip-dashboard-side' "></div>
+    </div>
 
-    <div data-ng-switch-when="sections.tpl.html"
-         ng-include=" 'ip-sections-side' "></div>
+    <div data-ng-switch-when="sections.tpl.html">
+      <div ng-include=" 'ip-sections-side' "></div>
+    </div>
 
-    <div data-ng-switch-when="repo.tpl.html"
-         ng-include=" 'ip-section-side' "></div>
+    <div data-ng-switch-when="repo.tpl.html">
+      <div ng-include=" 'ip-section-side' "></div>
+    </div>
 
-    <div data-ng-switch-when="issue.tpl.html"
-         ng-include=" 'ip-issue-side' "></div>
+    <div data-ng-switch-when="issue.tpl.html">
+      <div ng-include=" 'ip-issue-side' "></div>
+    </div>
 
     <!-- Note: no create issue declaration, it will not have a sidebar. -->
 
