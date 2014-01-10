@@ -1873,7 +1873,6 @@ angular.module('components.release', []).directive('ipRelease', function() {
     replace: true,
     scope: {
       'title': '@title',
-      'release': '@release',
     },
     templateUrl: IP_PATH + '/app/components/release/release.tpl.html',
     controller: function($scope) {
