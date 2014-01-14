@@ -46,6 +46,8 @@ class UP_IssuePress {
   private $print_scripts = false;
   private $widget_locs = null;
 
+  private $ip_api;
+
 
   /**
   * Hook WordPress
@@ -53,6 +55,9 @@ class UP_IssuePress {
   * @return void
   */
   public function __construct(){
+
+    $this->ip_api = new UPIP_api();
+
     add_action('template_redirect', array($this, 'load_IP_template'), 0);
 
     add_action('init', array($this, 'register_IP_scripts'), 0);
@@ -265,22 +270,35 @@ class UP_IssuePress {
 
 
   /**
-  * Fetch the github IP data
+  * Fetch the IP data currently in the cache
   *
-  * @return [json] $IP_repos;
+  * @return [json] $IP_data;
   */
   public function get_IP_data(){
 
+    $IP_data = array();
     $options =  get_option('issuepress_options');
 
     if(!array_key_exists('upip_gh_repos', $options))
       return 'undefined';
 
     foreach($options['upip_gh_repos'] as $index => $item) {
-      $IP_repos[]['name'] = $item;
+
+      $repoCache = $this->ip_api->ip_get_repo_cache($item);
+      
+      $repoData = array(
+        'name' => $item,
+        'repo' => $repoCache['repo'],
+        'issues' => $repoCache['issues'],
+        'activity' => $repoCache['activity'],
+//        'releases' => $repoCache['releases'],
+      );
+
+      $IP_data[] = $repoData;
     }
 
-    return json_encode($IP_repos);
+
+    return json_encode($IP_data);
   }
 
 

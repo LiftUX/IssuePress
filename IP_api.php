@@ -356,7 +356,7 @@ class UPIP_api{
    * @return string
    */
   private function get_issue_comments($issue, $repoName){
-    $cacheKey = $repoName . '-comments-' . $issue;
+    $cacheKey = $repoName . '-issue-comments-' . $issue;
 
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
@@ -417,5 +417,37 @@ class UPIP_api{
 
   /*** END IP Cache Functions ***/
 
+
+  /**
+   * IP Repo Cache Get
+   *
+   * Utility function to get all related transients for a repo
+   *
+   * @param $key STRING
+   */
+  public function ip_get_repo_cache($repo=''){
+
+    $cacheKeys = array(
+      'repo',
+      'issues',
+      'activity',
+//      'releases', Releases currently disabled
+    );
+
+    $repoCache = array();
+
+    foreach($cacheKeys as $key){
+
+      $tmp = $this->ip_cache_get($repo . '-' . $key);
+
+      if($tmp == false) // If there isn't a cache, return new ArrayObject to is looks like an empty JS Object Literal when json_encoded
+        $tmp = new ArrayObject();
+
+      $repoCache[$key] = $tmp;
+    }
+
+    return $repoCache;
+
+  }
+
 }
-$ip_api = new UPIP_api();

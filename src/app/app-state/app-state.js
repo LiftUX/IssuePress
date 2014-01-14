@@ -8,8 +8,21 @@ angular.module('AppState', [])
 
 .factory('IPData', ['IPAppState', function(IPAppState){
 
-  var data = {};
-  return data;
+
+  var data = IPAppState.IP_data;
+
+  var IPData = {};
+
+  IPData.getRepoData = function(repo){
+    console.log("Looking for repo data for: " + repo);
+  };
+
+  IPData.getIssueData = function(issue, repo){
+    console.log("Looking for issue data for: " + issue + " in " + repo);
+  };
+
+
+  return IPData;
   
 }])
 
