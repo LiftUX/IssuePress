@@ -1711,15 +1711,28 @@ angular.module('AppState', [])
 
 .factory('IPData', ['IPAppState', function(IPAppState){
 
-  var data = {};
-  return data;
+
+  var data = IPAppState.IP_data;
+
+  var IPData = {};
+
+  IPData.getRepoData = function(repo){
+    console.log("Looking for repo data for: " + repo);
+  };
+
+  IPData.getIssueData = function(issue, repo){
+    console.log("Looking for issue data for: " + issue + " in " + repo);
+  };
+
+
+  return IPData;
   
 }])
 
 
 .factory('IPAPI', ['$http', 'IPAppState', function($http, IPAppState){
   
-  var ipUrl = IPAppState.IP_API_PATH;
+  var ipUrl = IPAppState.API_PATH;
 
   var api = {
     repo: function(repo){
@@ -1777,7 +1790,7 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
       'gravatarHash': '@gravatarHash',
     },
     controller: ['$scope', '$element', '$attrs', 'IPAppState', function($scope, $element, $attrs, IPAppState) {
-      if($scope.author !== IPAppState.IP_Auth_user)
+      if($scope.author !== IPAppState.Auth_user)
          $scope.staff = true;
     }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-comment.tpl.html'
@@ -1999,7 +2012,7 @@ function($scope, $location, $routeParams, $http, IPAppState, IPAPI, IPUser, grav
   $scope.logout_link = IPUser.logout_link;
 
   $scope.isStaff = function(login) {
-    if(login !== IPAppState.IP_Auth_user)
+    if(login !== IPAppState.Auth_user)
       return true;
     else
       return false;
@@ -2124,8 +2137,8 @@ angular.module('sections', ['AppState'])
 
 .controller('SectionsCtrl', ['$scope', '$location', 'IPAppState', function($scope, $location, IPAppState) {
   
-  if(IPAppState.IP_repos !== 'undefined')
-    $scope.sections = IPAppState.IP_repos;
+  if(IPAppState.repos !== 'undefined')
+    $scope.sections = IPAppState.repos;
 
 }]);
 
@@ -2137,12 +2150,12 @@ angular.module('user', [
 .factory('IPUser', ['IPAppState', 'gravatar', function(IPAppState, gravatar){
 
   user = {};
-  user.data = IPAppState.IP_user;
-  user.login_link = IPAppState.IP_login;
-  user.logout_link = IPAppState.IP_logout;
+  user.data = IPAppState.user;
+  user.login_link = IPAppState.login;
+  user.logout_link = IPAppState.logout;
 
-  if(IPAppState.IP_user)
-    user.data.gravatar_id = gravatar.getEmailHash(IPAppState.IP_user.email);
+  if(IPAppState.user)
+    user.data.gravatar_id = gravatar.getEmailHash(IPAppState.user.email);
 
   logout = function() {
     console.log(user.data);
