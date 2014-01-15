@@ -13,14 +13,14 @@ Template Name: IssuePress
     var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
 
     var IP_Vars = {};
-    IP_Vars.IP_API_PATH = "<?php echo UP_IssuePress::get_IP_API_path(); ?>";
-    IP_Vars.IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
-    IP_Vars.IP_data = <?php echo UP_IssuePress::get_IP_data(); ?>;
-    IP_Vars.IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
-    IP_Vars.IP_user = <?php echo UP_IssuePress::get_IP_user(); ?>;
-    IP_Vars.IP_login = "<?php echo UP_IssuePress::get_IP_login(); ?>";
-    IP_Vars.IP_logout = "<?php echo UP_IssuePress::get_IP_logout(); ?>";
-    IP_Vars.IP_Auth_user = <?php echo UP_IssuePress::get_IP_auth_user(); ?>;
+    IP_Vars.API_PATH = "<?php echo UP_IssuePress::get_IP_API_path(); ?>";
+    IP_Vars.repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
+    IP_Vars.data = <?php echo UP_IssuePress::get_IP_data(); ?>;
+    IP_Vars.root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
+    IP_Vars.user = <?php echo UP_IssuePress::get_IP_user(); ?>;
+    IP_Vars.login = "<?php echo UP_IssuePress::get_IP_login(); ?>";
+    IP_Vars.logout = "<?php echo UP_IssuePress::get_IP_logout(); ?>";
+    IP_Vars.Auth_user = <?php echo UP_IssuePress::get_IP_auth_user(); ?>;
   </script>
 
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
