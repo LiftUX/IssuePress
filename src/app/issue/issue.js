@@ -9,7 +9,7 @@ function($scope, $location, $routeParams, $http, IPAppState, IPAPI, IPUser, grav
   $scope.logout_link = IPUser.logout_link;
 
   $scope.isStaff = function(login) {
-    if(login !== IPAppState.IP_Auth_user)
+    if(login !== IPAppState.Auth_user)
       return true;
     else
       return false;

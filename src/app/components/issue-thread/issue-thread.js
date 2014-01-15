@@ -17,7 +17,7 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
       'gravatarHash': '@gravatarHash',
     },
     controller: ['$scope', '$element', '$attrs', 'IPAppState', function($scope, $element, $attrs, IPAppState) {
-      if($scope.author !== IPAppState.IP_Auth_user)
+      if($scope.author !== IPAppState.Auth_user)
          $scope.staff = true;
     }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-comment.tpl.html'

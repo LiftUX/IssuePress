@@ -29,7 +29,7 @@ angular.module('AppState', [])
 
 .factory('IPAPI', ['$http', 'IPAppState', function($http, IPAppState){
   
-  var ipUrl = IPAppState.IP_API_PATH;
+  var ipUrl = IPAppState.API_PATH;
 
   var api = {
     repo: function(repo){
