@@ -1,7 +1,7 @@
 
 angular.module('repo', ['AppState'])
 
-.controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAPI', function($scope, $location, $routeParams, $http, IPAPI) {
+.controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAPI', 'IPData', function($scope, $location, $routeParams, $http, IPAPI, IPData) {
   
   $scope.repo = $routeParams.repo;
 
@@ -15,6 +15,10 @@ angular.module('repo', ['AppState'])
   };
 
   IPAPI.repo($scope.repo).success(handleData);
+
+  $scope.d = IPData.getRepoData($scope.repo);
+
+  console.log($scope.d);
 
 
 }]);

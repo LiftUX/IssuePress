@@ -6,24 +6,67 @@ angular.module('AppState', [])
 })
 
 
-.factory('IPData', ['IPAppState', function(IPAppState){
+.factory('IPData', ['IPAppState', 'IPAPI', function(IPAppState, IPAPI){
 
 
-  var data = IPAppState.IP_data;
+  var data = IPAppState.data;
 
-  var IPData = {};
+  var IPData = {},
+      repoData = {},
+      issueData = {};
+
+  var hasOwnProperty = Object.prototype.hasOwnProperty,
+      isEmpty = function(obj) {
+
+        // null and undefined are "empty"
+        if (obj === null) return true;
+
+        // Assume if it has a length property with a non-zero value
+        // that that property is correct.
+        if (obj.length > 0)    return false;
+        if (obj.length === 0)  return true;
+
+        // Otherwise, does it have any properties of its own?
+        // Note that this doesn't handle
+        // toString and toValue enumeration bugs in IE < 9
+        for (var key in obj) {
+          if (hasOwnProperty.call(obj, key)) return false;
+        }
+
+        return true;
+      };
+
 
   IPData.getRepoData = function(repo){
-    console.log("Looking for repo data for: " + repo);
+
+    // Take a look at what we had cached
+    data.forEach(function(e, i, a) {
+      if(e.name === repo)
+        repoData = e;
+    });
+
+    var keys = ['activity', 'issues', 'repo'];
+
+    keys.forEach(function(e){
+      if(!isEmpty(repoData[e])) {
+        console.log("We have cached data for: " + repo + " " + e);
+        console.log(repoData[e]);
+      } else {
+        console.log("We need to hit API to fetch fresh data for: " + repo + " " + e);
+      }
+        
+    });
+
+    return repoData;
+
   };
 
   IPData.getIssueData = function(issue, repo){
     console.log("Looking for issue data for: " + issue + " in " + repo);
   };
 
-
   return IPData;
-  
+
 }])
 
 
