@@ -18,6 +18,7 @@ angular.module('repo', ['AppState'])
 
   $scope.d = IPData.getRepoData($scope.repo);
 
+  console.log("in repo.js");
   console.log($scope.d);
 
 

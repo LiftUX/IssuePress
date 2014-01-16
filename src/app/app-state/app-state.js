@@ -55,12 +55,14 @@ angular.module('AppState', [])
     if(keyTrack[0] && keyTrack[1] && keyTrack[2]){
       return repoData;
     } else {
-      return IPAPI.repo(repo).success(repoHandler);
+      return IPAPI.repo(repo).then(repoHandler);
     }
 
     var repoHandler = function(data, status, headers, config){
       if(status == 200) {
+        console.log("in repoHandler");
         console.log(data);
+        repoData.repo = data.data.repo;
         repoData.issues = data.data.issues;
         repoData.activity = data.data.activity;
         //repoData.releases = data.data.releases;
