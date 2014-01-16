@@ -18,17 +18,10 @@ angular.module('AppState', [])
   var hasOwnProperty = Object.prototype.hasOwnProperty,
       isEmpty = function(obj) {
 
-        // null and undefined are "empty"
         if (obj === null) return true;
-
-        // Assume if it has a length property with a non-zero value
-        // that that property is correct.
         if (obj.length > 0)    return false;
         if (obj.length === 0)  return true;
 
-        // Otherwise, does it have any properties of its own?
-        // Note that this doesn't handle
-        // toString and toValue enumeration bugs in IE < 9
         for (var key in obj) {
           if (hasOwnProperty.call(obj, key)) return false;
         }
@@ -46,18 +39,36 @@ angular.module('AppState', [])
     });
 
     var keys = ['activity', 'issues', 'repo'];
+    var keyTrack = [false, false, false];
 
-    keys.forEach(function(e){
+    // Loop through cache for each key, check for valid content
+    keys.forEach(function(e, i, a){
       if(!isEmpty(repoData[e])) {
         console.log("We have cached data for: " + repo + " " + e);
         console.log(repoData[e]);
+        keyTrack[i] = true;
       } else {
         console.log("We need to hit API to fetch fresh data for: " + repo + " " + e);
       }
-        
     });
 
-    return repoData;
+    if(keyTrack[0] && keyTrack[1] && keyTrack[2]){
+      return repoData;
+    } else {
+      return IPAPI.repo(repo).success(repoHandler);
+    }
+
+    var repoHandler = function(data, status, headers, config){
+      if(status == 200) {
+        console.log(data);
+        repoData.issues = data.data.issues;
+        repoData.activity = data.data.activity;
+        //repoData.releases = data.data.releases;
+
+        return repoData;
+      }
+    };
+
 
   };
 
