@@ -1756,21 +1756,27 @@ angular.module('AppState', [])
     });
 
     if(keyTrack[0] && keyTrack[1] && keyTrack[2]){
+      console.log("USING CACHED DATA");
       return repoData;
     } else {
-      return IPAPI.repo(repo).then(repoHandler);
+      console.log("FETCHING NEW DATA");
+      var newData = {};
+
+      newData = IPAPI.repo(repo).then(repoHandler);
+      console.log("NewData");
+      console.log(newData);
     }
 
     var repoHandler = function(data, status, headers, config){
       if(status == 200) {
         console.log("in repoHandler");
         console.log(data);
-        repoData.repo = data.data.repo;
-        repoData.issues = data.data.issues;
-        repoData.activity = data.data.activity;
+        newData.repo = data.data.repo;
+        newData.issues = data.data.issues;
+        newData.activity = data.data.activity;
         //repoData.releases = data.data.releases;
 
-        return repoData;
+        return newData;
       }
     };
 
@@ -2173,18 +2179,19 @@ angular.module('repo', ['AppState'])
 .controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAPI', 'IPData', function($scope, $location, $routeParams, $http, IPAPI, IPData) {
   
   $scope.repo = $routeParams.repo;
-
-  var handleData = function(data, status, headers, config){
-    if(status == 200) {
-      console.log(data);
-      $scope.issues = data.data.issues;
-      $scope.activity = data.data.activity;
-      //$scope.releases = data.data.releases;
-    }
-  };
-
-  IPAPI.repo($scope.repo).success(handleData);
-
+//
+//  var handleData = function(data, status, headers, config){
+//    if(status == 200) {
+//      console.log("In handleData");
+//      console.log(data);
+//      $scope.issues = data.data.issues;
+//      $scope.activity = data.data.activity;
+//      //$scope.releases = data.data.releases;
+//    }
+//  };
+//
+//  IPAPI.repo($scope.repo).success(handleData);
+//
   $scope.d = IPData.getRepoData($scope.repo);
 
   console.log("in repo.js");

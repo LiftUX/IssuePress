@@ -53,21 +53,27 @@ angular.module('AppState', [])
     });
 
     if(keyTrack[0] && keyTrack[1] && keyTrack[2]){
+      console.log("USING CACHED DATA");
       return repoData;
     } else {
-      return IPAPI.repo(repo).then(repoHandler);
+      console.log("FETCHING NEW DATA");
+      var newData = {};
+
+      newData = IPAPI.repo(repo).then(repoHandler);
+      console.log("NewData");
+      console.log(newData);
     }
 
     var repoHandler = function(data, status, headers, config){
       if(status == 200) {
         console.log("in repoHandler");
         console.log(data);
-        repoData.repo = data.data.repo;
-        repoData.issues = data.data.issues;
-        repoData.activity = data.data.activity;
+        newData.repo = data.data.repo;
+        newData.issues = data.data.issues;
+        newData.activity = data.data.activity;
         //repoData.releases = data.data.releases;
 
-        return repoData;
+        return newData;
       }
     };
 
