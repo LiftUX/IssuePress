@@ -4,23 +4,14 @@ angular.module('repo', ['AppState'])
 .controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAPI', 'IPData', function($scope, $location, $routeParams, $http, IPAPI, IPData) {
   
   $scope.repo = $routeParams.repo;
-//
-//  var handleData = function(data, status, headers, config){
-//    if(status == 200) {
-//      console.log("In handleData");
-//      console.log(data);
-//      $scope.issues = data.data.issues;
-//      $scope.activity = data.data.activity;
-//      //$scope.releases = data.data.releases;
-//    }
-//  };
-//
-//  IPAPI.repo($scope.repo).success(handleData);
-//
-  $scope.d = IPData.getRepoData($scope.repo);
 
-  console.log("in repo.js");
-  console.log($scope.d);
+  // Call to IPData service to populate data
+  // Checks Cache before making an API call
+  IPData.getRepoData($scope.repo).then(function(data){
+    console.log(data);
+    $scope.issues = data.issues;
+    $scope.activity = data.activity;
+  });
 
 
 }]);

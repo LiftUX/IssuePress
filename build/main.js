@@ -1709,7 +1709,7 @@ angular.module('AppState', [])
 })
 
 
-.factory('IPData', ['IPAppState', 'IPAPI', function(IPAppState, IPAPI){
+.factory('IPData', ['$q', 'IPAppState', 'IPAPI', function($q, IPAppState, IPAPI){
 
 
   var data = IPAppState.data;
@@ -1747,39 +1747,24 @@ angular.module('AppState', [])
     // Loop through cache for each key, check for valid content
     keys.forEach(function(e, i, a){
       if(!isEmpty(repoData[e])) {
-        console.log("We have cached data for: " + repo + " " + e);
-        console.log(repoData[e]);
         keyTrack[i] = true;
-      } else {
-        console.log("We need to hit API to fetch fresh data for: " + repo + " " + e);
       }
     });
 
     if(keyTrack[0] && keyTrack[1] && keyTrack[2]){
       console.log("USING CACHED DATA");
-      return repoData;
+      var cachedData = $q.defer();
+      cachedData.resolve(repoData);
+
+      return cachedData.promise;
     } else {
       console.log("FETCHING NEW DATA");
       var newData = {};
 
-      newData = IPAPI.repo(repo).then(repoHandler);
-      console.log("NewData");
-      console.log(newData);
+      return IPAPI.repo(repo).then(function(result){
+        return result.data;
+      });
     }
-
-    var repoHandler = function(data, status, headers, config){
-      if(status == 200) {
-        console.log("in repoHandler");
-        console.log(data);
-        newData.repo = data.data.repo;
-        newData.issues = data.data.issues;
-        newData.activity = data.data.activity;
-        //repoData.releases = data.data.releases;
-
-        return newData;
-      }
-    };
-
 
   };
 
@@ -1798,19 +1783,14 @@ angular.module('AppState', [])
 
   var api = {
     repo: function(repo){
-      var apiEndpoint = ipUrl + repo;
-
-      return $http({
-        method: 'GET',
-        url: apiEndpoint 
+      return $http.get(ipUrl + repo).then(function(result) {
+        return result.data; 
       });
     },
 
     issue: function(repo, issue) {
-      var apiEndpoint = ipUrl + repo + '/' + issue;
-      return $http({
-        method: 'GET',
-        url: apiEndpoint 
+      return $http.get(ipUrl + repo + '/' + issue).then(function(result) { 
+        return result.data; 
       });
     },
   
@@ -2179,23 +2159,14 @@ angular.module('repo', ['AppState'])
 .controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAPI', 'IPData', function($scope, $location, $routeParams, $http, IPAPI, IPData) {
   
   $scope.repo = $routeParams.repo;
-//
-//  var handleData = function(data, status, headers, config){
-//    if(status == 200) {
-//      console.log("In handleData");
-//      console.log(data);
-//      $scope.issues = data.data.issues;
-//      $scope.activity = data.data.activity;
-//      //$scope.releases = data.data.releases;
-//    }
-//  };
-//
-//  IPAPI.repo($scope.repo).success(handleData);
-//
-  $scope.d = IPData.getRepoData($scope.repo);
 
-  console.log("in repo.js");
-  console.log($scope.d);
+  // Call to IPData service to populate data
+  // Checks Cache before making an API call
+  IPData.getRepoData($scope.repo).then(function(data){
+    console.log(data);
+    $scope.issues = data.issues;
+    $scope.activity = data.activity;
+  });
 
 
 }]);
