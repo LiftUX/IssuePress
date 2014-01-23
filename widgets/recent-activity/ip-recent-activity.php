@@ -41,7 +41,7 @@ if(!class_exists('ip_recent_activity')){
 //                  '</div>';
 //
       $ng_html =  '<div data-ip-recent-activity title="'. $title . '">' .
-                    '<div data-ng-repeat="item in activity" data-ip-recent-activity-item ' . 
+                    '<div data-ng-show="activity" ng-if="activity" data-ng-repeat="item in activity" data-ip-recent-activity-item ' . 
                           'href="#/{{repo}}/{{item.issue.number}}" ' .
                           'timeago="{{item.created_at}}"> ' . 
 
@@ -49,6 +49,10 @@ if(!class_exists('ip_recent_activity')){
                       '<div data-ip-recent-activity-item-title href="#/{{repo}}/{{item.issue.number}}">{{item.issue.title}}</div> ' .
 
                     '</div> ' .
+
+                    '<div data-ng-show="!activity.">' .
+                      '<p>No Recent Activity</p>' .
+                    '</div>' .
                   '</div> '; 
 
 
