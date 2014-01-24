@@ -23,12 +23,13 @@ if(!defined('IP_ITEM_NAME'))
 
 define('IP_MAIN_PLUGIN_FILE', __FILE__ );
 
-require_once 'vendor/autoload.php';
-require_once 'IP_api.php';
-require_once 'IP_helpers.php';
-require_once 'widgets/load.php';
-require_once 'IP_admin.php';
-require_once 'IP_license_admin.php';
+include_once 'vendor/autoload.php';
+include_once 'IP_api.php';
+include_once 'IP_helpers.php';
+include_once 'widgets/load.php';
+include_once 'IP_admin.php';
+include_once 'IP_license_admin.php';
+
 
 if( !class_exists( 'IP_Plugin_Updater' ) ) {
   // load our custom updater
@@ -45,6 +46,8 @@ class UP_IssuePress {
   private $print_scripts = false;
   private $widget_locs = null;
 
+  private $ip_api;
+
 
   /**
   * Hook WordPress
@@ -52,6 +55,9 @@ class UP_IssuePress {
   * @return void
   */
   public function __construct(){
+
+    $this->ip_api = new UPIP_api();
+
     add_action('template_redirect', array($this, 'load_IP_template'), 0);
 
     add_action('init', array($this, 'register_IP_scripts'), 0);
@@ -184,7 +190,7 @@ class UP_IssuePress {
       $sb = get_dynamic_sidebar($sidebar[1]);
       $html .= '
 
-<script type="text/ng-template" id="'.$sidebar[1].'.html">
+<script type="text/ng-template" id="'.$sidebar[1].'">
 '. $sb .'
 </script>
 
@@ -213,65 +219,17 @@ class UP_IssuePress {
       'all');
 
     // Google's Angular
-    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js');
+    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js');
+    wp_register_script('ip_angular_route', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular-route.min.js', array('ip_angular'));
 
-    // The IP Angular app modules
-    wp_register_script('ip_app_state', plugins_url('src/app/app-state/app-state.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_header', plugins_url('src/app/header/header.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_dashboard', plugins_url('src/app/dashboard/dashboard.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_sections', plugins_url('src/app/sections/sections.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_repo', plugins_url('src/app/repo/repo.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_issue', plugins_url('src/app/issue/issue.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_create_issue', plugins_url('src/app/create-issue/create-issue.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_user', plugins_url('src/app/user/user.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-
-    // The IP Angular app components
-    wp_register_script('ip_c_message', plugins_url('src/app/components/message.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_sections', plugins_url('src/app/components/sections/sections.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_release', plugins_url('src/app/components/release/release.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_recent_activity', plugins_url('src/app/components/recent-activity/recent-activity.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_ticket_list', plugins_url('src/app/components/ticket-list/ticket-list.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_issue_thread', plugins_url('src/app/components/issue-thread/issue-thread.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_c_breadcrumbs', plugins_url('src/app/components/breadcrumbs/breadcrumbs.js', IP_MAIN_PLUGIN_FILE), array('ip_u_breadcrumbs'), '0.0.1', true);
-
-    // Util Angular modules
-    wp_register_script('ip_u_md5', plugins_url('src/util/md5/md5.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_u_gravatar', plugins_url('src/util/gravatar/gravatar.js', IP_MAIN_PLUGIN_FILE), array('ip_u_md5'), '0.0.1', true);
-    wp_register_script('ip_u_breadcrumbs', plugins_url('src/util/breadcrumbs.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_u_timeago', plugins_url('src/util/timeago.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_u_marked', plugins_url('src/util/marked/marked.js', IP_MAIN_PLUGIN_FILE), array(), '0.0.1', true);
-    wp_register_script('ip_u_markdown', plugins_url('src/util/marked/markdown.js', IP_MAIN_PLUGIN_FILE), array('ip_u_marked'), '0.0.1', true);
-
-    // The IP Angular app bootstrap file
+    // The IP built file 
     wp_register_script(
       'issuepress',
-      plugins_url('src/app/issuepress.js', IP_MAIN_PLUGIN_FILE),
-      array(
-        'ip_angular',
-
-        'ip_app_state',
-        'ip_header',
-        'ip_dashboard',
-        'ip_sections',
-        'ip_repo',
-        'ip_issue',
-        'ip_create_issue',
-        'ip_user',
-
-        'ip_c_message',
-        'ip_c_sections',
-        'ip_c_release',
-        'ip_c_breadcrumbs',
-        'ip_c_recent_activity',
-        'ip_c_ticket_list',
-        'ip_c_issue_thread',
-
-        'ip_u_gravatar',
-        'ip_u_timeago',
-        'ip_u_markdown',
-      ),
+      plugins_url('build/main.js', IP_MAIN_PLUGIN_FILE),
+      array('ip_angular_route'),
       '0.0.1',
-      true);
+      true
+    );
   }
 
 
@@ -312,22 +270,35 @@ class UP_IssuePress {
 
 
   /**
-  * Fetch the github IP data
+  * Fetch the IP data currently in the cache
   *
-  * @return [json] $IP_repos;
+  * @return [json] $IP_data;
   */
   public function get_IP_data(){
 
+    $IP_data = new ArrayObject(); 
     $options =  get_option('issuepress_options');
 
     if(!array_key_exists('upip_gh_repos', $options))
       return 'undefined';
 
     foreach($options['upip_gh_repos'] as $index => $item) {
-      $IP_repos[]['name'] = $item;
+
+      $repoCache = $this->ip_api->ip_get_repo_cache($item);
+      
+      $IP_data["$item"] = array(
+        'name' => $item,
+        'repo' => $repoCache['repo'],
+        'issues' => $repoCache['issues'],
+        'activity' => $repoCache['activity'],
+        'comments' => $repoCache['comments'],
+        // 'releases' => $repoCache['releases'],
+      );
+
     }
 
-    return json_encode($IP_repos);
+
+    return json_encode($IP_data);
   }
 
 

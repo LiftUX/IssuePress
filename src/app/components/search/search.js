@@ -1,11 +1,11 @@
-angular.module('components.sections', []).directive('ipSections', function() {
+
+angular.module('components.search', []).directive('ipSearch', function() {
   return {
     restrict: 'A',
     replace: true,
     scope: {
-      'title': '@title',
     },
-    templateUrl: IP_PATH + '/app/components/sections/sections.tpl.html',
+    templateUrl: IP_PATH + '/app/components/search/search.tpl.html',
 //    controller: function($scope, ipData) {
 //      $scope.sections = ipData.sections.getAll();
 //    }

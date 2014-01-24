@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('ui.gravatar', ['md5'])
 
 .factory('gravatar', ['md5', function(md5){
@@ -8,7 +6,7 @@ angular.module('ui.gravatar', ['md5'])
 
   gravatarService.getEmailHash = function(email) {
     return md5.createHash(email.toLowerCase());
-  }
+  };
 
   return gravatarService;
 
@@ -28,10 +26,12 @@ angular.module('ui.gravatar', ['md5'])
     template: '<img ng-show="src" data-ng-attr-src="{{src}}" />',
     controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs){
 
+      var emailHash;
+
       if(typeof $scope.gravatarHash !== 'undefined')
-        var emailHash = $scope.gravatarHash;
+        emailHash = $scope.gravatarHash;
       else
-        var emailHash = '00000000000000000000000000000000';
+        emailHash = '00000000000000000000000000000000';
 
       var protocol = $scope.secure ? 'https://secure' : 'http://';
       var src = protocol + 'gravatar.com/avatar/' + emailHash + '?d=mm&';

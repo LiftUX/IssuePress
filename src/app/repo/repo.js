@@ -1,29 +1,17 @@
 
 angular.module('repo', ['AppState'])
 
-.controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAppState', function($scope, $location, $routeParams, $http, IPAppState) {
+.controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPData', function($scope, $location, $routeParams, $http, IPData) {
   
   $scope.repo = $routeParams.repo;
 
-  var ipUrl = IPAppState.IP_API_PATH;
-  var repo = $scope.repo; 
-
-  $http({
-    method: 'GET',
-    url: ipUrl + repo
-  }).success(function(data, status, headers, config){
-    if(status === 200){
-      var repoData = data.data; 
-      $scope.issues = repoData.issues;
-      $scope.activity = repoData.activity;
-//      $scope.releases = repoData.releases;
-    }
-    console.log("Success");
-    console.log(repoData);
-  }).error(function(data, status, headers, config){
-    console.log("Fail");
+  // Call to IPData service to populate data
+  // Checks Cache before making an API call
+  IPData.getRepoData($scope.repo).then(function(data){
     console.log(data);
-    console.log(status);
+    $scope.issues = data.issues;
+    $scope.activity = data.activity;
   });
+
 
 }]);

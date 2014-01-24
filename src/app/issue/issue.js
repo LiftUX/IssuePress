@@ -1,40 +1,31 @@
 
-angular.module('issue', ['AppState', 'user', 'ui.gravatar'])
+angular.module('issue', ['AppState', 'user'])
 
-.controller('IssueCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAppState', 'IPUser', 'gravatar',
-function($scope, $location, $routeParams, $http, IPAppState, IPUser, gravatar) {
+.controller('IssueCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAppState', 'IPData', 'IPUser',
+function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
 
   $scope.user = IPUser.user;
   $scope.login_link = IPUser.login_link;
   $scope.logout_link = IPUser.logout_link;
 
   $scope.isStaff = function(login) {
-    if(login !== IPAppState.IP_Auth_user)
+    if(login !== IPAppState.Auth_user)
       return true;
     else
       return false;
   };
 
 
-  var ipUrl = IPAppState.IP_API_PATH;
-  $scope.params = $routeParams;
+  $scope.issue = {};
+  $scope.comments = [];
 
-  $http({
-    method: 'GET',
-    url: ipUrl + $scope.params.repo + '/' + $scope.params.issue
-  }).success(function(data, status, headers, config){
-    if(status === 200){
-      var issueData = data.data; 
-      $scope.issue = issueData.issue;
-      $scope.comments = issueData.comments;
-    }
-    console.log("Success");
+
+  // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
+  IPData.getIssueData($routeParams.repo, $routeParams.issue).then(function(data){
     console.log(data);
-//    console.log($scope.issue.body);
-  }).error(function(data, status, headers, config){
-    console.log("Fail");
-    console.log(data);
-    console.log(status);
+    $scope.issue = data.issue;
+    $scope.comments = data.comments;
   });
+
   
 }]);

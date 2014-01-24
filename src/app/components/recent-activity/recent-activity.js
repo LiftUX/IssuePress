@@ -10,7 +10,7 @@ angular.module('components.recentActivity', [])
       'title': '@title',
     },
     templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity.tpl.html'
-  }
+  };
 })
 
 .directive('ipRecentActivityItem', function() {
@@ -24,7 +24,7 @@ angular.module('components.recentActivity', [])
       'href': '@href'
     },
     templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html'
-  }
+  };
 })
 
 .directive('ipRecentActivityItemTitle', function(){
@@ -36,7 +36,7 @@ angular.module('components.recentActivity', [])
       'href': '@href',
     },
     template: '<a href="{{href}}" class="recent-activity-title"><div data-ng-transclude></div></a>'
-  }
+  };
 })
 
 
@@ -48,5 +48,5 @@ angular.module('components.recentActivity', [])
     scope: {
     },
     template: '<div class="recent-activity-meta"><div data-ng-transclude></div></div>'
-  }
-})
+  };
+});

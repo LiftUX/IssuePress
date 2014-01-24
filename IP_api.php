@@ -26,7 +26,7 @@ class UPIP_api{
    */
   public function __construct(){
     $options = get_option('issuepress_options');
-    if( isset( $options['upip_gh_token'] ) && $options['upip_gh_token'] && !is_admin() ){
+    if( isset( $options['upip_gh_token'] ) && $options['upip_gh_token'] ){
       $client = $this->new_client( $options['upip_gh_token'] );
       $this->client = $client;
 
@@ -98,22 +98,11 @@ class UPIP_api{
    */
   public function add_endpoint(){
 
-    $IP_options = get_option('issuepress_options');
-    $IP_landing_name = sanitize_title(get_the_title($IP_options['upip_support_page_id']));
-
-    // Add API endpoints
-
-    // IP, Repo & Issue
+    // Add API endpoints 
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
-    // IP & Repo
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]','top');
-    // IP
     add_rewrite_rule('^' . IP_API_PATH .'?','index.php?__ip_api=1','top');
 
-    // Add app rewrites for valid urls
-    //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)/([^/]*)/new(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]&issue=$matches[2]$is_new=true','top');
-    //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)/([^/]*)(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]&issue=$matches[2]','top');
-    //    add_rewrite_rule('^'.$IP_landing_name.'/([^/]*)(/)?', 'index.php?pagename='.$IP_landing_name.'&repo=$matches[1]','top');
   }
 
   /**
@@ -367,15 +356,25 @@ class UPIP_api{
    * @return string
    */
   private function get_issue_comments($issue, $repoName){
-    $cacheKey = $repoName . '-comments-' . $issue;
+    $cacheKey = $repoName . '-comments';
 
     $cache = $this->ip_cache_get($cacheKey);
-    if($cache === FALSE) {
+
+    if($cache === FALSE) { // No Comments cache for this repo, init
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue));
+      $data = array(); 
+      $data[$issue] = $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue);
+      
+      $cache = $this->ip_cache_set($cacheKey, $data);
+    } else if( !isset($cache[$issue]) ) { // Comments cache, but not for this issue
+      $client = $this->get_client();
+      $cache[$issue] = $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue);
+
+      $cache = $this->ip_cache_set($cacheKey, $cache);
     }
 
-    return $cache;
+
+    return $cache[$issue];
   }
 
   /**
@@ -428,5 +427,46 @@ class UPIP_api{
 
   /*** END IP Cache Functions ***/
 
+
+  /**
+   * IP Repo Cache Get
+   *
+   * Utility function to get all related transients for a repo
+   *
+   * @param $key STRING
+   */
+  public function ip_get_repo_cache($repo=''){
+
+    $cacheKeys = array(
+      'repo',
+      'issues',
+      'activity',
+      'comments',
+//      'releases', Releases currently disabled
+    );
+
+    $repoCache = array();
+
+    foreach($cacheKeys as $key){
+
+      $tmp = $this->ip_cache_get($repo . '-' . $key);
+      
+      // If there isn't a cache, create empty containters for proper json encoding
+      if($tmp == false) {
+
+        if($key == 'repo') {
+          $tmp = new ArrayObject(); // new ArrayObject looks like empty JS Object Literal
+        } else {
+          $tmp = array(); // array() looks like empty array
+        }
+        
+      }
+
+      $repoCache[$key] = $tmp;
+    }
+
+    return $repoCache;
+
+  }
+
 }
-$ip_github = new UPIP_api();

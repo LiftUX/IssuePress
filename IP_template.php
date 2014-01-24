@@ -8,28 +8,29 @@ Template Name: IssuePress
 <head>
   <title>IssuePress</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-<?php do_action('ip_head'); ?>
+
+  <script>
+    var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
+
+    var IP_Vars = {};
+    IP_Vars.API_PATH = "<?php echo UP_IssuePress::get_IP_API_path(); ?>";
+    IP_Vars.repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
+    IP_Vars.data = <?php echo UP_IssuePress::get_IP_data(); ?>;
+    IP_Vars.root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
+    IP_Vars.user = <?php echo UP_IssuePress::get_IP_user(); ?>;
+    IP_Vars.login = "<?php echo UP_IssuePress::get_IP_login(); ?>";
+    IP_Vars.logout = "<?php echo UP_IssuePress::get_IP_logout(); ?>";
+    IP_Vars.Auth_user = <?php echo UP_IssuePress::get_IP_auth_user(); ?>;
+  </script>
 
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<?php echo UP_IssuePress::get_IP_sidebars(); ?>
+<?php do_action('ip_head'); ?>
 
 </head>
 <body>
 
-<script>
-  var IP_PATH = "<?php echo UP_IssuePress::get_IP_path(); ?>";
-
-  var IP_Vars = {};
-  IP_Vars.IP_API_PATH = "<?php echo UP_IssuePress::get_IP_API_path(); ?>";
-  IP_Vars.IP_repos = <?php echo UP_IssuePress::get_IP_repo_json(); ?>;
-  IP_Vars.IP_data = <?php echo UP_IssuePress::get_IP_data(); ?>;
-  IP_Vars.IP_root = "<?php echo UP_IssuePress::get_IP_root(); ?>";
-  IP_Vars.IP_user = <?php echo UP_IssuePress::get_IP_user(); ?>;
-  IP_Vars.IP_login = "<?php echo UP_IssuePress::get_IP_login(); ?>";
-  IP_Vars.IP_logout = "<?php echo UP_IssuePress::get_IP_logout(); ?>";
-  IP_Vars.IP_Auth_user = <?php echo UP_IssuePress::get_IP_auth_user(); ?>;
-</script>
-
-<?php echo UP_IssuePress::get_IP_sidebars(); ?>
 
 <div class="content">
   <div ip-header></div>
@@ -39,19 +40,23 @@ Template Name: IssuePress
 
   <div class="right-column" data-ng-switch="" on="sidebar">
 
-    <div data-ng-switch-when="dashboard.tpl.html"
-         data-ng-include=" 'ip-dashboard-side.html' "></div>
+    <div data-ng-switch-when="dashboard.tpl.html">
+      <div data-ng-include=" 'ip-dashboard-side' "></div>
+    </div>
 
-    <div data-ng-switch-when="sections.tpl.html"
-         ng-include=" 'ip-sections-side.html' "></div>
+    <div data-ng-switch-when="sections.tpl.html">
+      <div ng-include=" 'ip-sections-side' "></div>
+    </div>
 
-    <div data-ng-switch-when="repo.tpl.html"
-         ng-include=" 'ip-section-side.html' "></div>
+    <div data-ng-switch-when="repo.tpl.html">
+      <div ng-include=" 'ip-section-side' "></div>
+    </div>
 
-    <div data-ng-switch-when="issue.tpl.html"
-         ng-include=" 'ip-issue-side.html' "></div>
+    <div data-ng-switch-when="issue.tpl.html">
+      <div ng-include=" 'ip-issue-side' "></div>
+    </div>
 
-    <!-- Note no create issue declaration, it will not have a sidebar. -->
+    <!-- Note: no create issue declaration, it will not have a sidebar. -->
 
     <div data-ng-switch-default></div>
 

@@ -3,7 +3,7 @@
     {{title}}
   </div>
 
-  <div class="section-nav">
+  <div class="section-nav" data-ng-show="sections">
     <a href="">Most Recent</a>
     <a href="">All</a>
   </div>
@@ -12,5 +12,11 @@
     <div class="support-section-title">{{section.title}}</div>
     <div class="support-section-date">{{section.date}}</div>
   </a>
+
+  <p data-ng-hide="sections">
+    <strong>No sections have been added yet, inform your administrator! </strong><br>
+    <a href="#/dashboard">Back to the dashboard</a>
+  </p>
+
 </section>
 

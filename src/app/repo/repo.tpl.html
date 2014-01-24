@@ -3,67 +3,8 @@
 
   <div data-ip-breadcrumbs></div>
 
-  <section class="search">
-    <form>
-      <input class="textbox" type="text" placeholder="Search"/>
-      <div class="live-search-results">
-        <div class="live-search-message">
-          <div class="message-title">
-            No Results
-          </div>
-          <div class="message-content">
-            Aww shucks, nothing was found. Try updating your search term.
-          </div>
-        </div>
-        <div class="live-search-results-header">
-          Support Sections
-        </div>
-        <div class="issue-list-item">
-          <a href="" class="issue-link">Open Section</a>
-          <div class="issue-title">
-            Issue with the Music Player for the homepage on Garage Band
-          </div>
-          <div class="issue-date">
-            Last Updated: December 27, 2012
-          </div>
-        </div>
-        <div class="issue-list-item">
-          <a href="" class="issue-link">Open Section</a>
-          <div class="issue-title">
-            Issue with the Music Player for the homepage on Garage Band
-          </div>
-          <div class="issue-date">
-            Last Updated: December 27, 2012
-          </div>
-        </div>
-        <div class="live-search-results-header">
-          Issues
-        </div>
-        <div class="issue-list-item">
-          <a href="" class="issue-link">Open Issue</a>
-          <div class="issue-title">
-            Issue with the Music Player for the homepage on Garage Band
-          </div>
-          <div class="issue-date">
-            Last Updated: December 27, 2012
-          </div>
-        </div>
-      </div>
-    </form>
-  </section>
+  <div data-ip-search></div>
 
-
-
-  <div data-ip-recent-activity title=" Activity Title">
-    
-    <div data-ng-repeat="item in activity" data-ip-recent-activity-item 
-      href="#/{{repo}}/{{item.issue.number}}"
-      timeago="{{item.created_at}}">
-      <div data-ip-recent-activity-item-meta><a href="">{{item.actor.login}}</a> {{item.event}} an issue in <a href="">{{repo}}</a></div>
-      <div data-ip-recent-activity-item-title href="#/{{repo}}/{{item.issue.number}}">{{item.issue.title}}</div>
-    </div>
-
-  </div>
-
+  <div data-ng-include=" 'ip-section-main' "></div>
 
 </div>

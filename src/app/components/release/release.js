@@ -4,7 +4,6 @@ angular.module('components.release', []).directive('ipRelease', function() {
     replace: true,
     scope: {
       'title': '@title',
-      'release': '@release',
     },
     templateUrl: IP_PATH + '/app/components/release/release.tpl.html',
     controller: function($scope) {
@@ -14,6 +13,6 @@ angular.module('components.release', []).directive('ipRelease', function() {
         date: "2013-08-24T12:36:13-07:00",
       };
     }
-  }
+  };
 });
 
