@@ -439,9 +439,17 @@ class UPIP_api{
     foreach($cacheKeys as $key){
 
       $tmp = $this->ip_cache_get($repo . '-' . $key);
+      
+      // If there isn't a cache, create empty containters for proper json encoding
+      if($tmp == false) {
 
-      if($tmp == false) // If there isn't a cache, return new ArrayObject to is looks like an empty JS Object Literal when json_encoded
-        $tmp = new ArrayObject();
+        if($key == 'repo') {
+          $tmp = new ArrayObject(); // new ArrayObject looks like empty JS Object Literal
+        } else {
+          $tmp = array(); // array() looks like empty array
+        }
+        
+      }
 
       $repoCache[$key] = $tmp;
     }
