@@ -1735,11 +1735,7 @@ angular.module('AppState', [])
 
   IPData.getRepoData = function(repo){
 
-    // Take a look at what we had cached
-    data.forEach(function(e, i, a) {
-      if(e.name === repo)
-        repoData = e;
-    });
+    repoData = data[repo];
 
     var keys = ['activity', 'issues', 'repo'];
     var keyTrack = [false, false, false];
@@ -1771,9 +1767,36 @@ angular.module('AppState', [])
   IPData.getIssueData = function(repo, issue){
     console.log("Looking for issue data for: " + issue + " in " + repo);
 
-    return IPAPI.issue(repo, issue).then(function(result){
-      return result.data;
+    var issues = data[repo].issues;
+    var hasIssueCached = false;
+
+    issues.forEach(function(e, i, a){
+      if(issue == e.number)
+        hasIssueCached = i;
     });
+
+    if(hasIssueCached !== false) {
+
+      console.log("Using Cached Data");
+      var cachedData = {};
+      cachedData.issue = data[repo].issues[hasIssueCached];
+      cachedData.comments = data[repo].comments[issue];
+
+      var cache = $q.defer();
+      cache.resolve(cachedData);
+
+      return cache.promise;
+
+    } else {
+
+      console.log("Fetching Fresh Data");
+      return IPAPI.issue(repo, issue).then(function(result){
+        return result.data;
+      });
+
+    }
+
+    
 
   };
 
