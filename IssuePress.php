@@ -291,6 +291,7 @@ class UP_IssuePress {
         'repo' => $repoCache['repo'],
         'issues' => $repoCache['issues'],
         'activity' => $repoCache['activity'],
+        'comments' => $repoCache['comments'],
         // 'releases' => $repoCache['releases'],
       );
 

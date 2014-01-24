@@ -356,15 +356,25 @@ class UPIP_api{
    * @return string
    */
   private function get_issue_comments($issue, $repoName){
-    $cacheKey = $repoName . '-issue-comments-' . $issue;
+    $cacheKey = $repoName . '-comments';
 
     $cache = $this->ip_cache_get($cacheKey);
-    if($cache === FALSE) {
+
+    if($cache === FALSE) { // No Comments cache for this repo, init
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue));
+      $data = array(); 
+      $data[$issue] = $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue);
+      
+      $cache = $this->ip_cache_set($cacheKey, $data);
+    } else if( !isset($cache[$issue]) ) { // Comments cache, but not for this issue
+      $client = $this->get_client();
+      $cache[$issue] = $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue);
+
+      $cache = $this->ip_cache_set($cacheKey, $cache);
     }
 
-    return $cache;
+
+    return $cache[$issue];
   }
 
   /**
@@ -431,6 +441,7 @@ class UPIP_api{
       'repo',
       'issues',
       'activity',
+      'comments',
 //      'releases', Releases currently disabled
     );
 
