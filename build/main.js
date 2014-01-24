@@ -1755,7 +1755,6 @@ angular.module('AppState', [])
       return cachedData.promise;
     } else {
       console.log("FETCHING NEW DATA");
-      var newData = {};
 
       return IPAPI.repo(repo).then(function(result){
         return result.data;
