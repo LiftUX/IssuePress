@@ -276,7 +276,7 @@ class UP_IssuePress {
   */
   public function get_IP_data(){
 
-    $IP_data = array();
+    $IP_data = new ArrayObject(); 
     $options =  get_option('issuepress_options');
 
     if(!array_key_exists('upip_gh_repos', $options))
@@ -286,17 +286,14 @@ class UP_IssuePress {
 
       $repoCache = $this->ip_api->ip_get_repo_cache($item);
       
-      $repoData = array(
-        $item => array(
-          'name' => $item,
-          'repo' => $repoCache['repo'],
-          'issues' => $repoCache['issues'],
-          'activity' => $repoCache['activity'],
-  //        'releases' => $repoCache['releases'],
-        ),
+      $IP_data[$item] = array(
+        'name' => $item,
+        'repo' => $repoCache['repo'],
+        'issues' => $repoCache['issues'],
+        'activity' => $repoCache['activity'],
+        // 'releases' => $repoCache['releases'],
       );
 
-      $IP_data[] = $repoData;
     }
 
 
