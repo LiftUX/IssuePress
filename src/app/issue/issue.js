@@ -1,8 +1,8 @@
 
-angular.module('issue', ['AppState', 'user', 'ui.gravatar'])
+angular.module('issue', ['AppState', 'user'])
 
-.controller('IssueCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAppState', 'IPAPI', 'IPUser', 'gravatar',
-function($scope, $location, $routeParams, $http, IPAppState, IPAPI, IPUser, gravatar) {
+.controller('IssueCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAppState', 'IPData', 'IPUser',
+function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
 
   $scope.user = IPUser.user;
   $scope.login_link = IPUser.login_link;
@@ -19,34 +19,13 @@ function($scope, $location, $routeParams, $http, IPAppState, IPAPI, IPUser, grav
   $scope.issue = {};
   $scope.comments = [];
 
-  var handleData = function(data, status, headers, config){
-    if(status == 200) {
-      console.log(data);
-      $scope.issue = data.data.issue;
-      $scope.comments = data.data.comments;
-    }
 
-    console.log($scope.issue);
-  };
+  // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
+  IPData.getIssueData($routeParams.repo, $routeParams.issue).then(function(data){
+    console.log(data);
+    $scope.issue = data.issue;
+    $scope.comments = data.comments;
+  });
 
-  IPAPI.issue($routeParams.repo, $routeParams.issue).success(handleData);
-//
-//  $http({
-//    method: 'GET',
-//    url: ipUrl + $scope.params.repo + '/' + $scope.params.issue
-//  }).success(function(data, status, headers, config){
-//    if(status === 200){
-//      var issueData = data.data; 
-//      $scope.issue = issueData.issue;
-//      $scope.comments = issueData.comments;
-//    }
-//    console.log("Success");
-//    console.log(data);
-////    console.log($scope.issue.body);
-//  }).error(function(data, status, headers, config){
-//    console.log("Fail");
-//    console.log(data);
-//    console.log(status);
-//  });
   
 }]);

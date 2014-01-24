@@ -65,8 +65,13 @@ angular.module('AppState', [])
 
   };
 
-  IPData.getIssueData = function(issue, repo){
+  IPData.getIssueData = function(repo, issue){
     console.log("Looking for issue data for: " + issue + " in " + repo);
+
+    return IPAPI.issue(repo, issue).then(function(result){
+      return result.data;
+    });
+
   };
 
   return IPData;
