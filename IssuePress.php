@@ -287,11 +287,13 @@ class UP_IssuePress {
       $repoCache = $this->ip_api->ip_get_repo_cache($item);
       
       $repoData = array(
-        'name' => $item,
-        'repo' => $repoCache['repo'],
-        'issues' => $repoCache['issues'],
-        'activity' => $repoCache['activity'],
-//        'releases' => $repoCache['releases'],
+        $item => array(
+          'name' => $item,
+          'repo' => $repoCache['repo'],
+          'issues' => $repoCache['issues'],
+          'activity' => $repoCache['activity'],
+  //        'releases' => $repoCache['releases'],
+        ),
       );
 
       $IP_data[] = $repoData;
