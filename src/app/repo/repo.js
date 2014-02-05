@@ -8,9 +8,11 @@ angular.module('repo', ['AppState'])
   // Call to IPData service to populate data
   // Checks Cache before making an API call
   IPData.getRepoData($scope.repo).then(function(data){
-    console.log(data);
-    $scope.issues = data.issues;
-    $scope.activity = data.activity;
+    if(data){
+      console.log(data);
+      $scope.issues = data.issues;
+      $scope.activity = data.activity;
+    }
   });
 
 

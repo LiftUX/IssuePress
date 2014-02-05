@@ -303,6 +303,20 @@ class Repo extends AbstractApi
     }
 
     /**
+     * Get the events of a repository
+     * @link http://developer.github.com/v3/repos/
+     *
+     * @param  string  $username         the user who owns the repository
+     * @param  string  $repository       the name of the repository
+     *
+     * @return array                     list of the events
+     */
+    public function events($username, $repository)
+    {
+        return $this->get('repos/'.urlencode($username).'/'.urlencode($repository).'/events');
+    }
+
+    /**
      * Get the language breakdown of a repository
      * @link http://developer.github.com/v3/repos/
      *
