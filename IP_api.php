@@ -307,7 +307,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->events()->all($this->user['login'], $repoName));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->events($this->user['login'], $repoName));
     }
 
     return $cache;

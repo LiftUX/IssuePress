@@ -45,7 +45,7 @@ if(!class_exists('ip_recent_activity')){
                           'href="#/{{repo}}/{{item.issue.number}}" ' .
                           'timeago="{{item.created_at}}"> ' . 
 
-                      '<div data-ip-recent-activity-item-meta><a href="#/{{repo}}/{{item.issue.number}}">{{item.actor.login}}</a> {{item.event}} an issue in <a href="#/{{repo}}/">{{repo}}</a></div> ' . 
+                      '<div data-ip-recent-activity-item-meta><a href="#/{{repo}}/{{item.issue.number}}">{{item.actor.login}}</a> {{item.payload.action}} an issue in <a href="#/{{repo}}/">{{repo}}</a></div> ' . 
                       '<div data-ip-recent-activity-item-title href="#/{{repo}}/{{item.issue.number}}">{{item.issue.title}}</div> ' .
 
                     '</div> ' .
