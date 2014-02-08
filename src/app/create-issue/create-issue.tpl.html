@@ -4,13 +4,18 @@
     Create New Issue
   </div>
   <div data-ip-breadcrumbs></div>
-  <form data-validate="parsley">
+  <form data-ng-submit="submitForm()" name="createIssue" novalidate>
     <div class="input-wrap">
-      <input class="textbox required" type="text" placeholder="Title"/>
+      <input class="textbox required" required name="title" data-ng-model="issue.title" type="text" placeholder="Title"/>
+      <p ng-show="createIssue.title.$invalid && !createIssue.title.$pristine" class="help-block">The issue title is required.</p>
     </div>
     <div class="input-wrap">
-      <textarea class="required" placeholder="Leave a comment"></textarea>
+      <textarea class="required" required name="body" data-ng-model="issue.body" placeholder="Leave a comment"></textarea>
+      <p ng-show="createIssue.body.$invalid && !createIssue.body.$pristine" class="help-block">The issue body is required.</p>
     </div>
-    <input class="submit" type="submit" value="Create Issue"/>
+    <input type="hidden" name="meta" data-ng-model="issue.meta" />
+    <input ng-disabled="createIssue.$invalid" class="submit" type="submit" value="Create Issue"/>
   </form>
+
+  <pre>issue: {{issue|json}}</pre>
 </section>

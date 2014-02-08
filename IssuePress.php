@@ -63,11 +63,25 @@ class UP_IssuePress {
     add_action('init', array($this, 'register_IP_scripts'), 0);
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
 
+    add_action('update_option_issuepress_options', array($this, 'create_IP_labels'), 5, 2);
+
     add_action('admin_print_styles', array($this, 'resize_icon'), 20);
 
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
 
     add_action('admin_init', array($this, 'theme_updater'),0);
+
+  }
+
+  public function testing_updates($option, $new, $old, $another){
+    echo "TESTING\n";
+    var_dump($option);
+    echo "\n";
+    var_dump($new);
+    echo "\n";
+    var_dump($old);
+    echo "\n";
+    var_dump($another);
 
   }
 
@@ -246,6 +260,22 @@ class UP_IssuePress {
     wp_print_styles('issuepress-css');
     // We only need this call since we've set up deps properly
     wp_print_scripts('issuepress');
+  }
+
+  
+  /**
+  * Create Labels for selected IP repos
+  *
+  * @return void
+  */
+  public function create_IP_labels($old, $new) {
+
+    foreach($new['upip_gh_repos'] as $r){ 
+      $this->ip_api->create_label($r, array( "name" => "issuepress", "color" => "936091"));
+    }
+
+    return;
+
   }
 
 

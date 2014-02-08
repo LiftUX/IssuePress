@@ -104,6 +104,7 @@ angular.module('AppState', [])
 .factory('IPAPI', ['$http', 'IPAppState', function($http, IPAppState){
   
   var ipUrl = IPAppState.API_PATH;
+  $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
   var api = {
     repo: function(repo){
@@ -117,7 +118,27 @@ angular.module('AppState', [])
         return result.data; 
       });
     },
+
+    issueNew: function(repo, issueData) {
+      return $http({
+        method: 'POST',
+        url: ipUrl + repo,
+        data: issueData,
+      }).success(function(result){
+//      return $http.post(ipUrl + repo , "My test string").then(function(result) { 
+        console.log("In IPAPI:issueNew");
+        console.log(ipUrl + repo);
+        console.log(issueData);
+        return result.data; 
+      });
+    },
   
+    issueComment: function(repo, issue, comment) {
+      return $http.post(ipUrl + repo + '/' + issue, comment).then(function(result) { 
+        return result.data; 
+      });
+    },
+
   };
 
   return api;

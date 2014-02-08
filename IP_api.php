@@ -186,15 +186,11 @@ class UPIP_api{
     if(isset($wp->query_vars['issue']))
       $issue = json_encode($wp->query_vars['issue']);
 
-    if($method === 'POST')
-      $post_data = file_get_contents('php://input');
+    if($method === 'POST') {
+      $post_data = json_decode(file_get_contents('php://input'), true);
+    }
 
-
-    if(!empty($post_data))
-      $data['post'] = json_decode($post_data, true);
-
-
-
+    $msg = '200 OK';
     /*
      * Route the request:
      *
@@ -213,15 +209,15 @@ class UPIP_api{
     } else if($method === "GET" && isset($repo) && !isset($issue)){
       $data['repo'] = $this->get_repo(json_decode($repo));
       $data['issues'] = $this->get_issues(json_decode($repo));
-//      $data['releases'] = $this->get_repo_releases(json_decode($repo));  // Github undocumented releases API, currently taken down?
       $data['activity'] = $this->get_repo_activity(json_decode($repo));
+//      $data['releases'] = $this->get_repo_releases(json_decode($repo));  // Github undocumented releases API, currently taken down?
     } else if($method === "POST" && isset($repo) && !isset($issue)){
-      $data['response'] = $this->post_issue(json_decode($repo));
+      $data['response'] = $this->post_issue(json_decode($repo), $post_data);
     } else if($method === "POST" && isset($repo) && isset($issue)){
       $data['reponse'] = $this->post_comment(json_decode($issue), json_decode($repo));
     }
 
-    $this->send_response('200 OK', $data);
+    $this->send_response($msg, $data);
 
   }
 
@@ -242,7 +238,7 @@ class UPIP_api{
   }
 
 
-  /*** UPAPI refs to Github API ***/
+  /*** IPAPI refs to Github API ***/
 
 
   /**
@@ -318,9 +314,30 @@ class UPIP_api{
    *
    * @return string (response)
    */
-  private function post_issue($repoName){
-    // Github API call to post a new issue in particular repo ($repoName)
-    // $client->api('issue')->create($this->user['login'], 'php-github-api', array('title' => 'The issue title', 'body' => 'The issue body');
+  private function post_issue($repoName, $issue_data){
+
+    $error = null;
+
+    if( !isset($issue_data['title']) )
+      $error = "Missing the issue title.";
+  
+    if( !isset($issue_data['body'] ) )
+      $error = "Missing the issue body.";
+
+    if(isset($error)) {
+      return array('error' => true, 'message' => $error);
+    } else {
+
+      $issue_data = $this->process_issue($issue_data);
+
+      $client = $this->get_client();
+      // Github API call to post a new issue in particular repo ($repoName)
+      $response = $client->api('issue')->create($this->user['login'], $repoName, $issue_data);
+//      $client->api('issue')->labels()->add($this->user['login'], $repoName, $response['number'], array('issuepress'));
+
+      return $response;
+
+    }
   }
 
   /**
@@ -386,7 +403,91 @@ class UPIP_api{
     // $client->api('issue')->comments()->create($this->user['login'], 'php-github-api', 4, array('body' => 'My new comment'));
   }
 
-  /*** END UPAPI refs to Github API ***/
+  /*** END IPAPI refs to Github API ***/
+
+  /*** IPAPI Util Functions ***/
+
+  /**
+   * Process Issue 
+   *
+   * Does some things to the issue so that it's clear it is an IssuePress issue in github
+   * (Add Tags, body header/footer info)
+   *
+   * @var issue Array
+   * @return issue Array
+   */
+  private function process_issue($issue) {
+
+    $issue['body'] = $this->add_issue_meta_to_body($issue['meta'], $issue['body']);
+
+    unset($issue['meta']);
+
+//    $issue['labels'] = array('issuepress');
+
+    return $issue;
+
+  }
+
+
+  /**
+   * Add Isse Meta to Body 
+   *
+   * Adds WP user/time meta to github issue body
+   *
+   * @var body string
+   * @return body string
+   */
+  private function add_issue_meta_to_body($meta, $body) {
+
+    $meta_string = '';
+    foreach($meta as $key => $value) {
+      $meta_string .= "$key: $value\n";
+    }
+
+    $body = "* * *
+Hello! IssuePress has processed an issue. Begin transmission...
+* * *
+
+$body
+
+
+* * *
+User Meta: 
+$meta_string
+* * *";
+
+    return $body;
+  }
+
+
+  /*
+   * Create IssuePress label for a repo
+   *
+   * @param string Repo
+   * @param array Label
+   * @return void
+   */
+  public function create_label($repo, $label) {
+
+    $client = $this->get_client();
+    $labels = $client->api('issue')->labels()->all($this->user['login'], $repo);
+
+    $has_label = false;
+
+    foreach($labels as $l) {
+      if($l['name'] == $label['name'])
+        $has_label = true;
+    }
+
+    if($has_label == true)
+      return;
+    
+    $client->api('issue')->labels()->create($this->user['login'], $repo, $label);
+
+  }
+
+  /*** END IPAPI Util Functions ***/
+
 
   /*** IP Cache Functions ***/
 

@@ -1807,6 +1807,7 @@ angular.module('AppState', [])
 .factory('IPAPI', ['$http', 'IPAppState', function($http, IPAppState){
   
   var ipUrl = IPAppState.API_PATH;
+  $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
   var api = {
     repo: function(repo){
@@ -1820,7 +1821,27 @@ angular.module('AppState', [])
         return result.data; 
       });
     },
+
+    issueNew: function(repo, issueData) {
+      return $http({
+        method: 'POST',
+        url: ipUrl + repo,
+        data: issueData,
+      }).success(function(result){
+//      return $http.post(ipUrl + repo , "My test string").then(function(result) { 
+        console.log("In IPAPI:issueNew");
+        console.log(ipUrl + repo);
+        console.log(issueData);
+        return result.data; 
+      });
+    },
   
+    issueComment: function(repo, issue, comment) {
+      return $http.post(ipUrl + repo + '/' + issue, comment).then(function(result) { 
+        return result.data; 
+      });
+    },
+
   };
 
   return api;
@@ -2028,13 +2049,36 @@ angular.module('components.ticketList', [])
 });
 
 
-angular.module('create-issue', [])
+angular.module('create-issue', ['AppState'])
 
-.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', function($scope, $location, $routeParams) {
+.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', 'IPAPI', 'IPUser', function($scope, $location, $routeParams, IPAPI, IPUser) {
   
   console.log($location.path());
-
   console.log($routeParams);
+
+  var repo = $routeParams.repo;
+  
+  $scope.issue = {};
+  $scope.issue.meta = IPUser.user;
+
+  $scope.submitForm = function(){
+
+
+    if( $scope.createIssue.$valid ) {
+
+      IPAPI.issueNew(repo, $scope.issue).then(function(result){
+        if(result) {
+          console.log("In CreateIssueCtrl");
+          console.log( result.data );
+        }
+      });
+
+    }
+
+
+  };
+
+
 }]);
 
 angular.module('dashboard', [])
