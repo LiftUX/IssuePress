@@ -120,17 +120,7 @@ angular.module('AppState', [])
     },
 
     issueNew: function(repo, issueData) {
-      return $http({
-        method: 'POST',
-        url: ipUrl + repo,
-        data: issueData,
-      }).success(function(result){
-//      return $http.post(ipUrl + repo , "My test string").then(function(result) { 
-        console.log("In IPAPI:issueNew");
-        console.log("ipUrl + repo");
-        console.log(ipUrl + repo);
-        console.log("issueData");
-        console.log(issueData);
+      return $http.post(ipUrl + repo , issueData).then(function(result) { 
         return result.data; 
       });
     },
@@ -139,6 +129,18 @@ angular.module('AppState', [])
       return $http.post(ipUrl + repo + '/' + issue, comment).then(function(result) { 
         return result.data; 
       });
+    },
+
+    search: function(term, repo){
+      repo = repo || "all";
+      return $http.post(ipUrl + 'search/' + repo, term).then(function(result){
+        console.log("In IPAPI Search");
+
+        console.log("resulte.data");
+        console.log(result.data);
+        return result.data;
+      });
+      
     },
 
   };

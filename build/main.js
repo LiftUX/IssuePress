@@ -1823,17 +1823,7 @@ angular.module('AppState', [])
     },
 
     issueNew: function(repo, issueData) {
-      return $http({
-        method: 'POST',
-        url: ipUrl + repo,
-        data: issueData,
-      }).success(function(result){
-//      return $http.post(ipUrl + repo , "My test string").then(function(result) { 
-        console.log("In IPAPI:issueNew");
-        console.log("ipUrl + repo");
-        console.log(ipUrl + repo);
-        console.log("issueData");
-        console.log(issueData);
+      return $http.post(ipUrl + repo , issueData).then(function(result) { 
         return result.data; 
       });
     },
@@ -1842,6 +1832,18 @@ angular.module('AppState', [])
       return $http.post(ipUrl + repo + '/' + issue, comment).then(function(result) { 
         return result.data; 
       });
+    },
+
+    search: function(term, repo){
+      repo = repo || "all";
+      return $http.post(ipUrl + 'search/' + repo, term).then(function(result){
+        console.log("In IPAPI Search");
+
+        console.log("resulte.data");
+        console.log(result.data);
+        return result.data;
+      });
+      
     },
 
   };
@@ -1865,7 +1867,6 @@ angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadc
 
 
 angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
-
 
 .directive('ipIssueComment', ['marked', function(marked) {
   return {
@@ -1991,17 +1992,35 @@ angular.module('components.release', []).directive('ipRelease', function() {
 });
 
 
+angular.module('components.search', ['AppState'])
 
-angular.module('components.search', []).directive('ipSearch', function() {
+.directive('ipSearch', function() {
   return {
     restrict: 'A',
     replace: true,
     scope: {
+      "repo": '@repo',
     },
     templateUrl: IP_PATH + '/app/components/search/search.tpl.html',
-//    controller: function($scope, ipData) {
-//      $scope.sections = ipData.sections.getAll();
-//    }
+    controller: ['$scope', '$element', '$attrs', 'IPAPI', function($scope, $element, $attrs, IPAPI) {
+      
+
+      var target = 'all';
+      if($scope.repo) {
+        target = $scope.repo;
+      }
+
+      IPAPI.search({search: "My API Test Terms!"}, target).then(function(data){
+        if(data){
+
+          console.log("In Search directrive controller");
+          console.log("data");
+          console.log(data);
+        }
+      });
+
+
+    }],
   };
 });
 
@@ -2225,7 +2244,6 @@ angular.module('repo', ['AppState'])
   // Checks Cache before making an API call
   IPData.getRepoData($scope.repo).then(function(data){
     if(data){
-      console.log(data);
       $scope.issues = data.issues;
       $scope.activity = data.activity;
     }

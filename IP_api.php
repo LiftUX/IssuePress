@@ -86,6 +86,7 @@ class UPIP_api{
     $vars[] = 'repo';
     $vars[] = 'issue';
     $vars[] = 'name';
+    $vars[] = 'ip_search';
     $vars[] = 'is_new';
     return $vars;
   }
@@ -99,6 +100,7 @@ class UPIP_api{
   public function add_endpoint(){
 
     // Add API endpoints 
+    add_rewrite_rule('^' . IP_API_PATH .'search/([^/]*)/?','index.php?__ip_api=1&ip_search=1&repo=$matches[1]','top');
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]','top');
     add_rewrite_rule('^' . IP_API_PATH .'?','index.php?__ip_api=1','top');
@@ -179,6 +181,9 @@ class UPIP_api{
     // GET, POST, PUT, or DELETE
     $method = $_SERVER['REQUEST_METHOD'];
 
+    if(isset($wp->query_vars['ip_search'])){
+      $is_search = true;
+    }
 
     // Get the vars in variables if they exist
     if(isset($wp->query_vars['repo']))
@@ -211,6 +216,9 @@ class UPIP_api{
       $data['issues'] = $this->get_issues(json_decode($repo));
       $data['activity'] = $this->get_repo_activity(json_decode($repo));
 //      $data['releases'] = $this->get_repo_releases(json_decode($repo));  // Github undocumented releases API, currently taken down?
+
+    } else if($method === "POST" && isset($is_search)){
+      $data['response'] = $this->search($post_data);
     } else if($method === "POST" && isset($repo) && !isset($issue)){
       $data['response'] = $this->post_issue(json_decode($repo), $post_data);
     } else if($method === "POST" && isset($repo) && isset($issue)){
@@ -401,6 +409,21 @@ class UPIP_api{
   private function post_comment($issue, $repoName){
     // $client->api('issue')->comments()->create($this->user['login'], 'php-github-api', 4, array('body' => 'My new comment'));
   }
+
+
+  /**
+   * github API call to run a search 
+   *
+   * @return string (response)
+   */
+  private function search($data){
+    $r = array();
+    $r['data'] = $data;
+    $r['testing'] = "Search API hit";
+
+    return $r;
+  }
+
 
   /*** END IPAPI refs to Github API ***/
 

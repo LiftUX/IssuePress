@@ -9,7 +9,6 @@ angular.module('repo', ['AppState'])
   // Checks Cache before making an API call
   IPData.getRepoData($scope.repo).then(function(data){
     if(data){
-      console.log(data);
       $scope.issues = data.issues;
       $scope.activity = data.activity;
     }

@@ -1,7 +1,6 @@
 
 angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
 
-
 .directive('ipIssueComment', ['marked', function(marked) {
   return {
     restrict: 'A',
