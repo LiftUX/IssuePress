@@ -1,9 +1,36 @@
 
-angular.module('create-issue', [])
+angular.module('create-issue', ['AppState'])
 
-.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', function($scope, $location, $routeParams) {
+.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', 'IPAPI', 'IPUser', function($scope, $location, $routeParams, IPAPI, IPUser) {
   
-  console.log($location.path());
+  var repo = $routeParams.repo;
+  
+  $scope.issue = {};
+  $scope.issue.meta = IPUser.user;
+  $scope.loginLink = IPUser.login_link + encodeURIComponent("#" + $location.$$url );
 
-  console.log($routeParams);
+  $scope.submitForm = function(){
+
+    if( $scope.issueForm.$valid ) {
+      console.log("Form Submitted");
+
+      IPAPI.issueNew(repo, $scope.issue).then(function(result){
+        if(result) {
+
+          $scope.issueLink = repo + "/" + result.data.data.response.number;
+          $scope.formSubmitted = true;
+        }
+      });
+
+    }
+
+  };
+
+  $scope.hasUser = function(){
+    if(IPUser.user)
+      return true;
+    else
+      return false;
+  };
+
 }]);

@@ -1807,6 +1807,7 @@ angular.module('AppState', [])
 .factory('IPAPI', ['$http', 'IPAppState', function($http, IPAppState){
   
   var ipUrl = IPAppState.API_PATH;
+  $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
   var api = {
     repo: function(repo){
@@ -1820,7 +1821,29 @@ angular.module('AppState', [])
         return result.data; 
       });
     },
+
+    issueNew: function(repo, issueData) {
+      return $http({
+        method: 'POST',
+        url: ipUrl + repo,
+        data: issueData,
+      }).success(function(result){
+//      return $http.post(ipUrl + repo , "My test string").then(function(result) { 
+        console.log("In IPAPI:issueNew");
+        console.log("ipUrl + repo");
+        console.log(ipUrl + repo);
+        console.log("issueData");
+        console.log(issueData);
+        return result.data; 
+      });
+    },
   
+    issueComment: function(repo, issue, comment) {
+      return $http.post(ipUrl + repo + '/' + issue, comment).then(function(result) { 
+        return result.data; 
+      });
+    },
+
   };
 
   return api;
@@ -2028,13 +2051,40 @@ angular.module('components.ticketList', [])
 });
 
 
-angular.module('create-issue', [])
+angular.module('create-issue', ['AppState'])
 
-.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', function($scope, $location, $routeParams) {
+.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', 'IPAPI', 'IPUser', function($scope, $location, $routeParams, IPAPI, IPUser) {
   
-  console.log($location.path());
+  var repo = $routeParams.repo;
+  
+  $scope.issue = {};
+  $scope.issue.meta = IPUser.user;
+  $scope.loginLink = IPUser.login_link + encodeURIComponent("#" + $location.$$url );
 
-  console.log($routeParams);
+  $scope.submitForm = function(){
+
+    if( $scope.issueForm.$valid ) {
+      console.log("Form Submitted");
+
+      IPAPI.issueNew(repo, $scope.issue).then(function(result){
+        if(result) {
+
+          $scope.issueLink = repo + "/" + result.data.data.response.number;
+          $scope.formSubmitted = true;
+        }
+      });
+
+    }
+
+  };
+
+  $scope.hasUser = function(){
+    if(IPUser.user)
+      return true;
+    else
+      return false;
+  };
+
 }]);
 
 angular.module('dashboard', [])
@@ -2057,13 +2107,18 @@ angular.module('header', ['user'])
   };
 })
 
-.controller('HeaderCtrl', ['$scope', '$location', 'IPUser',
-function ($scope, $location, IPUser) {
-  $scope.user = IPUser.user;
-  $scope.login_link = IPUser.login_link;
-  $scope.logout_link = IPUser.logout_link;
+.controller('HeaderCtrl', ['$rootScope', '$scope', '$location', 'IPUser',
+function ($rootScope, $scope, $location, IPUser) {
+
+  $rootScope.$on('$routeChangeSuccess', function(scope, current) {
+    $scope.loc = $location.$$url;
+    $scope.login_link = IPUser.login_link + encodeURIComponent("#" + $scope.loc);
+  });
 
   $scope.loc = $location.$$url;
+  $scope.user = IPUser.user;
+  $scope.login_link = IPUser.login_link + encodeURIComponent("#" + $scope.loc);
+  $scope.logout_link = IPUser.logout_link;
 
   $scope.isNavbarActive = function (navBarPath) {
     return navBarPath === $scope.loc;
@@ -2146,8 +2201,8 @@ IP.config(function($routeProvider, $locationProvider) {
     });
 });
 
-IP.run(function($rootScope, $templateCache) {
-  $rootScope.$on('$routeChangeSuccess', function(scope, current, pre) {
+IP.run(function($rootScope, $templateCache, $location) {
+  $rootScope.$on('$routeChangeSuccess', function(scope, current) {
 
     if(!current.loadedTemplateUrl)
       return;

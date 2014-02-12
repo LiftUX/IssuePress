@@ -42,8 +42,8 @@ IP.config(function($routeProvider, $locationProvider) {
     });
 });
 
-IP.run(function($rootScope, $templateCache) {
-  $rootScope.$on('$routeChangeSuccess', function(scope, current, pre) {
+IP.run(function($rootScope, $templateCache, $location) {
+  $rootScope.$on('$routeChangeSuccess', function(scope, current) {
 
     if(!current.loadedTemplateUrl)
       return;
