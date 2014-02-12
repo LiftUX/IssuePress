@@ -1,21 +1,34 @@
 
 <section data-ng-controller="CreateIssueCtrl" class="create-issue">
+
   <div class="section-title">
     Create New Issue
   </div>
   <div data-ip-breadcrumbs></div>
-  <form data-ng-submit="submitForm()" name="createIssue" novalidate>
-    <div class="input-wrap">
-      <input class="textbox required" required name="title" data-ng-model="issue.title" type="text" placeholder="Title"/>
-      <p ng-show="createIssue.title.$invalid && !createIssue.title.$pristine" class="help-block">The issue title is required.</p>
+
+  <form data-ng-submit="submitForm()" name="issueForm" novalidate>
+
+    <div data-ng-if="hasUser() && !formSubmitted">
+      <div class="input-wrap">
+        <input class="textbox required" required name="title" data-ng-model="issue.title" type="text" placeholder="Title" autofocus />
+        <p ng-show="issueForm.title.$invalid && !issueForm.title.$pristine" class="help-block">The issue title is required.</p>
+      </div>
+      <div class="input-wrap">
+        <textarea class="required" required name="body" data-ng-model="issue.body" placeholder="Tell us about what is going on"></textarea>
+        <p ng-show="issueForm.body.$invalid && !issueForm.body.$pristine" class="help-block">The issue body is required.</p>
+      </div>
+      <input type="hidden" name="meta" data-ng-model="issue.meta" />
+      <input ng-disabled="issueForm.$invalid" class="submit" type="submit" value="Create Issue" />
     </div>
-    <div class="input-wrap">
-      <textarea class="required" required name="body" data-ng-model="issue.body" placeholder="Leave a comment"></textarea>
-      <p ng-show="createIssue.body.$invalid && !createIssue.body.$pristine" class="help-block">The issue body is required.</p>
+
+    <div data-ng-if="!hasUser()">
+      <h2>Sorry, but you must <a data-ng-href="{{loginLink}}">log in</a> to create an issue</h2>  
     </div>
-    <input type="hidden" name="meta" data-ng-model="issue.meta" />
-    <input ng-disabled="createIssue.$invalid" class="submit" type="submit" value="Create Issue"/>
+
+    <div data-ng-if="formSubmitted">
+      <h2>Thanks for reporting that <a data-ng-href="#{{issueLink}}">issue</a>, we'll be in touch soon!</h2>
+    </div>
+
   </form>
 
-  <pre>issue: {{issue|json}}</pre>
 </section>

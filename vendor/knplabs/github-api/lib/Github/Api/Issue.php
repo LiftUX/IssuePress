@@ -101,11 +101,7 @@ class Issue extends AbstractApi
             throw new MissingArgumentException(array('title', 'body'));
         }
 
-        if (!isset($params['labels'])) {
-          $params['labels'] = array('issuepress');
-        }
-
-        return $this->post('repos/'.urlencode($username).'/'.urlencode($repository).'/issues', $params);
+        return $this->post('repos/'.rawurlencode($username).'/'.rawurlencode($repository).'/issues', $params);
     }
 
     /**

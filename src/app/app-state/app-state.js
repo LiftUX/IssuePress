@@ -127,7 +127,9 @@ angular.module('AppState', [])
       }).success(function(result){
 //      return $http.post(ipUrl + repo , "My test string").then(function(result) { 
         console.log("In IPAPI:issueNew");
+        console.log("ipUrl + repo");
         console.log(ipUrl + repo);
+        console.log("issueData");
         console.log(issueData);
         return result.data; 
       });

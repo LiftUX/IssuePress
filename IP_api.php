@@ -333,7 +333,6 @@ class UPIP_api{
       $client = $this->get_client();
       // Github API call to post a new issue in particular repo ($repoName)
       $response = $client->api('issue')->create($this->user['login'], $repoName, $issue_data);
-//      $client->api('issue')->labels()->add($this->user['login'], $repoName, $response['number'], array('issuepress'));
 
       return $response;
 
@@ -418,11 +417,11 @@ class UPIP_api{
    */
   private function process_issue($issue) {
 
-    $issue['body'] = $this->add_issue_meta_to_body($issue['meta'], $issue['body']);
+    $issue["body"] = $this->add_issue_meta_to_body($issue['meta'], $issue['body']);
 
     unset($issue['meta']);
 
-//    $issue['labels'] = array('issuepress');
+    $issue["labels"] = "issuepress";
 
     return $issue;
 

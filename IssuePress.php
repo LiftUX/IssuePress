@@ -233,8 +233,8 @@ class UP_IssuePress {
       'all');
 
     // Google's Angular
-    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js');
-    wp_register_script('ip_angular_route', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular-route.min.js', array('ip_angular'));
+    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js');
+    wp_register_script('ip_angular_route', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.min.js', array('ip_angular'));
 
     // The IP built file 
     wp_register_script(
