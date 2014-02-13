@@ -361,15 +361,26 @@ section {
   form {
     overflow:visible;
     z-index:1;
+    position: relative;
+  }
+
+  .spinner {
+    position: absolute;
+    top: 11px;
+    right: 13px;
+    width: 24px;
+    height: 24px;
+    display: block;
+    overflow: hidden;
+    text-indent: -999em;
+    z-index: 2;
+
+    background: rgb(60,60,60);
   }
 
   .textbox {
     z-index:1;
     margin:0;
-
-    &:focus + .live-search-results {
-      display:block;
-    }
   }
 
   .live-search-results {
@@ -379,7 +390,6 @@ section {
     border:.15em solid $border-color;
     display:block;
     width:100%;
-    display:none;
 
     .live-search-results-header {
       padding:.7em 1em;
@@ -702,6 +712,7 @@ section {
     }
   }
 }
+
 
 
 /* .button {
