@@ -45,14 +45,11 @@ angular.module('AppState', [])
     });
 
     if(keyTrack[0] && keyTrack[1] && keyTrack[2]){
-      console.log("USING CACHED DATA");
       var cachedData = $q.defer();
       cachedData.resolve(repoData);
 
       return cachedData.promise;
     } else {
-      console.log("FETCHING NEW DATA");
-
       return IPAPI.repo(repo).then(function(result){
         return result.data;
       });
@@ -61,7 +58,6 @@ angular.module('AppState', [])
   };
 
   IPData.getIssueData = function(repo, issue){
-    console.log("Looking for issue data for: " + issue + " in " + repo);
 
     var issues = data[repo].issues;
     var hasIssueCached = false;
@@ -73,7 +69,6 @@ angular.module('AppState', [])
 
     if(hasIssueCached !== false) {
 
-      console.log("Using Cached Data");
       var cachedData = {};
       cachedData.issue = data[repo].issues[hasIssueCached];
       cachedData.comments = data[repo].comments[issue];
@@ -85,7 +80,6 @@ angular.module('AppState', [])
 
     } else {
 
-      console.log("Fetching Fresh Data");
       return IPAPI.issue(repo, issue).then(function(result){
         return result.data;
       });
@@ -131,13 +125,8 @@ angular.module('AppState', [])
       });
     },
 
-    search: function(term){
-      repo = repo || "all";
-      return $http.post(ipUrl + 'search/', term).then(function(result){
-        console.log("In IPAPI Search");
-
-        console.log("resulte.data");
-        console.log(result.data);
+    search: function(search){
+      return $http.post(ipUrl + 'search/', search).then(function(result){
         return result.data;
       });
       
