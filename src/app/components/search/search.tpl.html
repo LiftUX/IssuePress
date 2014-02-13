@@ -1,9 +1,11 @@
 
 <section class="search">
   <form>
-    <input class="textbox" type="text" placeholder="Search"/>
-    <div class="live-search-results">
-      <div class="live-search-message">
+    <input data-ng-model="q" class="textbox" type="text" placeholder="Search"/>
+    <span data-ng-show="isSearching" class="spinner">Searching</span>
+    <div class="live-search-results" data-ng-show="searchComplete">
+
+      <div data-ng-show="!hasResults" class="live-search-message">
         <div class="message-title">
           No Results
         </div>
@@ -11,6 +13,11 @@
           Aww shucks, nothing was found. Try updating your search term.
         </div>
       </div>
+
+      <!-- 
+
+            Implement Fuzzy Filter for Support Sections without API 
+
       <div class="live-search-results-header">
         Support Sections
       </div>
@@ -32,16 +39,19 @@
           Last Updated: December 27, 2012
         </div>
       </div>
-      <div class="live-search-results-header">
+
+      -->
+
+      <div data-ng-show="hasResults" class="live-search-results-header">
         Issues
       </div>
-      <div class="issue-list-item">
-        <a href="" class="issue-link">Open Issue</a>
+      <div class="issue-list-item" data-ng-repeat="result in results">
+        <a data-ng-href="#/{{getRepoFromResult(result.url)}}/{{result.number}}" class="issue-link">Open</a>
         <div class="issue-title">
-          Issue with the Music Player for the homepage on Garage Band
+          {{result.title}}
         </div>
         <div class="issue-date">
-          Last Updated: December 27, 2012
+          Last Updated: {{result.updated_at | date:'MMM d, y'}}
         </div>
       </div>
     </div>
