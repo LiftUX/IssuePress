@@ -100,7 +100,7 @@ class UPIP_api{
   public function add_endpoint(){
 
     // Add API endpoints 
-    add_rewrite_rule('^' . IP_API_PATH .'search/([^/]*)/?','index.php?__ip_api=1&ip_search=1&repo=$matches[1]','top');
+    add_rewrite_rule('^' . IP_API_PATH .'search/?','index.php?__ip_api=1&ip_search=1','top');
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]','top');
     add_rewrite_rule('^' . IP_API_PATH .'?','index.php?__ip_api=1','top');
@@ -417,11 +417,28 @@ class UPIP_api{
    * @return string (response)
    */
   private function search($data){
-    $r = array();
-    $r['data'] = $data;
-    $r['testing'] = "Search API hit";
+    
+    if($data['repo'] == 'all'){
+      $repos = $this->get_repos();
+    } else {
+      $repos = array($data['repo']);
+    }
 
-    return $r;
+//    For Testing
+//
+//    $r = array();
+//    $r['q'] = $data['q'];
+//    $r['repo'] = $data['repo'];
+//    $r['repos'] = $repos;
+
+    $q = $data['q'];
+    $params = array();
+    $params['repos'] = $repos;
+
+    $client = $this->get_client();
+    $response = $client->api('issue')->find($q, $params);
+
+    return $response;
   }
 
 
@@ -448,6 +465,27 @@ class UPIP_api{
 
     return $issue;
 
+  }
+
+  /**
+   * Get Repos
+   *
+   * Returns array of the IP enabled repos
+   *
+   * @return repos Array
+   */
+  private function get_repos(){
+
+    $options =  get_option('issuepress_options');
+
+    if(!array_key_exists('upip_gh_repos', $options))
+      return array('undefined');
+
+    foreach($options['upip_gh_repos'] as $index => $item) {
+      $repos[] = $this->user['login'] . "/" . $item;
+    }
+
+    return $repos;
   }
 
 
