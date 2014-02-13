@@ -37,18 +37,37 @@ class Issue extends AbstractApi
      *
      * @param  string  $username         the username
      * @param  string  $repository       the repository
-     * @param  string  $state            the issue state, can be open or closed
-     * @param  string  $keyword          the keyword to filter issues by
+     * @param  string  $term             the term to be searched for 
+     * @param  array   $params           sort & order options
      *
      * @return array                     list of issues found
      */
-    public function find($username, $repository, $state, $keyword)
+    public function find( $term, array $params)
     {
-        if (!in_array($state, array('open', 'closed'))) {
-            $state = 'open';
-        }
+      $sort = '';
+      $order = '';
 
-        return $this->get('legacy/issues/search/'.urlencode($username).'/'.urlencode($repository).'/'.urlencode($state).'/'.urlencode($keyword));
+      if(array_key_exists('sort', $params)){
+        $sort = '&sort=' . rawurlencode($params['sort']);
+      }
+
+      if(array_key_exists('order', $params)){
+        $order = '&order=' . rawurlencode($params['order']);
+      }
+
+      if(array_key_exists('repos', $params)){
+        $repos = '';
+        foreach($params['repos'] as $repo) {
+          $repos .= '+repo:' . rawurlencode($repo);
+        }
+      }
+
+        return $this->get('search/issues?q=' . rawurlencode($term) . $repos . $sort . $order );
+
+//        if (!in_array($params, array('open', 'closed'))) {
+//            $state = 'open';
+//        }
+//        return $this->get('legacy/issues/search/'.urlencode($username).'/'.urlencode($repository).'/'.urlencode($state).'/'.urlencode($keyword));
     }
 
     /**

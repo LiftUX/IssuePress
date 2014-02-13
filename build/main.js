@@ -1748,14 +1748,11 @@ angular.module('AppState', [])
     });
 
     if(keyTrack[0] && keyTrack[1] && keyTrack[2]){
-      console.log("USING CACHED DATA");
       var cachedData = $q.defer();
       cachedData.resolve(repoData);
 
       return cachedData.promise;
     } else {
-      console.log("FETCHING NEW DATA");
-
       return IPAPI.repo(repo).then(function(result){
         return result.data;
       });
@@ -1764,7 +1761,6 @@ angular.module('AppState', [])
   };
 
   IPData.getIssueData = function(repo, issue){
-    console.log("Looking for issue data for: " + issue + " in " + repo);
 
     var issues = data[repo].issues;
     var hasIssueCached = false;
@@ -1776,7 +1772,6 @@ angular.module('AppState', [])
 
     if(hasIssueCached !== false) {
 
-      console.log("Using Cached Data");
       var cachedData = {};
       cachedData.issue = data[repo].issues[hasIssueCached];
       cachedData.comments = data[repo].comments[issue];
@@ -1788,7 +1783,6 @@ angular.module('AppState', [])
 
     } else {
 
-      console.log("Fetching Fresh Data");
       return IPAPI.issue(repo, issue).then(function(result){
         return result.data;
       });
@@ -1823,17 +1817,7 @@ angular.module('AppState', [])
     },
 
     issueNew: function(repo, issueData) {
-      return $http({
-        method: 'POST',
-        url: ipUrl + repo,
-        data: issueData,
-      }).success(function(result){
-//      return $http.post(ipUrl + repo , "My test string").then(function(result) { 
-        console.log("In IPAPI:issueNew");
-        console.log("ipUrl + repo");
-        console.log(ipUrl + repo);
-        console.log("issueData");
-        console.log(issueData);
+      return $http.post(ipUrl + repo , issueData).then(function(result) { 
         return result.data; 
       });
     },
@@ -1842,6 +1826,13 @@ angular.module('AppState', [])
       return $http.post(ipUrl + repo + '/' + issue, comment).then(function(result) { 
         return result.data; 
       });
+    },
+
+    search: function(search){
+      return $http.post(ipUrl + 'search/', search).then(function(result){
+        return result.data;
+      });
+      
     },
 
   };
@@ -1865,7 +1856,6 @@ angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadc
 
 
 angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
-
 
 .directive('ipIssueComment', ['marked', function(marked) {
   return {
@@ -1991,17 +1981,86 @@ angular.module('components.release', []).directive('ipRelease', function() {
 });
 
 
+angular.module('components.search', ['AppState'])
 
-angular.module('components.search', []).directive('ipSearch', function() {
+.directive('ipSearch', function() {
   return {
     restrict: 'A',
     replace: true,
     scope: {
+      "repo": '@repo',
     },
     templateUrl: IP_PATH + '/app/components/search/search.tpl.html',
-//    controller: function($scope, ipData) {
-//      $scope.sections = ipData.sections.getAll();
-//    }
+    controller: ['$scope', '$element', '$attrs', '$timeout', 'IPAPI', function($scope, $element, $attrs, $timeout, IPAPI) {
+      
+      $scope.q = '';
+      $scope.isSearching = false;
+      $scope.searchComplete = $scope.hasResults = false;
+      $scope.results = [];
+
+      var target = 'all';
+      if($scope.repo) {
+        target = $scope.repo;
+      }
+
+      var timeout;
+
+      $scope.$watch('q', function(nVal, oVal){
+
+        $scope.searchComplete = $scope.hasResults = false;
+
+        if(nVal.length < 3) {
+          return;
+        }
+
+        $scope.isSearching = true;
+
+        if(nVal !== oVal) {
+          if(timeout) $timeout.cancel(timeout);
+          
+          timeout = $timeout(function(){
+            $scope.executeSearch();
+          }, 600);
+
+        }
+
+      });
+
+      $scope.executeSearch = function(){
+
+        IPAPI.search({q: $scope.q, repo: target}).then(function(data){
+          if(data){
+
+            $scope.searchComplete = true;
+            $scope.isSearching = false;
+            $scope.results = data.data.response.items;
+
+          }
+        });
+
+      };
+
+      $scope.$watch('results', function(nVal, oVal) {
+        if(nVal.length === 0) {
+          $scope.hasResults = false;
+        } else {
+          $scope.hasResults = true;
+        }
+
+      });
+
+
+      $scope.getRepoFromResult = function(string) {
+
+        var regEx = /([^\/]*)\/issues\/\d*/i;
+        var matches = string.match(regEx);
+
+        return matches[1];
+
+      };
+
+
+    }],
   };
 });
 
@@ -2225,7 +2284,6 @@ angular.module('repo', ['AppState'])
   // Checks Cache before making an API call
   IPData.getRepoData($scope.repo).then(function(data){
     if(data){
-      console.log(data);
       $scope.issues = data.issues;
       $scope.activity = data.activity;
     }
