@@ -16,12 +16,13 @@ angular.module('components.search', ['AppState'])
         target = $scope.repo;
       }
 
-      IPAPI.search({search: "My API Test Terms!"}, target).then(function(data){
+      IPAPI.search({q: "CDN", repo: target}, target).then(function(data){
         if(data){
 
           console.log("In Search directrive controller");
           console.log("data");
-          console.log(data);
+          console.log(data.data);
+
         }
       });
 

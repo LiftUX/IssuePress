@@ -1834,9 +1834,9 @@ angular.module('AppState', [])
       });
     },
 
-    search: function(term, repo){
+    search: function(term){
       repo = repo || "all";
-      return $http.post(ipUrl + 'search/' + repo, term).then(function(result){
+      return $http.post(ipUrl + 'search/', term).then(function(result){
         console.log("In IPAPI Search");
 
         console.log("resulte.data");
@@ -2010,12 +2010,13 @@ angular.module('components.search', ['AppState'])
         target = $scope.repo;
       }
 
-      IPAPI.search({search: "My API Test Terms!"}, target).then(function(data){
+      IPAPI.search({q: "CDN", repo: target}, target).then(function(data){
         if(data){
 
           console.log("In Search directrive controller");
           console.log("data");
-          console.log(data);
+          console.log(data.data);
+
         }
       });
 

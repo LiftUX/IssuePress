@@ -131,9 +131,9 @@ angular.module('AppState', [])
       });
     },
 
-    search: function(term, repo){
+    search: function(term){
       repo = repo || "all";
-      return $http.post(ipUrl + 'search/' + repo, term).then(function(result){
+      return $http.post(ipUrl + 'search/', term).then(function(result){
         console.log("In IPAPI Search");
 
         console.log("resulte.data");
