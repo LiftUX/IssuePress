@@ -193,11 +193,47 @@ class UPIP_admin {
       $client = new Github\Client();
       $client->authenticate($github_token, null, Github\Client::AUTH_HTTP_TOKEN);
       $gh_repos = $client->api('current_user')->repositories(array('per_page' => 100));
+      $gh_orgs = $client->api('current_user')->orgs(array('per_page' => 100));
 
+
+
+      $all_repos = array();
+
+      $t_repos = array();
+
+      foreach($gh_repos as $index => $repo) {
+        if(!array_key_exists($repo['owner']['login'], $all_repos))
+          $all_repos[$repo['owner']['login']] = array();
+
+        $all_repos[$repo['owner']['login']][] = $repo['name'];
+      }
+
+      foreach($gh_orgs as $org) {
+        $_o_repos = $client->api('organization')->repositories($org['login'], array('per_page' => 100));
+        foreach($_o_repos as $index => $repo) {
+          if(!array_key_exists($repo['owner']['login'], $all_repos))
+            $all_repos[$repo['owner']['login']] = array();
+
+          $all_repos[$repo['owner']['login']][] = $repo['name'];
+        }
+      }
+         
       echo '<select data-placeholder="' . __('Select One or More Repositories ...','issuepress') . '" name="issuepress_options[upip_gh_repos][]" class="chosen chosen-multiple" multiple>';
 
-      foreach($gh_repos as $index => $repo)
-        echo '<option value="' . $repo['name'] . '"' . selected(in_array($repo['name'],$selected_repos),1). '>'.$repo['name'].'</option>';
+      foreach($all_repos as $owner => $repos) {
+        echo "\n\n";
+        echo '<optgroup label="' . $owner . '">';
+        echo "\n";
+
+        foreach($repos as $repo) {
+          echo '<option value="' . $owner . '/' . $repo . '"' . selected(in_array($owner . '/' . $repo,$selected_repos),1, false). '>'. $owner . '/' .$repo.'</option>';
+          echo "\n";
+        }
+
+        echo '</optgroup>';
+        echo "\n\n";
+      }
+
 
       echo '</select></td>';
 
