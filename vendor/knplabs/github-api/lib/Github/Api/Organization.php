@@ -41,11 +41,12 @@ class Organization extends AbstractApi
      *
      * @return array                     the repositories
      */
-    public function repositories($organization, $type = 'all')
+    public function repositories($organization, array $params)
     {
-        return $this->get('orgs/'.urlencode($organization).'/repos', array(
-            'type' => $type
-        ));
+        if(!array_key_exists('type', $params)){
+            $params['type'] = 'all';
+        }
+        return $this->get('orgs/'.urlencode($organization).'/repos', $params);
     }
 
     /**
