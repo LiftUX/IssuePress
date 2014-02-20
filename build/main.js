@@ -1705,6 +1705,18 @@ angular.module('AppState', [])
 
 .factory('IPAppState', function(){
   var appState = window.IP_Vars;
+
+  appState.getOwner = function(repo){
+    
+    var owner = '';
+    appState.repos.forEach(function(v,i){
+      if(v.name === repo)
+        owner = v.owner;
+    });
+
+    return owner; 
+  };
+
   return appState;
 })
 
@@ -1735,7 +1747,8 @@ angular.module('AppState', [])
 
   IPData.getRepoData = function(repo){
 
-    repoData = data[repo];
+    var owner = IPAppState.getOwner(repo);
+    repoData = data[owner + '/' + repo];
 
     var keys = ['activity', 'issues', 'repo'];
     var keyTrack = [false, false, false];
@@ -1762,7 +1775,8 @@ angular.module('AppState', [])
 
   IPData.getIssueData = function(repo, issue){
 
-    var issues = data[repo].issues;
+    var owner = IPAppState.getOwner(repo);
+    var issues = data[owner + '/' + repo].issues;
     var hasIssueCached = false;
 
     issues.forEach(function(e, i, a){
@@ -1804,26 +1818,31 @@ angular.module('AppState', [])
   $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
   var api = {
+
     repo: function(repo){
-      return $http.get(ipUrl + repo).then(function(result) {
+      var org = IPAppState.getOwner(repo);
+      return $http.get(ipUrl + org + '/' + repo).then(function(result) {
         return result.data; 
       });
     },
 
     issue: function(repo, issue) {
-      return $http.get(ipUrl + repo + '/' + issue).then(function(result) { 
+      var org = IPAppState.getOwner(repo);
+      return $http.get(ipUrl + org + '/' + repo + '/' + issue).then(function(result) { 
         return result.data; 
       });
     },
 
     issueNew: function(repo, issueData) {
-      return $http.post(ipUrl + repo , issueData).then(function(result) { 
+      var org = IPAppState.getOwner(repo);
+      return $http.post(ipUrl + org + '/' + repo , issueData).then(function(result) { 
         return result.data; 
       });
     },
   
     issueComment: function(repo, issue, comment) {
-      return $http.post(ipUrl + repo + '/' + issue, comment).then(function(result) { 
+      var org = IPAppState.getOwner(repo);
+      return $http.post(ipUrl + org + '/' + repo + '/' + issue, comment).then(function(result) { 
         return result.data; 
       });
     },
@@ -1832,7 +1851,6 @@ angular.module('AppState', [])
       return $http.post(ipUrl + 'search/', search).then(function(result){
         return result.data;
       });
-      
     },
 
   };
@@ -2276,7 +2294,7 @@ IP.run(function($rootScope, $templateCache, $location) {
 
 angular.module('repo', ['AppState'])
 
-.controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPData', function($scope, $location, $routeParams, $http, IPData) {
+.controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPData', 'IPAppState', function($scope, $location, $routeParams, $http, IPData, IPAppState) {
   
   $scope.repo = $routeParams.repo;
 
@@ -2297,8 +2315,9 @@ angular.module('sections', ['AppState'])
 
 .controller('SectionsCtrl', ['$scope', '$location', 'IPAppState', function($scope, $location, IPAppState) {
   
-  if(IPAppState.repos !== 'undefined')
+  if(IPAppState.repos !== 'undefined') {
     $scope.sections = IPAppState.repos;
+  }
 
 }]);
 

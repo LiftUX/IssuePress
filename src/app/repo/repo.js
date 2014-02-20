@@ -1,7 +1,7 @@
 
 angular.module('repo', ['AppState'])
 
-.controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPData', function($scope, $location, $routeParams, $http, IPData) {
+.controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPData', 'IPAppState', function($scope, $location, $routeParams, $http, IPData, IPAppState) {
   
   $scope.repo = $routeParams.repo;
 
