@@ -19,6 +19,8 @@ class UPIP_api{
   private $cacheIsOn = TRUE;
   private $cacheExpire = 480; // Expires every 8 mins: (60*8)
 
+  private $test_mode = false;
+
   /**
    * Hook WordPress
    *
@@ -187,27 +189,25 @@ class UPIP_api{
     }
 
     // Get the vars in variables if they exist
-    if(isset($wp->query_vars['ip_org']))
+    if(isset($wp->query_vars['ip_org'])) {
       $org = json_encode($wp->query_vars['ip_org']);
-    if(isset($wp->query_vars['ip_repo']))
+    }
+
+    if(isset($wp->query_vars['ip_repo'])) {
       $repo = json_encode($wp->query_vars['ip_repo']);
-    if(isset($wp->query_vars['ip_issue']))
+    }
+
+    if(isset($wp->query_vars['ip_issue'])) {
       $issue = json_encode($wp->query_vars['ip_issue']);
+    }
 
     if($method === 'POST') {
       $post_data = json_decode(file_get_contents('php://input'), true);
     }
 
     $msg = '200 OK';
-    /*
-     * Route the request:
-     *
-     * if PUT & Repo & Issue -> put_issue()
-     * if GET & Repo & Issue -> get_issue()
-     * if GET & Repo -> get_repo() & get_issues()
-     * if POST & Repo -> post_issue()
-     *
-     */
+    $data = array();
+
     if($method === "PUT" && isset($org) && isset($repo) && isset($issue)){
       $data['response'] = $this->put_issue(json_decode($org), json_decode($repo), json_decode($issue));
 
@@ -229,6 +229,25 @@ class UPIP_api{
     } else if($method === "POST" && isset($org) && isset($repo) && isset($issue)){
       $data['reponse'] = $this->post_comment(json_decode($org), json_decode($repo), json_decode($issue));
     }
+
+
+    if( $this->test_mode ) {
+      $data['test'] = array();
+
+      if($org)
+        $data['test']['org'] = $org;
+
+      if($repo)
+        $data['test']['repo'] = $repo;
+
+      if($issue)
+        $data['test']['issue'] = $issue;
+
+      if($method)
+        $data['test']['method'] = $method;
+
+    }
+
 
     $this->send_response($msg, $data);
 
