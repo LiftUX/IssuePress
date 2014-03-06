@@ -67,6 +67,15 @@ class UP_IssuePress {
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
     add_action('admin_init', array($this, 'theme_updater'),0);
 
+    register_activation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
+    register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
+
+  }
+
+  public function flush_rewrites(){
+
+    flush_rewrite_rules();
+
   }
 
 
@@ -448,4 +457,5 @@ class UP_IssuePress {
   <?php
   }
 }
+
 $UP_IP = new UP_IssuePress();
