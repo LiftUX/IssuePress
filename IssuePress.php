@@ -58,32 +58,17 @@ class UP_IssuePress {
 
     $this->ip_api = new UPIP_api();
 
-    add_action('template_redirect', array($this, 'load_IP_template'), 0);
+    add_action('template_include', array($this, 'load_IP_template'), 0);
 
     add_action('init', array($this, 'register_IP_scripts'), 0);
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
-
     add_action('update_option_issuepress_options', array($this, 'create_IP_labels'), 5, 2);
-
     add_action('admin_print_styles', array($this, 'resize_icon'), 20);
-
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
-
     add_action('admin_init', array($this, 'theme_updater'),0);
 
   }
 
-  public function testing_updates($option, $new, $old, $another){
-    echo "TESTING\n";
-    var_dump($option);
-    echo "\n";
-    var_dump($new);
-    echo "\n";
-    var_dump($old);
-    echo "\n";
-    var_dump($another);
-
-  }
 
   public function get_version(){
     $plugin_data = get_plugin_data( IP_MAIN_PLUGIN_FILE );
@@ -92,11 +77,11 @@ class UP_IssuePress {
   }
 
   /**
-  * Overwrite the default template with IssuePress Backbone App
+  * Overwrite the default template with IssuePress Angular App
   *
   * @return void
   */
-  public function load_IP_template(){
+  public function load_IP_template( $original_template ){
 
     // Check if we've got work to do.
     if( !get_query_var("pagename") && !get_query_var("page_id") )
@@ -109,28 +94,16 @@ class UP_IssuePress {
 
     // Check if the page being served matches the name or ID of the one set in options
     if(get_query_var("pagename") == $IP_landing_name || get_query_var("page_id") == $IP_landing_id){
-      if(file_exists($IP_dir . '/IP_template.php')){
-        $return_template = $IP_dir . '/IP_template.php';
+
+      $ip_tpl = $IP_dir . '/IP_template.php';
+      if(file_exists($ip_tpl)){
         $this->print_scripts = true;
-        $this->do_theme_direct($return_template);
+        return $ip_tpl; 
+      } else {
+        return $original_template;
       }
     }
 
-  }
-
-  /**
-  * Actually load our template instead of the requested page
-  *
-  * @return void
-  */
-  private function do_theme_direct($url){
-    global $post, $wp_query;
-    if(have_posts()){
-      include($url);
-      die();
-    } else {
-      $wp_query->is_404 = true;
-    }
   }
 
 
@@ -320,6 +293,7 @@ class UP_IssuePress {
 
     foreach($options['upip_gh_repos'] as $index => $item) {
 
+
       $repoCache = $this->ip_api->ip_get_repo_cache($item);
       
       $IP_data["$item"] = array(
@@ -474,4 +448,4 @@ class UP_IssuePress {
   <?php
   }
 }
-new UP_IssuePress();
+$UP_IP = new UP_IssuePress();
