@@ -291,8 +291,14 @@ class UP_IssuePress {
     if(!array_key_exists('upip_gh_repos', $options))
       return 'undefined';
 
+    // Split full name
     foreach($options['upip_gh_repos'] as $index => $item) {
-      $IP_repos[]['name'] = $item;
+      list($owner, $repo) = explode("/", $item);
+      $IP_repos[] = array(
+        'name' => $repo,
+        'owner' => $owner
+      );
+
     }
 
     return json_encode($IP_repos);

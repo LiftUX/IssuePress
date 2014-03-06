@@ -19,6 +19,8 @@ class UPIP_api{
   private $cacheIsOn = TRUE;
   private $cacheExpire = 480; // Expires every 8 mins: (60*8)
 
+  private $test_mode = false;
+
   /**
    * Hook WordPress
    *
@@ -83,11 +85,12 @@ class UPIP_api{
    */
   public function add_query_vars($vars){
     $vars[] = '__ip_api';
-    $vars[] = 'repo';
-    $vars[] = 'issue';
-    $vars[] = 'name';
+    $vars[] = 'ip_org';
+    $vars[] = 'ip_repo';
+    $vars[] = 'ip_issue';
+    $vars[] = 'ip_name';
     $vars[] = 'ip_search';
-    $vars[] = 'is_new';
+    $vars[] = 'ip_is_new';
     return $vars;
   }
 
@@ -101,8 +104,8 @@ class UPIP_api{
 
     // Add API endpoints 
     add_rewrite_rule('^' . IP_API_PATH .'search/?','index.php?__ip_api=1&ip_search=1','top');
-    add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]&issue=$matches[2]','top');
-    add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/?','index.php?__ip_api=1&repo=$matches[1]','top');
+    add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/([^/]*)/?','index.php?__ip_api=1&ip_org=$matches[1]&ip_repo=$matches[2]&ip_issue=$matches[3]','top');
+    add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&ip_org=$matches[1]&ip_repo=$matches[2]','top');
     add_rewrite_rule('^' . IP_API_PATH .'?','index.php?__ip_api=1','top');
 
   }
@@ -186,44 +189,65 @@ class UPIP_api{
     }
 
     // Get the vars in variables if they exist
-    if(isset($wp->query_vars['repo']))
-      $repo = json_encode($wp->query_vars['repo']);
-    if(isset($wp->query_vars['issue']))
-      $issue = json_encode($wp->query_vars['issue']);
+    if(isset($wp->query_vars['ip_org'])) {
+      $org = json_encode($wp->query_vars['ip_org']);
+    }
+
+    if(isset($wp->query_vars['ip_repo'])) {
+      $repo = json_encode($wp->query_vars['ip_repo']);
+    }
+
+    if(isset($wp->query_vars['ip_issue'])) {
+      $issue = json_encode($wp->query_vars['ip_issue']);
+    }
 
     if($method === 'POST') {
       $post_data = json_decode(file_get_contents('php://input'), true);
     }
 
     $msg = '200 OK';
-    /*
-     * Route the request:
-     *
-     * if PUT & Repo & Issue -> put_issue()
-     * if GET & Repo & Issue -> get_issue()
-     * if GET & Repo -> get_repo() & get_issues()
-     * if POST & Repo -> post_issue()
-     *
-     */
-    if($method === "PUT" && isset($repo) && isset($issue)){
-      $data['response'] = $this->put_issue(json_decode($issue), json_decode($repo));
-    } else if($method === "GET" && isset($repo) && isset($issue)){
+    $data = array();
+
+    if($method === "PUT" && isset($org) && isset($repo) && isset($issue)){
+      $data['response'] = $this->put_issue(json_decode($org), json_decode($repo), json_decode($issue));
+
+    } else if($method === "GET" && isset($org) && isset($repo) && isset($issue)){
       //      $data['repo'] = $this->get_repo(json_decode($repo)); // Necessary?
-      $data['issue'] = $this->get_issue(json_decode($issue), json_decode($repo));
-      $data['comments'] = $this->get_issue_comments(json_decode($issue), json_decode($repo));
-    } else if($method === "GET" && isset($repo) && !isset($issue)){
-      $data['repo'] = $this->get_repo(json_decode($repo));
-      $data['issues'] = $this->get_issues(json_decode($repo));
-      $data['activity'] = $this->get_repo_activity(json_decode($repo));
-//      $data['releases'] = $this->get_repo_releases(json_decode($repo));  // Github undocumented releases API, currently taken down?
+      $data['issue'] = $this->get_issue(json_decode($org), json_decode($repo), json_decode($issue));
+      $data['comments'] = $this->get_issue_comments(json_decode($org), json_decode($repo), json_decode($issue));
+
+    } else if($method === "GET" && isset($org) && isset($repo) && !isset($issue)){
+      $data['repo'] = $this->get_repo(json_decode($org), json_decode($repo));
+      $data['issues'] = $this->get_issues(json_decode($org), json_decode($repo));
+      $data['activity'] = $this->get_repo_activity(json_decode($org), json_decode($repo));
+//      $data['releases'] = $this->get_repo_releases(json_decode($org), json_decode($repo));  // Github undocumented releases API, currently taken down?
 
     } else if($method === "POST" && isset($is_search)){
       $data['response'] = $this->search($post_data);
-    } else if($method === "POST" && isset($repo) && !isset($issue)){
-      $data['response'] = $this->post_issue(json_decode($repo), $post_data);
-    } else if($method === "POST" && isset($repo) && isset($issue)){
-      $data['reponse'] = $this->post_comment(json_decode($issue), json_decode($repo));
+    } else if($method === "POST" && isset($org) && isset($repo) && !isset($issue)){
+      $data['response'] = $this->post_issue(json_decode($org), json_decode($repo), $post_data);
+    } else if($method === "POST" && isset($org) && isset($repo) && isset($issue)){
+      $data['reponse'] = $this->post_comment(json_decode($org), json_decode($repo), json_decode($issue));
     }
+
+
+    if( $this->test_mode ) {
+      $data['test'] = array();
+
+      if($org)
+        $data['test']['org'] = $org;
+
+      if($repo)
+        $data['test']['repo'] = $repo;
+
+      if($issue)
+        $data['test']['issue'] = $issue;
+
+      if($method)
+        $data['test']['method'] = $method;
+
+    }
+
 
     $this->send_response($msg, $data);
 
@@ -254,13 +278,13 @@ class UPIP_api{
    *
    * @return object
    */
-  private function get_repo($repoName){
-    $cacheKey = $repoName . '-repo';
+  private function get_repo($org, $repoName){
+    $cacheKey = $org . '/' . $repoName . '-repo';
 
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->show($this->user['login'], $repoName));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->show($org, $repoName));
     }
 
     return $cache;
@@ -271,13 +295,13 @@ class UPIP_api{
    *
    * @return array of objects
    */
-  private function get_issues($repoName){
-    $cacheKey = $repoName . '-issues';
+  private function get_issues($org, $repoName){
+    $cacheKey = $org . '/' . $repoName . '-issues';
 
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($this->user['login'], $repoName, array('state' => 'open')));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($org, $repoName, array('state' => 'open')));
     }
 
     return $cache;
@@ -288,13 +312,13 @@ class UPIP_api{
    *
    * * @return array of objects
    */
-  private function get_repo_releases($repoName){
-    $cacheKey = $repoName . '-releases';
+  private function get_repo_releases($org, $repoName){
+    $cacheKey = $org . '/' . $repoName . '-releases';
 
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->releases()->all($this->user['login'], $repoName));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->releases()->all($org, $repoName));
     }
 
     return $cache;
@@ -305,13 +329,13 @@ class UPIP_api{
    *
    * @return array of objects
    */
-  private function get_repo_activity($repoName){
-    $cacheKey = $repoName . '-activity';
+  private function get_repo_activity($org, $repoName){
+    $cacheKey = $org . '/' . $repoName . '-activity';
 
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->events($this->user['login'], $repoName));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('repo')->events($org, $repoName));
     }
 
     return $cache;
@@ -322,7 +346,7 @@ class UPIP_api{
    *
    * @return string (response)
    */
-  private function post_issue($repoName, $issue_data){
+  private function post_issue($org, $repoName, $issue_data){
 
     $error = null;
 
@@ -340,7 +364,7 @@ class UPIP_api{
 
       $client = $this->get_client();
       // Github API call to post a new issue in particular repo ($repoName)
-      $response = $client->api('issue')->create($this->user['login'], $repoName, $issue_data);
+      $response = $client->api('issue')->create($org, $repoName, $issue_data);
 
       return $response;
 
@@ -352,7 +376,7 @@ class UPIP_api{
    *
    * @return string
    */
-  private function put_issue($issue, $repoName){
+  private function put_issue($org, $repoName, $issue){
     // Github API call to update a particular issue ($issue) in particular repo ($repoName)
     // $client->api('issue')->update($this->user['login'], 'php-github-api', 4, array('body' => 'The new issue body'));
   }
@@ -362,13 +386,13 @@ class UPIP_api{
    *
    * @return string
    */
-  private function get_issue($issue, $repoName){
-    $cacheKey = $repoName . '-issue-' . $issue;
+  private function get_issue($org, $repoName, $issue){
+    $cacheKey = $org . '/' . $repoName . '-issue-' . $issue;
 
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->show($this->user['login'], $repoName, $issue));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->show($org, $repoName, $issue));
     }
 
     return $cache;
@@ -379,20 +403,20 @@ class UPIP_api{
    *
    * @return string
    */
-  private function get_issue_comments($issue, $repoName){
-    $cacheKey = $repoName . '-comments';
+  private function get_issue_comments($org, $repoName, $issue){
+    $cacheKey = $org . '/' . $repoName . '-comments';
 
     $cache = $this->ip_cache_get($cacheKey);
 
     if($cache === FALSE) { // No Comments cache for this repo, init
       $client = $this->get_client();
       $data = array(); 
-      $data[$issue] = $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue);
+      $data[$issue] = $client->api('issue')->comments()->all($org, $repoName, $issue);
       
       $cache = $this->ip_cache_set($cacheKey, $data);
     } else if( !isset($cache[$issue]) ) { // Comments cache, but not for this issue
       $client = $this->get_client();
-      $cache[$issue] = $client->api('issue')->comments()->all($this->user['login'], $repoName, $issue);
+      $cache[$issue] = $client->api('issue')->comments()->all($org, $repoName, $issue);
 
       $cache = $this->ip_cache_set($cacheKey, $cache);
     }
@@ -406,7 +430,7 @@ class UPIP_api{
    *
    * @return string (response)
    */
-  private function post_comment($issue, $repoName){
+  private function post_comment($org, $repoName, $issue){
     // $client->api('issue')->comments()->create($this->user['login'], 'php-github-api', 4, array('body' => 'My new comment'));
   }
 
