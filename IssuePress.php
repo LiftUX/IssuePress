@@ -68,6 +68,8 @@ class UP_IssuePress {
     add_action('admin_init', array($this, 'theme_updater'),0);
 
     register_activation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
+    register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );  
+
     register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
 
   }
@@ -168,6 +170,65 @@ class UP_IssuePress {
       ));
     }
   }
+
+
+  /**
+  * Initialize the IP sidebars with widgets after activiation 
+  *
+  * @return void
+  */
+  public function init_IP_sidebar_widgets() {
+
+    $sidebars_widgets = get_option( 'sidebars_widgets' );
+
+    $widget_locs = $this->widget_locs;
+
+    foreach($widget_locs as $widget_loc) {
+
+      if($widget_loc[1] == 'ip-dashboard-main') {
+
+        $sidebars_widgets[$widget_loc[1]] = array(
+          'ip_message-1',
+        );
+
+        $widget_data = get_option('widget_ip_message');
+        $widget_data[1] = array(
+          'title' => 'Welcome to IssuePress',
+          'msg' => 'This is the introductory content, edit it in the wp-admin on the widget\'s page. It\'s the "IP Message Box" widget in the "IssuePress Dashboard Main" WordPress sidebar.'
+        );
+        update_option('widget_ip_message', $widget_data);
+
+      } else if($widget_loc[1] == 'ip-dashboard-side') {
+
+        $sidebars_widgets[$widget_loc[1]] = array(
+          'ip_sections-1',
+        );
+
+        $widget_data = get_option('widget_ip_section');
+        $widget_data[1] = array(
+          'title' => 'Sections'
+        );
+        update_option('widget_ip_section', $widget_data);
+
+      } else if ($widget_loc[1] == 'ip-dashboard-main') {
+
+        $sidebars_widgets[$widget_loc[1]] = array(
+          'ip_recent_activity-1',
+        );
+
+        $widget_data = get_option('widget_ip_recent_activity');
+        $widget_data[1] = array(
+          'title' => 'Recent Activity'
+        );
+        update_option('widget_ip_recent_activity', $widget_data);
+      }
+
+    }
+
+    update_option('sidebars_widgets', $sidebars_widgets);
+
+  }
+
 
   /**
    * Get IP Sidebars
