@@ -229,7 +229,7 @@ class UPIP_api{
     } else if($method === "POST" && isset($org) && isset($repo) && !isset($issue)){
       $data['response'] = $this->post_issue(json_decode($org), json_decode($repo), $post_data);
     } else if($method === "POST" && isset($org) && isset($repo) && isset($issue)){
-      $data['reponse'] = $this->post_comment(json_decode($org), json_decode($repo), json_decode($issue));
+      $data['reponse'] = $this->post_comment(json_decode($org), json_decode($repo), json_decode($issue), $post_data);
     }
 
 
@@ -395,7 +395,7 @@ class UPIP_api{
     if($cache === FALSE) {
       $client = $this->get_client();
       
-      $issue =  $this->filter_issue_body($client->api('issue')->show($org, $repoName, $issue));
+      $issue =  $this->filter_body($client->api('issue')->show($org, $repoName, $issue));
       $cache = $this->ip_cache_set($cacheKey, $issue);
     }
 
@@ -413,18 +413,16 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
 
     if($cache === FALSE) { // No Comments cache for this repo, init
-      $client = $this->get_client();
-      $data = array(); 
-      $data[$issue] = $client->api('issue')->comments()->all($org, $repoName, $issue);
-      
-      $cache = $this->ip_cache_set($cacheKey, $data);
-    } else if( !isset($cache[$issue]) ) { // Comments cache, but not for this issue
-      $client = $this->get_client();
-      $cache[$issue] = $client->api('issue')->comments()->all($org, $repoName, $issue);
-
-      $cache = $this->ip_cache_set($cacheKey, $cache);
+      $cache = array();
     }
 
+    $client = $this->get_client();
+    $cache[$issue] = $client->api('issue')->comments()->all($org, $repoName, $issue);
+    foreach($cache[$issue] as $i => $comment) {
+      $cache[$issue][$i] = $this->filter_body($comment);
+    }
+
+    $cache = $this->ip_cache_set($cacheKey, $cache);
 
     return $cache[$issue];
   }
@@ -434,8 +432,26 @@ class UPIP_api{
    *
    * @return string (response)
    */
-  private function post_comment($org, $repoName, $issue){
-    // $client->api('issue')->comments()->create($this->user['login'], 'php-github-api', 4, array('body' => 'My new comment'));
+  private function post_comment($org, $repoName, $issue, $comment_data){
+
+    $error = null;
+
+    if( !isset($comment_data['body'] ) )
+      $error = "Missing the comment body.";
+
+    if(isset($error)) {
+      return array('error' => true, 'message' => $error);
+    } else {
+
+      $comment_data = $this->process_issue($comment_data);
+
+      $client = $this->get_client();
+      // Github API call to post a new issue in particular repo ($repoName)
+      $response = $client->api('issue')->comments()->create($org, $repoName, $issue, $comment_data);
+
+      return $response;
+
+    }
   }
 
 
@@ -552,7 +568,7 @@ Sent via [IssuePress](http://issuepress.co)
    * @param array issue Object from GitHub
    * @return 
    */
-  private function filter_issue_body($issue) {
+  private function filter_body($issue) {
 
     $element_regex = '/\*\*\*\sIssuePress Data:.*/ism';
 
