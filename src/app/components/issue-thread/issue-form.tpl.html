@@ -1,22 +1,35 @@
 <div>
 
-  <div class="comment" data-ng-if="!user"><h3>You must <a href="{{login_link}}">login</a> to comment!</h3></div>
+  <div class="comment" data-ng-if="!hasUser()">
+    <h3>You must <a href="{{loginLink}}">login</a> to comment!</h3>
+  </div>
 
-  <form class="comment new-comment" data-ng-if="user">
-    <div class="comment-meta">
-      <a href="" class="author">
-        <div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="300"></div>
-        <span class="author-action">Logged in as</span>
-        <span class="author-name">{{user.display_name}}</span>
-      </a>
-      <!--
-      <a href="{{logout_link}}" class="comment-timeago">Logout</a>
-      -->
+  <form data-ng-submit="submitForm()" name="commentForm" novalidate class="comment new-comment">
+
+
+    <div data-ng-if="hasUser()  && !formSubmitted">
+      <div class="comment-meta">
+        <div class="author">
+          <div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="300"></div>
+          <span class="author-action">Logged in as</span>
+          <span class="author-name">{{user.display_name}}</span>
+        </div>
+      </div>
+      <div class="textarea-wrap">
+        <textarea class="required" required name="body" data-ng-model="comment.body" placeholder="Leave a comment"></textarea>
+        <p ng-show="commentForm.body.$invalid && !commentForm.body.$pristine" class="help-block">You need a comment, silly.</p>
+      </div>
+
+      <input type="hidden" name="meta" data-ng-model="comment.meta" />
+      <input ng-disabled="commentForm.$invalid" type="submit" class="submit" value="Post Comment"/>
     </div>
-    <div class="textarea-wrap">
-      <textarea placeholder="Leave a comment"></textarea>
+
+
+    <div data-ng-if="formSubmitted">
+      <h2>Thanks for commenting, stay tuned!</h2>
     </div>
-    <input type="submit" class="submit" value="Post Comment"/>
+
+
   </form>
 
 </div>
