@@ -394,7 +394,9 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->show($org, $repoName, $issue));
+      
+      $issue =  $this->filter_issue_body($client->api('issue')->show($org, $repoName, $issue));
+      $cache = $this->ip_cache_set($cacheKey, $issue);
     }
 
     return $cache;
@@ -530,19 +532,34 @@ class UPIP_api{
       $meta_string .= "$key: $value\n";
     }
 
-    $body = "* * *
-Hello! IssuePress has processed an issue. Begin transmission...
-* * *
-
-$body
+    $body .= "
 
 
-* * *
-User Meta: 
+***
+IssuePress Data:
+
 $meta_string
-* * *";
+
+Sent via [IssuePress](http://issuepress.co)
+";
 
     return $body;
+  }
+
+  /*
+   * Filter Issue Body
+   *
+   * @param array issue Object from GitHub
+   * @return 
+   */
+  private function filter_issue_body($issue) {
+
+    $element_regex = '/\*\*\*\sIssuePress Data:.*/ism';
+
+    $issue['body'] = preg_replace($element_regex, "", $issue['body']);
+
+    return $issue;
+
   }
 
 
