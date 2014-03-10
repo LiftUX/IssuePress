@@ -44,7 +44,38 @@ class UP_IssuePress {
   * @var $print_scripts
   */
   private $print_scripts = false;
-  private $widget_locs = null;
+  private $widget_locs = array(
+    array(
+      'IssuePress Dashboard Main',
+      'ip-dashboard-main',
+      'Control the content in the IssuePress "Dashboard" page.',
+    ),
+    array(
+      'IssuePress Dashboard Sidebar',
+      'ip-dashboard-side',
+      'Control the content in the IssuePress "Dashboard" page\'s sidebar',
+    ),
+    array(
+      'IssuePress Sections Sidebar',
+      'ip-sections-side',
+      'Control the content in the IssuePress "Sections" page\'s sidebar',
+    ),
+    array(
+      'IssuePress Section Main',
+      'ip-section-main',
+      'Control the content in the IssuePress "Section" page.',
+    ),
+    array(
+      'IssuePress Section Sidebar',
+      'ip-section-side',
+      'Control the content in the IssuePress "Section" page\'s sidebar',
+    ),
+    array(
+      'IssuePress Issue Sidebar',
+      'ip-issue-side',
+      'Control the content in the IssuePress "Issue Thread" page\'s sidebar',
+    ),
+  );
 
   private $ip_api;
 
@@ -68,7 +99,7 @@ class UP_IssuePress {
     add_action('admin_init', array($this, 'theme_updater'),0);
 
     register_activation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
-    register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );  
+//    register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );  
 
     register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
 
@@ -77,6 +108,8 @@ class UP_IssuePress {
   public function flush_rewrites(){
 
     flush_rewrite_rules();
+
+    $this->init_IP_sidebar_widgets();
 
   }
 
@@ -125,41 +158,7 @@ class UP_IssuePress {
   */
   public function register_IP_sidebars() {
 
-    // Build out the various sidebar detail in an array for easy registering...
-    $widget_locs = array(
-      array(
-        'IssuePress Dashboard Main',
-        'ip-dashboard-main',
-        'Control the content in the IssuePress "Dashboard" page.',
-      ),
-      array(
-        'IssuePress Dashboard Sidebar',
-        'ip-dashboard-side',
-        'Control the content in the IssuePress "Dashboard" page\'s sidebar',
-      ),
-      array(
-        'IssuePress Sections Sidebar',
-        'ip-sections-side',
-        'Control the content in the IssuePress "Sections" page\'s sidebar',
-      ),
-      array(
-        'IssuePress Section Main',
-        'ip-section-main',
-        'Control the content in the IssuePress "Section" page.',
-      ),
-      array(
-        'IssuePress Section Sidebar',
-        'ip-section-side',
-        'Control the content in the IssuePress "Section" page\'s sidebar',
-      ),
-      array(
-        'IssuePress Issue Sidebar',
-        'ip-issue-side',
-        'Control the content in the IssuePress "Issue Thread" page\'s sidebar',
-      ),
-    );
-
-    $this->widget_locs = $widget_locs;
+    $widget_locs = $this->widget_locs;
 
     // Loop through our sidebar details and register them
     foreach($widget_locs as $widget_loc){
@@ -169,6 +168,7 @@ class UP_IssuePress {
         'description' => __($widget_loc[2], 'IssuePress'),
       ));
     }
+
   }
 
 
@@ -192,7 +192,7 @@ class UP_IssuePress {
         );
 
         $widget_data = get_option('widget_ip_message');
-        $widget_data[1] = array(
+        $widget_data[0] = array(
           'title' => 'Welcome to IssuePress',
           'msg' => 'This is the introductory content, edit it in the wp-admin on the widget\'s page. It\'s the "IP Message Box" widget in the "IssuePress Dashboard Main" WordPress sidebar.'
         );
@@ -204,11 +204,11 @@ class UP_IssuePress {
           'ip_sections-1',
         );
 
-        $widget_data = get_option('widget_ip_section');
-        $widget_data[1] = array(
+        $widget_data = get_option('widget_ip_sections');
+        $widget_data[0] = array(
           'title' => 'Sections'
         );
-        update_option('widget_ip_section', $widget_data);
+        update_option('widget_ip_sections', $widget_data);
 
       } else if ($widget_loc[1] == 'ip-dashboard-main') {
 
@@ -217,7 +217,7 @@ class UP_IssuePress {
         );
 
         $widget_data = get_option('widget_ip_recent_activity');
-        $widget_data[1] = array(
+        $widget_data[0] = array(
           'title' => 'Recent Activity'
         );
         update_option('widget_ip_recent_activity', $widget_data);
