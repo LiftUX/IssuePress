@@ -138,9 +138,9 @@ angular.module('AppState', [])
       });
     },
   
-    issueComment: function(repo, issue, comment) {
+    issueComment: function(repo, issue, commentData) {
       var org = IPAppState.getOwner(repo);
-      return $http.post(ipUrl + org + '/' + repo + '/' + issue, comment).then(function(result) { 
+      return $http.post(ipUrl + org + '/' + repo + '/' + issue, commentData).then(function(result) { 
         return result.data; 
       });
     },
