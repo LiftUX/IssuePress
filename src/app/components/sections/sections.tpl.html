@@ -3,19 +3,14 @@
     {{title}}
   </div>
 
-  <div class="section-nav" data-ng-show="sections">
-    <a href="">Most Recent</a>
-    <a href="">All</a>
+  <div data-ng-show="sections">
+    <a href="#/{{section.name}}" class="support-section" data-ng-repeat="section in sections" title="{{section.name}} Section">
+      <div class="support-section-title">{{section.name}}</div>
+    </a>
   </div>
 
-  <a href="#/{{section.href}}" class="support-section" data-ng-repeat="section in sections">
-    <div class="support-section-title">{{section.title}}</div>
-    <div class="support-section-date">{{section.date}}</div>
-  </a>
-
   <p data-ng-hide="sections">
-    <strong>No sections have been added yet, inform your administrator! </strong><br>
-    <a href="#/dashboard">Back to the dashboard</a>
+    <strong>No sections have been added yet!</strong><br>
   </p>
 
 </section>

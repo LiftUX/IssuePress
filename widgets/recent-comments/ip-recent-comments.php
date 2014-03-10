@@ -49,10 +49,6 @@ if(!class_exists('ip_recent_comments')){
 //      echo $after_widget;
 //    }
 
-    public function update($new_instance, $old_instance){
-      return $new_instance;
-    }
-
     public function form($instance){
       $form = '';
 

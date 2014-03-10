@@ -44,7 +44,38 @@ class UP_IssuePress {
   * @var $print_scripts
   */
   private $print_scripts = false;
-  private $widget_locs = null;
+  private $widget_locs = array(
+    array(
+      'IssuePress Dashboard Main',
+      'ip-dashboard-main',
+      'Control the content in the IssuePress "Dashboard" page.',
+    ),
+    array(
+      'IssuePress Dashboard Sidebar',
+      'ip-dashboard-side',
+      'Control the content in the IssuePress "Dashboard" page\'s sidebar',
+    ),
+    array(
+      'IssuePress Sections Sidebar',
+      'ip-sections-side',
+      'Control the content in the IssuePress "Sections" page\'s sidebar',
+    ),
+    array(
+      'IssuePress Section Main',
+      'ip-section-main',
+      'Control the content in the IssuePress "Section" page.',
+    ),
+    array(
+      'IssuePress Section Sidebar',
+      'ip-section-side',
+      'Control the content in the IssuePress "Section" page\'s sidebar',
+    ),
+    array(
+      'IssuePress Issue Sidebar',
+      'ip-issue-side',
+      'Control the content in the IssuePress "Issue Thread" page\'s sidebar',
+    ),
+  );
 
   private $ip_api;
 
@@ -58,32 +89,26 @@ class UP_IssuePress {
 
     $this->ip_api = new UPIP_api();
 
-    add_action('template_redirect', array($this, 'load_IP_template'), 0);
+    add_action('template_include', array($this, 'load_IP_template'), 0);
 
     add_action('init', array($this, 'register_IP_scripts'), 0);
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
-
     add_action('update_option_issuepress_options', array($this, 'create_IP_labels'), 5, 2);
-
     add_action('admin_print_styles', array($this, 'resize_icon'), 20);
-
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
-
     add_action('admin_init', array($this, 'theme_updater'),0);
 
-  }
-
-  public function testing_updates($option, $new, $old, $another){
-    echo "TESTING\n";
-    var_dump($option);
-    echo "\n";
-    var_dump($new);
-    echo "\n";
-    var_dump($old);
-    echo "\n";
-    var_dump($another);
+    register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );  
+    register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
 
   }
+
+  public function flush_rewrites(){
+
+    flush_rewrite_rules();
+
+  }
+
 
   public function get_version(){
     $plugin_data = get_plugin_data( IP_MAIN_PLUGIN_FILE );
@@ -92,11 +117,11 @@ class UP_IssuePress {
   }
 
   /**
-  * Overwrite the default template with IssuePress Backbone App
+  * Overwrite the default template with IssuePress Angular App
   *
   * @return void
   */
-  public function load_IP_template(){
+  public function load_IP_template( $original_template ){
 
     // Check if we've got work to do.
     if( !get_query_var("pagename") && !get_query_var("page_id") )
@@ -109,28 +134,16 @@ class UP_IssuePress {
 
     // Check if the page being served matches the name or ID of the one set in options
     if(get_query_var("pagename") == $IP_landing_name || get_query_var("page_id") == $IP_landing_id){
-      if(file_exists($IP_dir . '/IP_template.php')){
-        $return_template = $IP_dir . '/IP_template.php';
+
+      $ip_tpl = $IP_dir . '/IP_template.php';
+      if(file_exists($ip_tpl)){
         $this->print_scripts = true;
-        $this->do_theme_direct($return_template);
+        return $ip_tpl; 
+      } else {
+        return $original_template;
       }
     }
 
-  }
-
-  /**
-  * Actually load our template instead of the requested page
-  *
-  * @return void
-  */
-  private function do_theme_direct($url){
-    global $post, $wp_query;
-    if(have_posts()){
-      include($url);
-      die();
-    } else {
-      $wp_query->is_404 = true;
-    }
   }
 
 
@@ -141,41 +154,7 @@ class UP_IssuePress {
   */
   public function register_IP_sidebars() {
 
-    // Build out the various sidebar detail in an array for easy registering...
-    $widget_locs = array(
-      array(
-        'IssuePress Dashboard Main',
-        'ip-dashboard-main',
-        'Control the content in the IssuePress "Dashboard" page.',
-      ),
-      array(
-        'IssuePress Dashboard Sidebar',
-        'ip-dashboard-side',
-        'Control the content in the IssuePress "Dashboard" page\'s sidebar',
-      ),
-      array(
-        'IssuePress Sections Sidebar',
-        'ip-sections-side',
-        'Control the content in the IssuePress "Sections" page\'s sidebar',
-      ),
-      array(
-        'IssuePress Section Main',
-        'ip-section-main',
-        'Control the content in the IssuePress "Section" page.',
-      ),
-      array(
-        'IssuePress Section Sidebar',
-        'ip-section-side',
-        'Control the content in the IssuePress "Section" page\'s sidebar',
-      ),
-      array(
-        'IssuePress Issue Sidebar',
-        'ip-issue-side',
-        'Control the content in the IssuePress "Issue Thread" page\'s sidebar',
-      ),
-    );
-
-    $this->widget_locs = $widget_locs;
+    $widget_locs = $this->widget_locs;
 
     // Loop through our sidebar details and register them
     foreach($widget_locs as $widget_loc){
@@ -185,7 +164,78 @@ class UP_IssuePress {
         'description' => __($widget_loc[2], 'IssuePress'),
       ));
     }
+
   }
+
+
+  /**
+  * Initialize the IP sidebars with widgets after activiation 
+  *
+  * @return void
+  */
+  public function init_IP_sidebar_widgets() {
+
+    $sidebars_widgets = get_option( 'sidebars_widgets' );
+
+    $widget_locs = $this->widget_locs;
+
+    foreach($widget_locs as $widget_loc) {
+
+      if(!empty($sidebars_widgets[$widget_loc[1]])){
+
+        // Do nothing, this sidebar already has stuff in it
+
+      } else if($widget_loc[1] == 'ip-dashboard-main') {
+
+        $sidebars_widgets[$widget_loc[1]] = array(
+          'ip_message-1',
+        );
+        $this->init_widget('ip_message', array(
+          'title' => 'Welcome to IssuePress',
+          'msg' => 'We\'ve added some introductory content, customize this in the wp-admin on the widget\'s page. It\'s the "IP Message Box" widget in the "IssuePress Dashboard Main" WordPress sidebar.'
+        ));
+
+      } else if($widget_loc[1] == 'ip-dashboard-side') {
+
+        $sidebars_widgets[$widget_loc[1]] = array(
+          'ip_sections-1',
+        );
+        $this->init_widget('ip_sections', array('title' => 'Sections'));
+
+      } else if ($widget_loc[1] == 'ip-section-main') {
+
+        $sidebars_widgets[$widget_loc[1]] = array(
+          'ip_recent_activity-1',
+        );
+        $this->init_widget('ip_recent_activity', array('title' => 'Recent Activity'));
+
+      }
+
+    }
+
+    update_option('sidebars_widgets', $sidebars_widgets);
+
+  }
+
+
+  /*
+   * Init Widget Util Function
+   *
+   * Initializes the content of a widget at specified index with array of settings
+   *
+   * @param $widget STRING - Widget id
+   * @param $settings STRING - Sidebar
+   * @param $i INT - Index to update, defaults to 1
+   * @return void
+   */
+  public function init_widget($widget, $settings, $i = 1) {
+
+    $widget_data = get_option('widget_' . $widget);
+    $widget_data[$i] = $settings;
+    update_option('widget_' . $widget, $widget_data);
+
+  }
+
 
   /**
    * Get IP Sidebars
@@ -319,6 +369,7 @@ class UP_IssuePress {
       return 'undefined';
 
     foreach($options['upip_gh_repos'] as $index => $item) {
+
 
       $repoCache = $this->ip_api->ip_get_repo_cache($item);
       
@@ -474,4 +525,5 @@ class UP_IssuePress {
   <?php
   }
 }
-new UP_IssuePress();
+
+$UP_IP = new UP_IssuePress();

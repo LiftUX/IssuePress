@@ -1,5 +1,7 @@
 
-angular.module('sections', ['AppState'])
+angular.module('sections', [
+  'AppState'
+])
 
 .controller('SectionsCtrl', ['$scope', '$location', 'IPAppState', function($scope, $location, IPAppState) {
   

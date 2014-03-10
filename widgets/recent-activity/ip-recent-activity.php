@@ -21,25 +21,6 @@ if(!class_exists('ip_recent_activity')){
       if(!$title)
         $title = '';
 
-//      $ng_html =  '<div data-ip-recent-activity title="'. $title .'">' .
-//                    '<div data-ng-repeat="item in activity">' .
-//                      '<div data-ip-recent-activity-item ng-switch="item.type">' .
-//
-//                        '<div data-ng-switch-when="issue_comment">'.
-//                          '<div data-ip-recent-activity-item-title href="{{item.href}}">{{item.title}}</div>'.
-//                          '<div data-ip-recent-activity-item-meta>{{item.meta}}</div>'.
-//                          '<div>{{item.comment.body}}</div>'.
-//                        '</div>'.
-//
-//                        '<div data-ng-switch-when="issue">'.
-//                          '<div data-ip-recent-activity-item-meta>{{item.meta}}</div>'.
-//                          '<div data-ip-recent-activity-item-title href="{{item.href}}">{{item.title}}</div>'.
-//                        '</div>'.
-//
-//                      '</div>'.
-//                    '</div>' .
-//                  '</div>';
-//
       $ng_html =  '<div data-ip-recent-activity title="'. $title . '">' .
                     '<div data-ng-show="activity.length" ng-if="activity" data-ng-repeat="item in activity" data-ip-recent-activity-item ' . 
                           'href="#/{{repo}}/{{item.issue.number}}" ' .
@@ -72,10 +53,6 @@ if(!class_exists('ip_recent_activity')){
 //
 //      echo $after_widget;
 //    }
-
-    public function update($new_instance, $old_instance){
-      return $new_instance;
-    }
 
     public function form($instance){
       $form = '';

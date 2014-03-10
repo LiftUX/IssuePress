@@ -1701,6 +1701,7 @@ angular.module('ui.timeago', [])
   }
 });
 
+
 angular.module('AppState', [])
 
 .factory('IPAppState', function(){
@@ -1911,7 +1912,9 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
 });
 
 
-angular.module('components.message', []).directive('ipMessage', function() {
+angular.module('components.message', [])
+
+.directive('ipMessage', function() {
   return {
     restrict: 'A',
     replace: true,
@@ -2082,7 +2085,12 @@ angular.module('components.search', ['AppState'])
   };
 });
 
-angular.module('components.sections', []).directive('ipSections', function() {
+
+angular.module('components.sections', [
+  'AppState',
+])
+
+.directive('ipSections', function() {
   return {
     restrict: 'A',
     replace: true,
@@ -2090,9 +2098,12 @@ angular.module('components.sections', []).directive('ipSections', function() {
       'title': '@title',
     },
     templateUrl: IP_PATH + '/app/components/sections/sections.tpl.html',
-//    controller: function($scope, ipData) {
-//      $scope.sections = ipData.sections.getAll();
-//    }
+    controller: function($scope, IPAppState) {
+
+      if(IPAppState.repos !== 'undefined') {
+        $scope.sections = IPAppState.repos;
+      }
+    }
   };
 });
 
@@ -2311,7 +2322,9 @@ angular.module('repo', ['AppState'])
 }]);
 
 
-angular.module('sections', ['AppState'])
+angular.module('sections', [
+  'AppState'
+])
 
 .controller('SectionsCtrl', ['$scope', '$location', 'IPAppState', function($scope, $location, IPAppState) {
   

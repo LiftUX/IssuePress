@@ -108,6 +108,8 @@ class UPIP_api{
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&ip_org=$matches[1]&ip_repo=$matches[2]','top');
     add_rewrite_rule('^' . IP_API_PATH .'?','index.php?__ip_api=1','top');
 
+    flush_rewrite_rules();
+
   }
 
   /**
