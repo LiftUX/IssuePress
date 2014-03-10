@@ -1841,9 +1841,9 @@ angular.module('AppState', [])
       });
     },
   
-    issueComment: function(repo, issue, comment) {
+    issueComment: function(repo, issue, commentData) {
       var org = IPAppState.getOwner(repo);
-      return $http.post(ipUrl + org + '/' + repo + '/' + issue, comment).then(function(result) { 
+      return $http.post(ipUrl + org + '/' + repo + '/' + issue, commentData).then(function(result) { 
         return result.data; 
       });
     },
@@ -1903,9 +1903,54 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
     restrict: 'A',
     replace: true,
     scope: {},
-    controller: ['$scope', function($scope) {
-      $scope.user = $scope.$parent.user;
-      $scope.login_link = $scope.$parent.login_link;
+    controller: ['$scope', '$location', '$routeParams', '$timeout', 'IPAPI', 'IPUser', function($scope, $location, $routeParams, $timeout, IPAPI, IPUser) {
+
+      
+      var repo = $routeParams.repo;
+      var issue = $routeParams.issue;
+
+      $scope.comment = {};
+      $scope.comment.meta = IPUser.user;
+      $scope.user = IPUser.user;
+      $scope.loginLink = IPUser.login_link + encodeURIComponent("#" + $location.$$url );
+
+      $scope.submitForm = function(){
+
+        if( $scope.commentForm.$valid ) {
+          console.log("Form Submitted");
+
+          $scope.formSubmitted = true;
+          IPAPI.issueComment(repo, issue, $scope.comment).then(function(result){
+
+            if(result) {
+              $scope.resetForm();
+            } 
+
+            console.log(result);
+
+          });
+
+        }
+
+      };
+
+      $scope.resetForm = function() {
+
+        $scope.comment = {};
+        $scope.commentForm.$setPristine();
+
+        $timeout(function() {
+          $scope.formSubmitted = false;
+        }, 1500);
+      };
+
+      $scope.hasUser = function(){
+        if(IPUser.user)
+          return true;
+        else
+          return false;
+      };
+
     }],
     templateUrl: IP_PATH + '/app/components/issue-thread/issue-form.tpl.html'
   };
