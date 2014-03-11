@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: IssuePress
-Plugin URI: http://upthemes.com/plugins/issuepress
-Description: Github Issues integration with WP - for support stuff
-Version: 0.0.1
-Author: Upthemes
+Plugin URI: http://issuepress.co/
+Description: Create a public support page for your private Github repositories, brought to you by UpThemes.
+Version: 1.0.0 beta 1
+Author: UpThemes
 Author URI: http://upthemes.com/
 */
 
