@@ -125,7 +125,7 @@ class UP_IssuePress {
 
     // Check if we've got work to do.
     if( !get_query_var("pagename") && !get_query_var("page_id") )
-      return false;
+      return $original_template;
 
     $IP_dir = dirname(IP_MAIN_PLUGIN_FILE);
     $IP_options = get_option('issuepress_options');
@@ -142,6 +142,8 @@ class UP_IssuePress {
       } else {
         return $original_template;
       }
+    } else {
+      return $original_template;
     }
 
   }
