@@ -236,16 +236,19 @@ class UPIP_api{
     if( $this->test_mode ) {
       $data['test'] = array();
 
-      if($org)
+      if(isset($org))
         $data['test']['org'] = $org;
 
-      if($repo)
+      if(isset($repo))
         $data['test']['repo'] = $repo;
 
-      if($issue)
+      if(isset($issue))
         $data['test']['issue'] = $issue;
 
-      if($method)
+      if(isset($is_search))
+        $data['test']['is_search'] = $is_search;
+
+      if(isset($method))
         $data['test']['method'] = $method;
 
     }
@@ -468,19 +471,25 @@ class UPIP_api{
       $repos = array($data['repo']);
     }
 
-//    For Testing
-//
-//    $r = array();
-//    $r['q'] = $data['q'];
-//    $r['repo'] = $data['repo'];
-//    $r['repos'] = $repos;
-
     $q = $data['q'];
     $params = array();
     $params['repos'] = $repos;
 
+
     $client = $this->get_client();
     $response = $client->api('issue')->find($q, $params);
+
+
+//    For Testing
+
+//    $r = array();
+//    $r['q'] = $data['q'];
+//    $r['repo'] = $data['repo'];
+//    $r['repos'] = $repos;
+//    $r['req-data'] = $data;
+//    $r['q'] = $q;
+//    $r['params'] = $params;
+
 
     return $response;
   }
@@ -526,7 +535,7 @@ class UPIP_api{
       return array('undefined');
 
     foreach($options['upip_gh_repos'] as $index => $item) {
-      $repos[] = $this->user['login'] . "/" . $item;
+      $repos[] = $item;
     }
 
     return $repos;
