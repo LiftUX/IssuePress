@@ -9,12 +9,17 @@ angular.module('header', ['user'])
   };
 })
 
-.controller('HeaderCtrl', ['$rootScope', '$scope', '$location', 'IPUser',
-function ($rootScope, $scope, $location, IPUser) {
+.controller('HeaderCtrl', ['$rootScope', '$scope', '$location', '$route', 'IPUser', function ($rootScope, $scope, $location, $route, IPUser) {
 
   $rootScope.$on('$routeChangeSuccess', function(scope, current) {
     $scope.loc = $location.$$url;
     $scope.login_link = IPUser.login_link + encodeURIComponent("#" + $scope.loc);
+
+    if($route.current.params.repo) {
+      $scope.repo = $route.current.params.repo;
+    } else {
+      $scope.repo = '';
+    }
   });
 
   $scope.loc = $location.$$url;
