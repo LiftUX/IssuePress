@@ -125,7 +125,7 @@ class UP_IssuePress {
 
     // Check if we've got work to do.
     if( !get_query_var("pagename") && !get_query_var("page_id") )
-      return false;
+      return $original_template;
 
     $IP_dir = dirname(IP_MAIN_PLUGIN_FILE);
     $IP_options = get_option('issuepress_options');
@@ -136,12 +136,15 @@ class UP_IssuePress {
     if(get_query_var("pagename") == $IP_landing_name || get_query_var("page_id") == $IP_landing_id){
 
       $ip_tpl = $IP_dir . '/IP_template.php';
-      if(file_exists($ip_tpl)){
+      if(file_exists($ip_tpl)){ // Does the template exist? 
         $this->print_scripts = true;
         return $ip_tpl; 
-      } else {
+      } else { // Fallback to original template if something is terribly wrong
         return $original_template;
       }
+
+    } else {
+      return $original_template;
     }
 
   }
