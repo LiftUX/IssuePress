@@ -50,7 +50,10 @@ angular.module('components.search', ['AppState'])
 
             $scope.searchComplete = true;
             $scope.isSearching = false;
-            $scope.results = data.data.response.items;
+
+            if(typeof data.data.response.items !== 'undefined') { 
+              $scope.results = data.data.response.items;
+            }
 
           }
         });
@@ -58,6 +61,7 @@ angular.module('components.search', ['AppState'])
       };
 
       $scope.$watch('results', function(nVal, oVal) {
+
         if(nVal.length === 0) {
           $scope.hasResults = false;
         } else {
