@@ -149,7 +149,6 @@ angular.module('AppState', [])
       if(search.repo !== 'all') {
         search.repo = IPAppState.getOwner(search.repo) + '/' + search.repo;
       }
-      console.log(search.repo);
       return $http.post(ipUrl + 'search/', search).then(function(result){
         return result.data;
       });
