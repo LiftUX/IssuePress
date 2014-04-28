@@ -364,24 +364,38 @@ section {
     position: relative;
   }
 
+  .form-wrapper {
+    @extend .clearfix;
+    position: relative;
+  }
+
+  .textbox {
+    z-index:1;
+    margin:0;
+    padding-right: 15%;
+  }
+
+  .submit {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 2;
+    width: 80px;
+  }
+
   .spinner {
     position: absolute;
     top: 11px;
-    right: 13px;
+    right: 94px;
     width: 24px;
     height: 24px;
     display: block;
     overflow: hidden;
     text-indent: -999em;
     z-index: 2;
-
-    background: rgb(60,60,60);
+    background: transparent url(../img/spinner.gif) no-repeat center center scroll;
   }
 
-  .textbox {
-    z-index:1;
-    margin:0;
-  }
 
   .live-search-results {
     margin-top:-.15em;

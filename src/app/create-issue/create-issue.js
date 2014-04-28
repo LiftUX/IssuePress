@@ -12,7 +12,6 @@ angular.module('create-issue', ['AppState'])
   $scope.submitForm = function(){
 
     if( $scope.issueForm.$valid ) {
-      console.log("Form Submitted");
 
       IPAPI.issueNew(repo, $scope.issue).then(function(result){
         if(result) {

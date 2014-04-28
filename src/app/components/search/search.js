@@ -12,7 +12,7 @@ angular.module('components.search', ['AppState'])
       
       $scope.q = '';
       $scope.isSearching = false;
-      $scope.searchComplete = $scope.hasResults = false;
+      $scope.searchComplete = $scope.hasResults = $scope.lastQ = false;
       $scope.results = [];
 
       var target = 'all';
@@ -22,26 +22,16 @@ angular.module('components.search', ['AppState'])
 
       var timeout;
 
-      $scope.$watch('q', function(nVal, oVal){
+      $scope.submitForm = function(){
 
-        $scope.searchComplete = $scope.hasResults = false;
+        if( $scope.searchForm.$valid && ($scope.q !== $scope.lastQ) ) {
 
-        if(nVal.length < 3) {
-          return;
-        }
-
-        $scope.isSearching = true;
-
-        if(nVal !== oVal) {
-          if(timeout) $timeout.cancel(timeout);
-          
-          timeout = $timeout(function(){
-            $scope.executeSearch();
-          }, 600);
+          $scope.isSearching = true;
+          $scope.executeSearch();
 
         }
 
-      });
+      };
 
       $scope.executeSearch = function(){
 
@@ -50,6 +40,7 @@ angular.module('components.search', ['AppState'])
 
             $scope.searchComplete = true;
             $scope.isSearching = false;
+            $scope.lastQ = $scope.q;
 
             if(typeof data.data.response.items !== 'undefined') { 
               $scope.results = data.data.response.items;
