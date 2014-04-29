@@ -15,10 +15,8 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
       return false;
   };
 
-
   $scope.issue = {};
   $scope.comments = [];
-
 
   // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
   IPData.getIssueData($routeParams.repo, $routeParams.issue).then(function(data){
