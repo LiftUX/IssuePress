@@ -7,7 +7,7 @@ angular.module('ui.markdown', [])
 
 }])
 
-.directive('markdown', ['$timeout', 'marked', function($timeout, marked){
+.directive('markdown', ['$timeout', '$interpolate', 'marked', function($timeout, $interpolate, marked){
   return {
     restrict: 'A',
     replace: true,
@@ -16,11 +16,18 @@ angular.module('ui.markdown', [])
 //      'body': '@body',
     },
     link: function(scope, element, attrs) {
-      var timeoutID = $timeout(function() {
-        element.html(marked(element.text()));
-      }, 1000);
+      scope.rawText = element.text();
+
+      scope.$watch(function(){
+        return element.text();
+      }, function(newVal, oldVal) {
+        if(newVal && newVal !== scope.rawText) {
+          element.html(marked(element.text()));
+        }
+      });
     },
     template: '<div class="rendered-markdown" data-ng-transclude></div>'
   };
 }]);
+
 
