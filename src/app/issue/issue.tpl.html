@@ -11,12 +11,12 @@
 
     <div class="comment" data-ng-class="{staff:isStaff(issue.user.login)}" data-ng-show="issue.id">
       <div class="comment-meta">
-        <a href="" class="author">
+        <span class="author">
           <div data-gravatar-image gravatar-hash="{{issue.user.gravatar_id}}" s="300"></div>
           <span class="author-name">{{issue.user.login}}</span>
           <span class="author-action">created an issue</span>
-        </a>
-        <a href="" class="comment-timeago">{{issue.created_at | timeago}}</a>
+        </span>
+        <span class="comment-timeago">{{issue.created_at | timeago}}</span>
       </div>
       <div class="comment-content">
         <div class="comment-title" data-ng-if="title">{{issue.title}}</div>
@@ -33,12 +33,12 @@
 
     <div data-ng-repeat="comment in comments" class="comment" data-ng-class="{staff:isStaff(comment.user.login)}">
       <div class="comment-meta">
-        <a href="" class="author">
+        <span class="author">
           <div data-gravatar-image gravatar-hash="{{comment.user.gravatar_id}}" s="300"></div>
           <span class="author-name">{{comment.user.login}}</span>
           <span class="author-action">said</span>
-        </a>
-        <a href="" class="comment-timeago">{{comment.updated_at | timeago}}</a>
+        </span>
+        <span href="" class="comment-timeago">{{comment.updated_at | timeago}}</span>
       </div>
       <div class="comment-content">
         <div data-ng-show="comment.body" class="comment-body"><div data-markdown>{{comment.body}}</div></div>
