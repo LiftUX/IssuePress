@@ -18,11 +18,18 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
   $scope.issue = {};
   $scope.comments = [];
 
-  // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
-  IPData.getIssueData($routeParams.repo, $routeParams.issue).then(function(data){
-    console.log(data);
-    $scope.issue = data.issue;
-    $scope.comments = data.comments;
+  $scope.fetchData = function() {
+    // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
+    IPData.getIssueData($routeParams.repo, $routeParams.issue).then(function(data){
+      $scope.issue = data.issue;
+      $scope.comments = data.comments;
+    });
+  };
+
+  $scope.fetchData();
+
+  $scope.$on('issueCommentSuccess', function(){
+    $scope.fetchData();
   });
 
   

@@ -15,8 +15,7 @@ angular.module('create-issue', ['AppState'])
 
       IPAPI.issueNew(repo, $scope.issue).then(function(result){
         if(result) {
-
-          $scope.issueLink = repo + "/" + result.data.data.response.number;
+          $scope.issueLink = repo + "/" + result.data.response.number;
           $scope.formSubmitted = true;
         }
       });

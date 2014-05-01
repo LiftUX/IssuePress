@@ -1787,10 +1787,12 @@ angular.module('AppState', [])
     var issues = data[owner + '/' + repo].issues;
     var hasIssueCached = false;
 
-    issues.forEach(function(e, i, a){
-      if(issue == e.number)
-        hasIssueCached = i;
-    });
+// Let's assume no issue cache so comments show up immediately
+//
+//    issues.forEach(function(e, i, a){
+//      if(issue == e.number)
+//        hasIssueCached = i;
+//    });
 
     if(hasIssueCached !== false) {
 
@@ -1927,16 +1929,14 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
       $scope.submitForm = function(){
 
         if( $scope.commentForm.$valid ) {
-          console.log("Form Submitted");
 
           $scope.formSubmitted = true;
           IPAPI.issueComment(repo, issue, $scope.comment).then(function(result){
 
             if(result) {
+              $scope.$emit('issueCommentSuccess');
               $scope.resetForm();
             } 
-
-            console.log(result);
 
           });
 
@@ -2205,8 +2205,7 @@ angular.module('create-issue', ['AppState'])
 
       IPAPI.issueNew(repo, $scope.issue).then(function(result){
         if(result) {
-
-          $scope.issueLink = repo + "/" + result.data.data.response.number;
+          $scope.issueLink = repo + "/" + result.data.response.number;
           $scope.formSubmitted = true;
         }
       });
@@ -2287,11 +2286,18 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
   $scope.issue = {};
   $scope.comments = [];
 
-  // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
-  IPData.getIssueData($routeParams.repo, $routeParams.issue).then(function(data){
-    console.log(data);
-    $scope.issue = data.issue;
-    $scope.comments = data.comments;
+  $scope.fetchData = function() {
+    // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
+    IPData.getIssueData($routeParams.repo, $routeParams.issue).then(function(data){
+      $scope.issue = data.issue;
+      $scope.comments = data.comments;
+    });
+  };
+
+  $scope.fetchData();
+
+  $scope.$on('issueCommentSuccess', function(){
+    $scope.fetchData();
   });
 
   
