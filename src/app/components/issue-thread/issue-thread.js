@@ -42,16 +42,14 @@ angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
       $scope.submitForm = function(){
 
         if( $scope.commentForm.$valid ) {
-          console.log("Form Submitted");
 
           $scope.formSubmitted = true;
           IPAPI.issueComment(repo, issue, $scope.comment).then(function(result){
 
             if(result) {
+              $scope.$emit('issueCommentSuccess');
               $scope.resetForm();
             } 
-
-            console.log(result);
 
           });
 

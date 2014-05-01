@@ -77,10 +77,12 @@ angular.module('AppState', [])
     var issues = data[owner + '/' + repo].issues;
     var hasIssueCached = false;
 
-    issues.forEach(function(e, i, a){
-      if(issue == e.number)
-        hasIssueCached = i;
-    });
+// Let's assume no issue cache so comments show up immediately
+//
+//    issues.forEach(function(e, i, a){
+//      if(issue == e.number)
+//        hasIssueCached = i;
+//    });
 
     if(hasIssueCached !== false) {
 
