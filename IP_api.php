@@ -656,6 +656,23 @@ Sent via [IssuePress](http://issuepress.co)
     return $data;
   }
 
+  /**
+   * IP cache clear
+   *
+   * Utility function wrapping the delete_transient(),
+   * first checks if IP cache is enabled, proceeds if so.
+   *
+   * @param $key STRING
+   * @return TRUE if successful, FALSE otherwise 
+   */
+  private function ip_cache_clear($key='') {
+    if(!$this->cacheIsOn || $key == '')
+      return false;
+
+    $clear = delete_transient('ip-'.$key); // Note the prepending 'ip-'
+    return $clear;
+  }
+
   /*** END IP Cache Functions ***/
 
 
@@ -699,5 +716,35 @@ Sent via [IssuePress](http://issuepress.co)
     return $repoCache;
 
   }
+
+
+  /**
+   * IP Repo Cache Clear
+   *
+   * Utility function to clear all related transients for a repo
+   *
+   * @param $key STRING
+   * @return void
+   */
+  public function ip_clear_repo_cache($repo=''){
+
+    $cacheKeys = array(
+      'repo',
+      'issues',
+      'activity',
+      'comments',
+//      'releases', Releases currently disabled
+    );
+
+    foreach($cacheKeys as $key){
+
+      $this->ip_cache_clear($repo . '-' . $key);
+
+    }
+
+    return;
+
+  }
+
 
 }

@@ -94,6 +94,7 @@ class UP_IssuePress {
     add_action('init', array($this, 'register_IP_scripts'), 0);
     add_action('ip_head', array($this, 'print_IP_scripts'), 20);
     add_action('update_option_issuepress_options', array($this, 'create_IP_labels'), 5, 2);
+    add_action('update_option_issuepress_options', array($this, 'clear_IP_cache'), 5, 2);
     add_action('admin_print_styles', array($this, 'resize_icon'), 20);
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
     add_action('admin_init', array($this, 'theme_updater'),0);
@@ -335,6 +336,27 @@ class UP_IssuePress {
     return;
 
   }
+
+
+  /**
+  * Clear IP cache  
+  *
+  * @return void
+  */
+  public function clear_IP_cache($old, $new) {
+
+    if(empty($old['upip_gh_repos'])){ 
+      return;
+    }
+
+    foreach($old['upip_gh_repos'] as $r){ 
+      $this->ip_api->ip_clear_repo_cache($r);
+    }
+
+    return;
+
+  }
+
 
 
   /**
