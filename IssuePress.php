@@ -3,7 +3,7 @@
 Plugin Name: IssuePress
 Plugin URI: http://issuepress.co/
 Description: Create a public support page for your private Github repositories, brought to you by UpThemes.
-Version: 1.0-beta
+Version: 1.0.3-beta
 Author: UpThemes
 Author URI: http://upthemes.com/
 */
@@ -97,6 +97,7 @@ class UP_IssuePress {
     add_action('admin_print_styles', array($this, 'resize_icon'), 20);
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
     add_action('admin_init', array($this, 'theme_updater'),0);
+    add_action('admin_notices', array($this, 'permalink_notice'),0);
 
     register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );  
     register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
@@ -323,6 +324,10 @@ class UP_IssuePress {
   */
   public function create_IP_labels($old, $new) {
 
+    if(empty($new['upip_gh_repos'])){ 
+      return;
+    }
+
     foreach($new['upip_gh_repos'] as $r){ 
       $this->ip_api->create_label($r, array( "name" => "issuepress", "color" => "936091"));
     }
@@ -527,6 +532,20 @@ class UP_IssuePress {
         <?php endif; ?>
   <?php
   }
+
+  public function permalink_notice() { 
+    if ( get_option('permalink_structure') ) {
+      return;
+    }
+
+  ?>
+    <div class="error">
+      <p><?php _e( 'IssuePress requires pretty permalinks to be set.', 'IssuePress' ); ?> <a href="<?php echo admin_url('options-permalink.php'); ?>" title="Update Permalinks Now">Update Permalinks Now</a></p>
+    </div> 
+  <?php
+  }
+
+
 }
 
 $UP_IP = new UP_IssuePress();
