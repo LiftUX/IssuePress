@@ -2,11 +2,15 @@
 
 class UPIP_admin {
 
+  private $client;
+
   public function __construct(){
     add_action('admin_init', array($this, 'init'));
     add_action('admin_menu', array($this, 'add_menu'));
     add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
     add_action('wp_ajax_upip-create-page', array($this,'ajax_create_page' ) );
+   
+    $this->client = new Github\Client();
 
     //print_r($_POST);
   }
@@ -60,7 +64,7 @@ class UPIP_admin {
   }
 
   public function add_menu() {
-    add_menu_page( __('IssuePress Options','issuepress'), 'IssuePress', 'manage_options', 'issuepress_options', array($this, 'draw_options_panel'), plugins_url("/assets/img/issuepress-wordpress-icon-32x32.png", __FILE__ ), 140);
+    add_menu_page( __('IssuePress Options','IssuePress'), 'IssuePress', 'manage_options', 'issuepress_options', array($this, 'draw_options_panel'), plugins_url("/assets/img/issuepress-wordpress-icon-32x32.png", __FILE__ ), 140);
   }
 
   public function draw_options_panel() { ?>
@@ -88,7 +92,7 @@ class UPIP_admin {
     echo '<style type="text/css"> @import url("' . plugins_url('vendor/chosen/chosen.min.css', __FILE__ ) . '"); </style>';
     ?>
 
-    <p><?php _e( 'Enter your Github personal token and select your support page and repositories below.','issuepress'); ?></p>
+    <p><?php _e( 'Enter your Github personal token and select your support page and repositories below.','IssuePress'); ?></p>
     <script type="text/javascript">
       jQuery(document).ready(function($){
         $(".chosen").chosen();
@@ -118,7 +122,7 @@ class UPIP_admin {
               $('<span>')
                 .insertAfter( $('#upip_support_page') )
                 .addClass('ip-alert')
-                .text('<?php _e("Please save options below.","issuepress"); ?>');
+                .text('<?php _e("Please save options below.","IssuePress"); ?>');
 
               $('#create-new-support-page')
                 .remove();
@@ -147,7 +151,7 @@ class UPIP_admin {
     $support_page_id = $issuepress_options['upip_support_page_id'];
 
     $output = '<select id="upip_support_page" name="issuepress_options[upip_support_page_id]">';
-    $output .= '<option value="">' . __('Select Page','issuepress') . '</option>';
+    $output .= '<option value="">' . __('Select Page','IssuePress') . '</option>';
 
     $pages = get_pages(array(
       'sort_order' => 'ASC',
@@ -164,7 +168,7 @@ class UPIP_admin {
     $output .= '</select> ';
 
     if( !$support_page_id ){
-      $output .= '<button class="button secondary" id="create-new-support-page">' . __('+ Create New','issuepress') . '</button>';
+      $output .= '<button class="button secondary" id="create-new-support-page">' . __('+ Create New','IssuePress') . '</button>';
     }
 
     echo $output;
@@ -176,21 +180,29 @@ class UPIP_admin {
   function github_repos_field(){
     $issuepress_options = get_option('issuepress_options');
 
+    /**
+     * Check if valid Github token in place
+     */
     if(!empty($issuepress_options['upip_gh_token'])) {
       $github_token = $issuepress_options['upip_gh_token'];
     } else {
       echo '<p>';
-      _e("No Github token entered. Please enter a valid personal token above to select repositories.","issuepress");
+      _e("No Github token entered. Please enter a valid personal token above to select repositories.","IssuePress");
       echo '</p>';
       return;
     }
 
-    if(isset($issuepress_options['upip_gh_repos']))
+    /**
+     * Fetch current ip repo data or init blank array
+     */
+    if(isset($issuepress_options['upip_gh_repos'])) {
       $selected_repos = $issuepress_options['upip_gh_repos'];
-    else $selected_repos = array();
+    } else {
+      $selected_repos = array();
+    }
 
     try {
-      $client = new Github\Client();
+      $client = $this->client;
       $client->authenticate($github_token, null, Github\Client::AUTH_HTTP_TOKEN);
       $gh_repos = $client->api('current_user')->repositories(array('per_page' => 100));
       $gh_orgs = $client->api('current_user')->orgs(array('per_page' => 100));
@@ -218,7 +230,7 @@ class UPIP_admin {
         }
       }
          
-      echo '<select data-placeholder="' . __('Select One or More Repositories ...','issuepress') . '" name="issuepress_options[upip_gh_repos][]" class="chosen chosen-multiple" multiple>';
+      echo '<select data-placeholder="' . __('Select One or More Repositories ...','IssuePress') . '" name="issuepress_options[upip_gh_repos][]" class="chosen chosen-multiple" multiple>';
 
       foreach($all_repos as $owner => $repos) {
         echo "\n\n";
@@ -256,19 +268,19 @@ class UPIP_admin {
 
     // Ensure our Github token actually works
     try{
-      $client = new Github\Client();
+      $client = $this->client;
       $client->authenticate($github_token, null, Github\Client::AUTH_HTTP_TOKEN);
       $gh_repos = $client->api('current_user')->repositories(array('per_page' => 100));
       $github_token = 'valid';
     } catch( Exception $e ){
-      $message = sprintf( __("Github Token Error: %s","issuepress"), $e->getMessage() );
+      $message = sprintf( __("Github Token Error: %s","IssuePress"), $e->getMessage() );
       add_settings_error( 'upip_gh_token', 'token-error', $message, 'error' );
       $github_token = 'invalid';
     }
 
     // Ensure the user has selected one or more repositories
     if( empty($github_repos) && $github_token == 'valid' ){
-      $message = __("Please select one or more repositories to complete IssuePress setup.","issuepress");
+      $message = __("Please select one or more repositories to complete IssuePress setup.","IssuePress");
       add_settings_error( 'upip_gh_repos', 'no-repository-selected', $message, 'error' );
     }
 
