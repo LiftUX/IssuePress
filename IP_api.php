@@ -595,10 +595,12 @@ Sent via [IssuePress](http://issuepress.co)
    * @param array Label
    * @return void
    */
-  public function create_label($repo, $label) {
+  public function create_label($owner_repo_name, $label) {
+
+    list($owner, $repo) = explode("/", $owner_repo_name);
 
     $client = $this->get_client();
-    $labels = $client->api('issue')->labels()->all($this->user['login'], $repo);
+    $labels = $client->api('issue')->labels()->all($owner, $repo);
 
     $has_label = false;
 
@@ -610,7 +612,7 @@ Sent via [IssuePress](http://issuepress.co)
     if($has_label == true)
       return;
     
-    $client->api('issue')->labels()->create($this->user['login'], $repo, $label);
+    $client->api('issue')->labels()->create($owner, $repo, $label);
 
   }
 
