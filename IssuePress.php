@@ -3,7 +3,7 @@
 Plugin Name: IssuePress
 Plugin URI: http://issuepress.co/
 Description: Create a public support page for your private Github repositories, brought to you by UpThemes.
-Version: 1.0-beta
+Version: 1.0.2-beta
 Author: UpThemes
 Author URI: http://upthemes.com/
 */
@@ -323,6 +323,10 @@ class UP_IssuePress {
   * @return void
   */
   public function create_IP_labels($old, $new) {
+
+    if(empty($new['upip_gh_repos'])){ 
+      return;
+    }
 
     foreach($new['upip_gh_repos'] as $r){ 
       $this->ip_api->create_label($r, array( "name" => "issuepress", "color" => "936091"));
