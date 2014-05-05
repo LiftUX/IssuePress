@@ -2008,9 +2008,14 @@ angular.module('components.recentActivity', [])
     scope: {
       'icon': '@icon',
       'timeago': '@timeago',
-      'href': '@href'
+      'href': '@href',
+      'item': '='
     },
-    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html'
+    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html',
+    controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+      console.log("inside activity item controller");
+      console.log($scope.item);
+    }]
   };
 })
 
@@ -2102,7 +2107,6 @@ angular.module('components.search', ['AppState'])
             $scope.lastQ = $scope.q;
 
             if(typeof data.data.response.items !== 'undefined') { 
-              console.log(data.data.response);
               $scope.results = data.data.response.items;
             }
 
@@ -2374,6 +2378,7 @@ angular.module('repo', ['AppState'])
     if(data){
       $scope.issues = data.issues;
       $scope.activity = data.activity;
+      console.log(data.activity);
     }
   });
 

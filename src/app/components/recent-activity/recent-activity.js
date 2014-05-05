@@ -21,9 +21,14 @@ angular.module('components.recentActivity', [])
     scope: {
       'icon': '@icon',
       'timeago': '@timeago',
-      'href': '@href'
+      'href': '@href',
+      'item': '='
     },
-    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html'
+    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html',
+    controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+      console.log("inside activity item controller");
+      console.log($scope.item);
+    }]
   };
 })
 

@@ -24,6 +24,7 @@ if(!class_exists('ip_recent_activity')){
       $ng_html =  '<div data-ip-recent-activity title="'. $title . '">' .
                     '<div data-ng-show="activity.length" ng-if="activity" data-ng-repeat="item in activity" data-ip-recent-activity-item ' . 
                           'href="#/{{repo}}/{{item.issue.number}}" ' .
+                          'item="item" ' .
                           'timeago="{{item.created_at}}"> ' . 
 
                       '<div data-ip-recent-activity-item-meta><a href="#/{{repo}}/{{item.issue.number}}">{{item.actor.login}}</a> {{item.payload.action}} an issue in <a href="#/{{repo}}/">{{repo}}</a></div> ' . 
