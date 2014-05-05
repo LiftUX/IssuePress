@@ -43,6 +43,7 @@ angular.module('components.search', ['AppState'])
             $scope.lastQ = $scope.q;
 
             if(typeof data.data.response.items !== 'undefined') { 
+              console.log(data.data.response);
               $scope.results = data.data.response.items;
             }
 
