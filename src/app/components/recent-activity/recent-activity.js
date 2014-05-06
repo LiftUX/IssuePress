@@ -8,8 +8,19 @@ angular.module('components.recentActivity', [])
     transclude: true,
     scope: {
       'title': '@title',
+      'items': '='
     },
-    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity.tpl.html'
+    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity.tpl.html',
+    controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+      $scope.isLoading = true;
+
+      $scope.$watch("items", function(nVal, oVal) {
+        if(nVal) {
+          $scope.isLoading = false;
+        }
+      });
+        
+    }]
   };
 })
 
@@ -27,7 +38,7 @@ angular.module('components.recentActivity', [])
     templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html',
     controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
       console.log("inside activity item controller");
-      console.log($scope.item);
+      //console.log($scope.item);
     }]
   };
 })
