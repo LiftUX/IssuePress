@@ -4,6 +4,9 @@ angular.module('AppState', [])
 .factory('IPAppState', function(){
   var appState = window.IP_Vars;
 
+  /**
+   * Given a repo name, find the owner based on repos available
+   */
   appState.getOwner = function(repo){
     
     var owner = '';
@@ -13,6 +16,17 @@ angular.module('AppState', [])
     });
 
     return owner; 
+  };
+
+  /**
+   * Pulls the repo name out of a github url or repo.name value (e.g. "LiftUX/ip-testing")
+   */
+  appState.getRepoName = function(OwnerRepoString){
+
+    var splitString = OwnerRepoString.split('/'); // Split string by "/" character
+    var repo = splitString[splitString.length - 1]; // Get last item in the splitString array; the repo
+
+    return repo;
   };
 
   return appState;
