@@ -1,5 +1,8 @@
 
-angular.module('components.recentActivity', [])
+angular.module('components.recentActivity', [
+  'AppState',
+])
+
 
 .directive('ipRecentActivity', function() {
   return {
@@ -11,8 +14,60 @@ angular.module('components.recentActivity', [])
       'items': '='
     },
     templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity.tpl.html',
-    controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+    controller: ['$scope', '$element', '$attrs', 'IPAppState', function($scope, $element, $attrs, IPAppState) {
       $scope.isLoading = true;
+
+      $scope.isEventType = function(item, eventType){
+
+        if(item.type === eventType) {
+          return true;
+        }
+
+        return false;
+
+      };
+
+      $scope.isNonRepoEvent = function(item){
+
+        if( $scope.isEventType(item, "IssueCommentEvent") || $scope.isEventType(item, "IssuesEvent") ) {
+          return true;
+        }
+
+        return false;
+
+      };
+
+      $scope.itemAction = function(item) {
+
+        if($scope.isEventType(item, "IssuesEvent")) {
+          return item.payload.action + ' an issue';
+        } else if ($scope.isEventType(item, "IssueCommentEvent")) {
+          return 'made a comment';
+        } else {
+          return 'updated an issue';
+        }
+
+      };
+
+      $scope.isIssueCommentEvent = 
+
+      $scope.getIPRepo = function(item){
+
+        var repo = IPAppState.getRepoName(item.repo.name);
+        return repo;
+
+      };
+
+      $scope.getIPIssueLink = function(item){
+
+        if(item.payload.issue) {
+          var repo = IPAppState.getRepoName(item.repo.name);
+          return '#/' + repo + '/' + item.payload.issue.number;
+        }
+
+        return false;
+
+      };
 
       $scope.$watch("items", function(nVal, oVal) {
         if(nVal) {
@@ -37,21 +92,8 @@ angular.module('components.recentActivity', [])
     },
     templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html',
     controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
-      console.log("inside activity item controller");
-      //console.log($scope.item);
-    }]
-  };
-})
 
-.directive('ipRecentActivityItemTitle', function(){
-  return {
-    restrict: 'A',
-    replace: true,
-    transclude: true,
-    scope: {
-      'href': '@href',
-    },
-    template: '<a href="{{href}}" class="recent-activity-title"><div data-ng-transclude></div></a>'
+    }]
   };
 })
 
