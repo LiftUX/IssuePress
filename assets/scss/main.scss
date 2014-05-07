@@ -326,6 +326,7 @@ section {
       overflow:hidden;
       text-overflow:ellipsis;
       color:$body-copy-color;
+      display: block;
 
       & + .recent-activity-meta {
         margin:.5em 0 .5em 0;
@@ -340,10 +341,11 @@ section {
     .recent-activity-timeago {
       display:block;
       font-size:.7em;
-      color: lighten($body-copy-color,40%);
+      font-weight: 400;
+      color: $message-color;
       position:absolute;
       right:0;
-      top:50%;
+      top:40%;
       margin-top:-.5em;
     }
   }
