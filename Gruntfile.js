@@ -10,6 +10,7 @@ module.exports = function(grunt) {
           cssDir: 'assets/css',
           trace: true,
           force: true,
+          outputStyle: 'expanded',
           environment: 'production'
         }
       }

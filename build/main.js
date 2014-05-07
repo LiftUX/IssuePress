@@ -1714,6 +1714,9 @@ angular.module('AppState', [])
 .factory('IPAppState', function(){
   var appState = window.IP_Vars;
 
+  /**
+   * Given a repo name, find the owner based on repos available
+   */
   appState.getOwner = function(repo){
     
     var owner = '';
@@ -1723,6 +1726,17 @@ angular.module('AppState', [])
     });
 
     return owner; 
+  };
+
+  /**
+   * Pulls the repo name out of a github url or repo.name value (e.g. "LiftUX/ip-testing")
+   */
+  appState.getRepoName = function(OwnerRepoString){
+
+    var splitString = OwnerRepoString.split('/'); // Split string by "/" character
+    var repo = splitString[splitString.length - 1]; // Get last item in the splitString array; the repo
+
+    return repo;
   };
 
   return appState;
@@ -1986,7 +2000,10 @@ angular.module('components.message', [])
 });
 
 
-angular.module('components.recentActivity', [])
+angular.module('components.recentActivity', [
+  'AppState',
+])
+
 
 .directive('ipRecentActivity', function() {
   return {
@@ -1995,8 +2012,71 @@ angular.module('components.recentActivity', [])
     transclude: true,
     scope: {
       'title': '@title',
+      'items': '='
     },
-    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity.tpl.html'
+    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity.tpl.html',
+    controller: ['$scope', '$element', '$attrs', 'IPAppState', function($scope, $element, $attrs, IPAppState) {
+      $scope.isLoading = true;
+
+      $scope.isEventType = function(item, eventType){
+
+        if(item.type === eventType) {
+          return true;
+        }
+
+        return false;
+
+      };
+
+      $scope.isNonRepoEvent = function(item){
+
+        if( $scope.isEventType(item, "IssueCommentEvent") || $scope.isEventType(item, "IssuesEvent") ) {
+          return true;
+        }
+
+        return false;
+
+      };
+
+      $scope.itemAction = function(item) {
+
+        if($scope.isEventType(item, "IssuesEvent")) {
+          return item.payload.action + ' an issue';
+        } else if ($scope.isEventType(item, "IssueCommentEvent")) {
+          return 'made a comment';
+        } else {
+          return 'updated an issue';
+        }
+
+      };
+
+      $scope.isIssueCommentEvent = 
+
+      $scope.getIPRepo = function(item){
+
+        var repo = IPAppState.getRepoName(item.repo.name);
+        return repo;
+
+      };
+
+      $scope.getIPIssueLink = function(item){
+
+        if(item.payload.issue) {
+          var repo = IPAppState.getRepoName(item.repo.name);
+          return '#/' + repo + '/' + item.payload.issue.number;
+        }
+
+        return false;
+
+      };
+
+      $scope.$watch("items", function(nVal, oVal) {
+        if(nVal) {
+          $scope.isLoading = false;
+        }
+      });
+        
+    }]
   };
 })
 
@@ -2008,21 +2088,13 @@ angular.module('components.recentActivity', [])
     scope: {
       'icon': '@icon',
       'timeago': '@timeago',
-      'href': '@href'
-    },
-    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html'
-  };
-})
-
-.directive('ipRecentActivityItemTitle', function(){
-  return {
-    restrict: 'A',
-    replace: true,
-    transclude: true,
-    scope: {
       'href': '@href',
+      'item': '='
     },
-    template: '<a href="{{href}}" class="recent-activity-title"><div data-ng-transclude></div></a>'
+    templateUrl: IP_PATH + '/app/components/recent-activity/recent-activity-item.tpl.html',
+    controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+
+    }]
   };
 })
 
@@ -2373,6 +2445,7 @@ angular.module('repo', ['AppState'])
     if(data){
       $scope.issues = data.issues;
       $scope.activity = data.activity;
+      console.log(data.activity);
     }
   });
 

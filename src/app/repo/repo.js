@@ -11,6 +11,7 @@ angular.module('repo', ['AppState'])
     if(data){
       $scope.issues = data.issues;
       $scope.activity = data.activity;
+      console.log(data.activity);
     }
   });
 

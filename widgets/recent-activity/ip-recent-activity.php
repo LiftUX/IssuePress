@@ -19,22 +19,9 @@ if(!class_exists('ip_recent_activity')){
 
       $title = apply_filters('widget_title', $title);
       if(!$title)
-        $title = '';
+        $title = 'Recent Activity';
 
-      $ng_html =  '<div data-ip-recent-activity title="'. $title . '">' .
-                    '<div data-ng-show="activity.length" ng-if="activity" data-ng-repeat="item in activity" data-ip-recent-activity-item ' . 
-                          'href="#/{{repo}}/{{item.issue.number}}" ' .
-                          'timeago="{{item.created_at}}"> ' . 
-
-                      '<div data-ip-recent-activity-item-meta><a href="#/{{repo}}/{{item.issue.number}}">{{item.actor.login}}</a> {{item.payload.action}} an issue in <a href="#/{{repo}}/">{{repo}}</a></div> ' . 
-                      '<div data-ip-recent-activity-item-title href="#/{{repo}}/{{item.issue.number}}">{{item.issue.title}}</div> ' .
-
-                    '</div> ' .
-
-                    '<div data-ng-show="!activity.length">' .
-                      '<p>No Recent Activity</p>' .
-                    '</div>' .
-                  '</div> '; 
+      $ng_html =  '<div data-ip-recent-activity title="'. $title . '" items="activity"></div>'; 
 
 
 
