@@ -8,8 +8,8 @@ if(!class_exists('ip_recent_comments')){
     public function __construct(){
       parent::__construct(
         'ip_recent_comments',
-        'IP Recent Comment Activity',
-        array('description' => __('Displays a "context aware" list of recent IP Comment Activity. For use on IssuePress Sidebars only.', 'IssuePress'))
+        'IP Recent Comments',
+        array('description' => __('Displays a "context aware" list of recent IP Comments. For use on IssuePress Sidebar areas only.', 'IssuePress'))
       );
     }
 
@@ -22,14 +22,7 @@ if(!class_exists('ip_recent_comments')){
       if(!$title)
         $title = '';
 
-      $ng_html =  '<div data-ip-recent-activity title="'. $title .'">'.
-                  '  <div data-ng-repeat="item in activity" data-ip-recent-activity-item '.
-                  '    href="#/{{repo}}/{{item.issue.number}}"'.
-                  '    timeago="{{item.created_at}}">'.
-                  '    <div data-ip-recent-activity-item-meta><a href="">{{item.actor.login}}</a> {{item.event}} an issue in <a href="">{{repo}}</a></div>'.
-                  '    <div data-ip-recent-activity-item-title href="#/{{repo}}/{{item.issue.number}}">{{item.issue.title}}</div>'.
-                  '  </div>'.
-                  '</div>';
+      $ng_html =  '<div data-ip-recent-activity title="'. $title .'"></div>';
 
 
 
