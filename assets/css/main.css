@@ -770,7 +770,6 @@ section {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #222222;
   display: block;
 }
 .recent-activity .recent-activity-item .recent-activity-title + .recent-activity-meta {

@@ -48,32 +48,32 @@ class UP_IssuePress {
     array(
       'IssuePress Dashboard Main',
       'ip-dashboard-main',
-      'Control the content in the IssuePress "Dashboard" page.',
+      'Control the content in the main column of the "Dashboard" page of IssuePress.',
     ),
     array(
       'IssuePress Dashboard Sidebar',
       'ip-dashboard-side',
-      'Control the content in the IssuePress "Dashboard" page\'s sidebar',
+      'Control the content in the sidebar column of the "Dashboard" page of IssuePress.',
     ),
     array(
       'IssuePress Sections Sidebar',
       'ip-sections-side',
-      'Control the content in the IssuePress "Sections" page\'s sidebar',
+      'Control the content in the sidebar of the "Sections" page of IssuePress.',
     ),
     array(
       'IssuePress Section Main',
       'ip-section-main',
-      'Control the content in the IssuePress "Section" page.',
+      'Control the content in the main column of the "Section" page of IssuePress.',
     ),
     array(
       'IssuePress Section Sidebar',
       'ip-section-side',
-      'Control the content in the IssuePress "Section" page\'s sidebar',
+      'Control the content in the sidebar column of the "Section" page of IssuePress.',
     ),
     array(
       'IssuePress Issue Sidebar',
       'ip-issue-side',
-      'Control the content in the IssuePress "Issue Thread" page\'s sidebar',
+      'Control the content in the sidebar column of the "Issue Thread" page of IssuePress.',
     ),
   );
 
