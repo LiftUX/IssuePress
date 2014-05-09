@@ -29,6 +29,26 @@ angular.module('AppState', [])
     return repo;
   };
 
+  /**
+   * Check if a string is an actual IP repo
+   * @return TRUE if it is or FALSE if not
+   */
+  appState.isIPRepo = function(string) {
+
+    var isRepo = false;
+
+    if(string){
+      appState.repos.forEach(function(v,i){
+        if(v.name === string) {
+          isRepo = true;
+          return;
+        }
+      });
+    }
+
+    return isRepo;
+  };
+
   return appState;
 })
 
