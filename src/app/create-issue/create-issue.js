@@ -5,6 +5,11 @@ angular.module('create-issue', ['AppState'])
   
   var repo = $routeParams.repo;
   
+  // Test if repo is a valid name, otherwise goto 404
+  if(!IPAppState.isIPRepo(repo)) {
+    $location.path('/404');
+  }
+
   $scope.issue = {};
   $scope.issue.meta = IPUser.user;
   $scope.loginLink = IPUser.login_link + encodeURIComponent("#" + $location.$$url );
