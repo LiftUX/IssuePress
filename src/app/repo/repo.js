@@ -7,17 +7,19 @@ angular.module('repo', ['AppState'])
 
   if(!IPAppState.isIPRepo($scope.repo)) {
     $location.path('/404');
-  }
+  } else {
 
-  // Call to IPData service to populate data
-  // Checks Cache before making an API call
-  IPData.getRepoData($scope.repo).then(function(data){
-    if(data){
-      $scope.issues = data.issues;
-      $scope.activity = data.activity;
-      console.log(data.activity);
-    }
-  });
+    // Call to IPData service to populate data
+    // Checks Cache before making an API call
+    IPData.getRepoData($scope.repo).then(function(data){
+      if(data){
+        $scope.issues = data.issues;
+        $scope.activity = data.activity;
+        console.log(data.activity);
+      }
+    });
+
+  }
 
 
 }]);

@@ -2283,7 +2283,7 @@ angular.module('components.ticketList', [])
 
 angular.module('create-issue', ['AppState'])
 
-.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', 'IPAPI', 'IPUser', function($scope, $location, $routeParams, IPAPI, IPUser) {
+.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', 'IPAPI', 'IPUser', 'IPAppState', function($scope, $location, $routeParams, IPAPI, IPUser, IPAppState) {
   
   var repo = $routeParams.repo;
   
@@ -2334,9 +2334,8 @@ angular.module('fourohfour', [])
 .controller('FourOhFourCtrl', ['$scope', '$location', '$timeout', function($scope, $location, $timeout) {
   
   $timeout(function(){
-    console.log("set location to dashboard!");
     $location.path('/dashboard');
-  }, 8000);
+  }, 6000);
 
 }]);
 
@@ -2381,9 +2380,11 @@ angular.module('issue', ['AppState', 'user'])
 function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
 
   var repo = $routeParams.repo;
-  // Test if repo is a valid name, otherwise goto 404
+
   if(!IPAppState.isIPRepo(repo)) {
     $location.path('/404');
+  } else {
+    $scope.fetchData();
   }
 
   $scope.user = IPUser.user;
@@ -2408,12 +2409,9 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
     });
   };
 
-  $scope.fetchData();
-
   $scope.$on('issueCommentSuccess', function(){
     $scope.fetchData();
   });
-
   
 }]);
 
@@ -2487,17 +2485,19 @@ angular.module('repo', ['AppState'])
 
   if(!IPAppState.isIPRepo($scope.repo)) {
     $location.path('/404');
-  }
+  } else {
 
-  // Call to IPData service to populate data
-  // Checks Cache before making an API call
-  IPData.getRepoData($scope.repo).then(function(data){
-    if(data){
-      $scope.issues = data.issues;
-      $scope.activity = data.activity;
-      console.log(data.activity);
-    }
-  });
+    // Call to IPData service to populate data
+    // Checks Cache before making an API call
+    IPData.getRepoData($scope.repo).then(function(data){
+      if(data){
+        $scope.issues = data.issues;
+        $scope.activity = data.activity;
+        console.log(data.activity);
+      }
+    });
+
+  }
 
 
 }]);

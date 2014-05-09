@@ -1,7 +1,7 @@
 
 angular.module('create-issue', ['AppState'])
 
-.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', 'IPAPI', 'IPUser', function($scope, $location, $routeParams, IPAPI, IPUser) {
+.controller('CreateIssueCtrl', ['$scope', '$location', '$routeParams', 'IPAPI', 'IPUser', 'IPAppState', function($scope, $location, $routeParams, IPAPI, IPUser, IPAppState) {
   
   var repo = $routeParams.repo;
   
