@@ -1739,6 +1739,26 @@ angular.module('AppState', [])
     return repo;
   };
 
+  /**
+   * Check if a string is an actual IP repo
+   * @return TRUE if it is or FALSE if not
+   */
+  appState.isIPRepo = function(string) {
+
+    var isRepo = false;
+
+    if(string){
+      appState.repos.forEach(function(v,i){
+        if(v.name === string) {
+          isRepo = true;
+          return;
+        }
+      });
+    }
+
+    return isRepo;
+  };
+
   return appState;
 })
 
@@ -2267,6 +2287,11 @@ angular.module('create-issue', ['AppState'])
   
   var repo = $routeParams.repo;
   
+  // Test if repo is a valid name, otherwise goto 404
+  if(!IPAppState.isIPRepo(repo)) {
+    $location.path('/404');
+  }
+
   $scope.issue = {};
   $scope.issue.meta = IPUser.user;
   $scope.loginLink = IPUser.login_link + encodeURIComponent("#" + $location.$$url );
@@ -2301,6 +2326,17 @@ angular.module('dashboard', [])
   
   //console.log($location.path());
   //console.log($routeParams);
+
+}]);
+
+angular.module('fourohfour', [])
+
+.controller('FourOhFourCtrl', ['$scope', '$location', '$timeout', function($scope, $location, $timeout) {
+  
+  $timeout(function(){
+    console.log("set location to dashboard!");
+    $location.path('/dashboard');
+  }, 8000);
 
 }]);
 
@@ -2344,6 +2380,12 @@ angular.module('issue', ['AppState', 'user'])
 .controller('IssueCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPAppState', 'IPData', 'IPUser',
 function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
 
+  var repo = $routeParams.repo;
+  // Test if repo is a valid name, otherwise goto 404
+  if(!IPAppState.isIPRepo(repo)) {
+    $location.path('/404');
+  }
+
   $scope.user = IPUser.user;
   $scope.login_link = IPUser.login_link;
   $scope.logout_link = IPUser.logout_link;
@@ -2360,7 +2402,7 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
 
   $scope.fetchData = function() {
     // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
-    IPData.getIssueData($routeParams.repo, $routeParams.issue).then(function(data){
+    IPData.getIssueData(repo, $routeParams.issue).then(function(data){
       $scope.issue = data.issue;
       $scope.comments = data.comments;
     });
@@ -2383,6 +2425,7 @@ var IP = angular.module('issuepress', [
   'repo',
   'issue',
   'create-issue',
+  'fourohfour',
   'components.search',
   'components.message',
   'components.sections',
@@ -2399,6 +2442,9 @@ var IP = angular.module('issuepress', [
 
 IP.config(function($routeProvider, $locationProvider) {
   $routeProvider
+    .when('/404', {
+      templateUrl: IP_PATH + '/app/fourohfour/fourohfour.tpl.html',
+    })
     .when('/dashboard', {
       templateUrl: IP_PATH + '/app/dashboard/dashboard.tpl.html',
     })
@@ -2415,7 +2461,7 @@ IP.config(function($routeProvider, $locationProvider) {
       templateUrl: IP_PATH + '/app/issue/issue.tpl.html',
     })
     .otherwise({
-      redirectTo: "/dashboard"
+      redirectTo: "/404"
     });
 });
 
@@ -2438,6 +2484,10 @@ angular.module('repo', ['AppState'])
 .controller('RepoCtrl', ['$scope', '$location', '$routeParams', '$http', 'IPData', 'IPAppState', function($scope, $location, $routeParams, $http, IPData, IPAppState) {
   
   $scope.repo = $routeParams.repo;
+
+  if(!IPAppState.isIPRepo($scope.repo)) {
+    $location.path('/404');
+  }
 
   // Call to IPData service to populate data
   // Checks Cache before making an API call
