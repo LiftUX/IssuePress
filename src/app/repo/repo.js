@@ -5,6 +5,10 @@ angular.module('repo', ['AppState'])
   
   $scope.repo = $routeParams.repo;
 
+  if(!IPAppState.isIPRepo($scope.repo)) {
+    $location.path('/404');
+  }
+
   // Call to IPData service to populate data
   // Checks Cache before making an API call
   IPData.getRepoData($scope.repo).then(function(data){

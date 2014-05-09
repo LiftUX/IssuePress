@@ -6,6 +6,7 @@ var IP = angular.module('issuepress', [
   'repo',
   'issue',
   'create-issue',
+  'fourohfour',
   'components.search',
   'components.message',
   'components.sections',
@@ -22,6 +23,9 @@ var IP = angular.module('issuepress', [
 
 IP.config(function($routeProvider, $locationProvider) {
   $routeProvider
+    .when('/404', {
+      templateUrl: IP_PATH + '/app/fourohfour/fourohfour.tpl.html',
+    })
     .when('/dashboard', {
       templateUrl: IP_PATH + '/app/dashboard/dashboard.tpl.html',
     })
@@ -38,7 +42,7 @@ IP.config(function($routeProvider, $locationProvider) {
       templateUrl: IP_PATH + '/app/issue/issue.tpl.html',
     })
     .otherwise({
-      redirectTo: "/dashboard"
+      redirectTo: "/404"
     });
 });
 
