@@ -2381,6 +2381,14 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
 
   var repo = $routeParams.repo;
 
+  $scope.fetchData = function() {
+    // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
+    IPData.getIssueData(repo, $routeParams.issue).then(function(data){
+      $scope.issue = data.issue;
+      $scope.comments = data.comments;
+    });
+  };
+
   if(!IPAppState.isIPRepo(repo)) {
     $location.path('/404');
   } else {
@@ -2401,13 +2409,6 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
   $scope.issue = {};
   $scope.comments = [];
 
-  $scope.fetchData = function() {
-    // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
-    IPData.getIssueData(repo, $routeParams.issue).then(function(data){
-      $scope.issue = data.issue;
-      $scope.comments = data.comments;
-    });
-  };
 
   $scope.$on('issueCommentSuccess', function(){
     $scope.fetchData();
