@@ -126,7 +126,7 @@ class UPIP_admin {
     echo '<style type="text/css"> @import url("' . plugins_url('vendor/chosen/chosen.min.css', __FILE__ ) . '"); </style>';
     ?>
 
-    <p><?php _e( 'Enter your Github personal token and select your support page and repositories below. <a href="#" title="Getting started">Getting Started</a>. <a href="#" title="Read the technical documentation">Read the technical documentation</a>.','IssuePress'); ?></p>
+    <p><?php _e( 'Enter your Github personal token and select your support page and repositories below. <a href="http://issuepress.co/documentation/" target="_blank" title="Read the documentation">Read the documentation</a>.','IssuePress'); ?></p>
     <script type="text/javascript">
       jQuery(document).ready(function($){
         $(".chosen").chosen();
