@@ -9,6 +9,9 @@ class UPIP_admin {
     add_action('admin_menu', array($this, 'add_menu'));
     add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
     add_action('wp_ajax_upip-create-page', array($this,'ajax_create_page' ) );
+
+    add_filter('plugin_action_links', array($this, 'action_links'), 10, 2);
+    add_filter('plugin_row_meta', array($this, 'meta_links'), 10, 2);
    
     $this->client = new Github\Client();
 
@@ -55,6 +58,37 @@ class UPIP_admin {
     );
   }
 
+
+  /**
+   * Add plugin action links
+   */
+  public function action_links($links, $file) {
+
+    if($file == plugin_basename(IP_MAIN_PLUGIN_FILE)) {
+
+      $ip_settings = get_admin_url('', '/admin.php?page=issuepress_options');
+      array_unshift($links, "<a href='$ip_settings'>Settings</a>");
+
+    }
+
+    return $links;
+  }
+
+  /**
+   * Add plugin meta links
+   */
+  public function meta_links($links, $file) {
+
+    if($file == plugin_basename(IP_MAIN_PLUGIN_FILE)) {
+
+      array_push($links, '<a target="_blank" href="http://issuepress.co/documentation">Documentation</a>');
+
+    }
+
+    return $links;
+  }
+
+
   function admin_scripts($hook) {
 
       if( !isset($_GET['page']) || ('admin.php' != $hook && $_GET['page'] != 'issuepress_options' ) )
@@ -92,7 +126,7 @@ class UPIP_admin {
     echo '<style type="text/css"> @import url("' . plugins_url('vendor/chosen/chosen.min.css', __FILE__ ) . '"); </style>';
     ?>
 
-    <p><?php _e( 'Enter your Github personal token and select your support page and repositories below.','IssuePress'); ?></p>
+    <p><?php _e( 'Enter your Github personal token and select your support page and repositories below. <a href="#" title="Getting started">Getting Started</a>. <a href="#" title="Read the technical documentation">Read the technical documentation</a>.','IssuePress'); ?></p>
     <script type="text/javascript">
       jQuery(document).ready(function($){
         $(".chosen").chosen();
