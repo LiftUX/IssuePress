@@ -41,6 +41,9 @@ IP.config(function($routeProvider, $locationProvider) {
     .when('/:repo/:issue', {
       templateUrl: IP_PATH + '/app/issue/issue.tpl.html',
     })
+    .when('/', {
+      redirectTo: "/dashboard"
+    })
     .otherwise({
       redirectTo: "/404"
     });
