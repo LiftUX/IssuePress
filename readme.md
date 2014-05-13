@@ -50,18 +50,18 @@ For general use, just use default `grunt` command, when you're ready to set a gi
 Page template to list defined repositories.
 
 ```
-/plugin-page/repo/
+/plugin-page/:repo/
 ```
 List Issues on that defined repository.
 
 ```
-/plugin-page/repo/ID
+/plugin-page/:repo/:issue
 ```
 List Defined Issue in defined repository.
 
 
 ```
-/plugin-page/repo/new
+/plugin-page/:repo/new
 ```
 Add a new issue to defined repo.
 
