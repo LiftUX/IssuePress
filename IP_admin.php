@@ -81,7 +81,7 @@ class UPIP_admin {
 
     if($file == plugin_basename(IP_MAIN_PLUGIN_FILE)) {
 
-      array_push($links, '<a target="_blank" href="http://issuepress.co/documentation">Documentation</a>');
+      array_push($links, '<a target="_blank" href="http://issuepress.co/docs/">Documentation</a>');
 
     }
 
@@ -126,7 +126,7 @@ class UPIP_admin {
     echo '<style type="text/css"> @import url("' . plugins_url('vendor/chosen/chosen.min.css', __FILE__ ) . '"); </style>';
     ?>
 
-    <p><?php _e( 'Enter your Github personal token and select your support page and repositories below. <a href="http://issuepress.co/documentation/" target="_blank" title="Read the documentation">Read the documentation</a>.','IssuePress'); ?></p>
+    <p><?php _e( 'Enter your Github personal token and select your support page and repositories below. <a href="http://issuepress.co/docs/" target="_blank" title="Read the documentation">Read the documentation</a>.','IssuePress'); ?></p>
     <script type="text/javascript">
       jQuery(document).ready(function($){
         $(".chosen").chosen();
