@@ -306,7 +306,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($org, $repoName, array('state' => 'open')));
+      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($org, $repoName, array('labels' => 'issuepress')));
     }
 
     return $cache;
