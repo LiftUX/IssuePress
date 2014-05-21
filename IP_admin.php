@@ -1,49 +1,88 @@
 <?php
 
+/**
+ * IssuePress Admin Class
+ * Handles all WP Admin integration for IssuePress
+ * (Settings page & plugins listing page links)
+ */
 class UPIP_admin {
 
   private $client;
+  private $options_key = 'issuepress_options';
+  private $general_settings_key = 'general';
+  private $customize_settings_key = 'customize';
 
   public function __construct(){
-    add_action('admin_init', array($this, 'init'));
+
     add_action('admin_menu', array($this, 'add_menu'));
+
+    add_action('init', array($this, 'load_settings'));
+
+    // Register Settings for each tab
+    add_action('admin_init', array($this, 'register_general_settings'));
+    add_action('admin_init', array($this, 'register_customization_settings'));
+
     add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
     add_action('wp_ajax_upip-create-page', array($this,'ajax_create_page' ) );
 
-    add_filter('plugin_action_links', array($this, 'action_links'), 10, 2);
-    add_filter('plugin_row_meta', array($this, 'meta_links'), 10, 2);
+    // Add links to Plugin Listings Admin Page
+    add_filter('plugin_action_links', array($this, 'add_action_links'), 10, 2);
+    add_filter('plugin_row_meta', array($this, 'add_meta_links'), 10, 2);
    
+    // Initialize a GitHub Client
     $this->client = new Github\Client();
 
     //print_r($_POST);
   }
 
-  public function init(){
+  /**
+   * Loads tabs settings from DB into their own arrays.
+   */
+  public function load_settings(){
 
-    register_setting('issuepress_options', 'issuepress_options', array($this,'issuepress_options_validate'));
 
-    add_settings_section('initial-setup-section',
-                         'Initial Setup',
-                         array($this,'initial_setup'),
-                         'issuepress_options');
+  }
 
-    add_settings_field('upip_gh_token',
-                       'Github Token',
-                       array($this,'github_token_field'),
-                       'issuepress_options',
-                       'initial-setup-section');
+  /**
+   * Registers the general settings section & fields
+   */
+  public function register_general_settings(){
 
-    add_settings_field('upip_support_page_id',
-                       'Support Page',
-                       array($this,'support_page_id_field'),
-                       'issuepress_options',
-                       'initial-setup-section');
+    $this->settings_tabs[$this->general_settings_key] = 'General';
 
-    add_settings_field('upip_gh_repos',
-                       'Github Repositories',
-                       array($this,'github_repos_field'),
-                       'issuepress_options',
-                       'initial-setup-section');
+    $section_key = 'section-general';
+    register_setting($this->general_settings_key, $this->general_settings_key, array($this,'general_settings_validate'));
+
+    add_settings_section(
+      $section_key,
+      'General Settings',
+      array($this,'general_initial_setup'),
+      $this->general_settings_key
+    );
+
+    add_settings_field(
+      'upip_gh_token',
+      'Github Token',
+      array($this,'github_token_field'),
+      $this->general_settings_key,
+      $section_key
+    );
+
+    add_settings_field(
+      'upip_support_page_id',
+      'Support Page',
+      array($this,'support_page_id_field'),
+      $this->general_settings_key,
+      $section_key
+    );
+
+    add_settings_field(
+      'upip_gh_repos',
+      'Github Repositories',
+      array($this,'github_repos_field'),
+      $this->general_settings_key,
+      $section_key
+    );
 
     // retrieve our license key from the DB
     $license_key  = get_option( 'upip_license_key' );
@@ -58,38 +97,44 @@ class UPIP_admin {
     );
   }
 
-
   /**
-   * Add plugin action links
+   * Register the Customization section & fields
    */
-  public function action_links($links, $file) {
+  public function register_customization_settings(){
+    $this->settings_tabs[$this->customize_settings_key] = 'Customize';
 
-    if($file == plugin_basename(IP_MAIN_PLUGIN_FILE)) {
+    $section_key = 'section-customize';
+    register_setting($this->customize_settings_key, $this->customize_settings_key, array($this,'customize_settings_validate'));
 
-      $ip_settings = get_admin_url('', '/admin.php?page=issuepress_options');
-      array_unshift($links, "<a href='$ip_settings'>Settings</a>");
+    add_settings_section(
+      $section_key,
+      'Customization Settings',
+      array($this,'customize_initial_setup'),
+      $this->customize_settings_key
+    );
 
-    }
+    add_settings_field(
+      'upip_customize_header',
+      'Header Image',
+      array($this,'customize_header'),
+      $this->customize_settings_key,
+      $section_key
+    );
 
-    return $links;
+    add_settings_field(
+      'upip_customize_color',
+      'Main Color',
+      array($this,'customize_color'),
+      $this->customize_settings_key,
+      $section_key
+    );
+
   }
 
   /**
-   * Add plugin meta links
+   * Test for our admin page to load styles
    */
-  public function meta_links($links, $file) {
-
-    if($file == plugin_basename(IP_MAIN_PLUGIN_FILE)) {
-
-      array_push($links, '<a target="_blank" href="http://issuepress.co/docs/">Documentation</a>');
-
-    }
-
-    return $links;
-  }
-
-
-  function admin_scripts($hook) {
+  public function admin_scripts($hook) {
 
       if( !isset($_GET['page']) || ('admin.php' != $hook && $_GET['page'] != 'issuepress_options' ) )
           return;
@@ -97,23 +142,29 @@ class UPIP_admin {
       wp_enqueue_style( 'ip-admin', plugins_url('/assets/css/admin.css', __FILE__) );
   }
 
+  /**
+   * Add the IssuePress Page to the Admin Menu
+   */
   public function add_menu() {
     add_menu_page( __('IssuePress Options','IssuePress'), 'IssuePress', 'manage_options', 'issuepress_options', array($this, 'draw_options_panel'), plugins_url("/assets/img/issuepress-wordpress-icon-32x32.png", __FILE__ ), 140);
   }
 
-  public function draw_options_panel() { ?>
+  /**
+   * Draw the Options Panel
+   */
+  public function draw_options_panel() { 
+    $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+
+  ?>
 
   <div class="wrap">
     <h2><img src="<?php echo plugins_url("/assets/img/mark.svg", __FILE__ ); ?>" style="vertical-align:middle; top: -2px; position: relative;" width="32" height="32" alt=""> <?php _e("IssuePress Options Panel","issuepress"); ?></h2>
+    <?php $this->render_admin_tabs(); ?>
     <form action="options.php" method="post">
     <?php
-
-    settings_fields( 'issuepress_options' );
-
-    do_settings_sections( 'issuepress_options' );
-
-    submit_button();
-
+      settings_fields( $tab );
+      do_settings_sections( $tab );
+      submit_button();
     ?>
     </form>
   </div>
@@ -121,7 +172,24 @@ class UPIP_admin {
 <?php
   }
 
-  function initial_setup() {
+  /**
+   * Render the Tabs for the admin page
+   */
+  public function render_admin_tabs() {
+    $current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_settings_key;
+    echo '<h2 class="nav-tab-wrapper">';
+    foreach ( $this->settings_tabs as $tab_key => $tab_caption ) {
+      $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
+      echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->options_key . '&tab=' . $tab_key . '">' . $tab_caption . '</a>'; 
+    }
+    echo '</h2>';
+  }
+
+  /**
+   * General Settings Initial Setup
+   * Binds some stuff so we can use ajax to create a page
+   */
+  public function general_initial_setup() {
     echo '<script type="text/javascript" src="' . plugins_url('vendor/chosen/chosen.jquery.js', __FILE__ ) . '"></script>';
     echo '<style type="text/css"> @import url("' . plugins_url('vendor/chosen/chosen.min.css', __FILE__ ) . '"); </style>';
     ?>
@@ -168,7 +236,23 @@ class UPIP_admin {
 <?php
   }
 
-  function github_token_field() {
+
+  public function customize_initial_setup() {?>
+
+    <p><?php _e( 'Customize the look of your IssuePress templates below. <a href="http://issuepress.co/docs/" target="_blank" title="Read the documentation">Read the documentation</a> for more information.','IssuePress'); ?> </p>
+
+<?php
+  }
+
+  /**
+   * Begin Field output
+   */
+
+
+  /**
+   * Build the GitHub token field
+   */
+  public function github_token_field() {
     $issuepress_options = get_option('issuepress_options');
     $github_token = $issuepress_options['upip_gh_token'];
     echo '<input type="text" name="issuepress_options[upip_gh_token]" value="' . $github_token . '" />';
@@ -180,7 +264,10 @@ class UPIP_admin {
     settings_errors('upip_gh_token');
   }
 
-  function support_page_id_field() {
+  /**
+   * Build the Support Page ID field
+   */
+  public function support_page_id_field() {
     $issuepress_options = get_option('issuepress_options');
     $support_page_id = $issuepress_options['upip_support_page_id'];
 
@@ -211,7 +298,10 @@ class UPIP_admin {
 
   }
 
-  function github_repos_field(){
+  /**
+   * Build the repos field
+   */
+  public function github_repos_field(){
     $issuepress_options = get_option('issuepress_options');
 
     /**
@@ -289,7 +379,23 @@ class UPIP_admin {
 
   }
 
-  function issuepress_options_validate($input) {
+  public function customize_header() {
+    echo "header here";
+  }
+
+  public function customize_color() {
+    echo "color here";
+  }
+
+  /**
+   * End Field  Output
+   */
+
+
+  /**
+   * Validate the IssuePress General Settings
+   */
+  public function general_settings_validate($input) {
 
     if(isset($input['upip_gh_token']))
       $github_token = $input['upip_gh_token'];
@@ -321,7 +427,19 @@ class UPIP_admin {
     return $input;
   }
 
-  function ajax_create_page() {
+  /**
+   * Validate IssuePress Customization Settings
+   */
+  public function customize_settings_validate($input) {
+    return $input;
+  }
+
+
+
+  /** 
+   * Method to create a WP page from the IssuePress admin settings page
+   */
+  public function ajax_create_page() {
     header( "Content-Type: application/json" );
 
     $nonce = $_POST['support_page_nonce'];
@@ -358,6 +476,37 @@ class UPIP_admin {
     }
     exit;
   }
+
+
+  /**
+   * Add plugin action links
+   */
+  public function add_action_links($links, $file) {
+
+    if($file == plugin_basename(IP_MAIN_PLUGIN_FILE)) {
+
+      $ip_settings = get_admin_url('', '/admin.php?page=issuepress_options');
+      array_unshift($links, "<a href='$ip_settings'>Settings</a>");
+
+    }
+
+    return $links;
+  }
+
+  /**
+   * Add plugin meta links
+   */
+  public function add_meta_links($links, $file) {
+
+    if($file == plugin_basename(IP_MAIN_PLUGIN_FILE)) {
+
+      array_push($links, '<a target="_blank" href="http://issuepress.co/docs/">Documentation</a>');
+
+    }
+
+    return $links;
+  }
+
 
 }
 
