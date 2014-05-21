@@ -418,17 +418,38 @@ class UP_IssuePress {
     return json_encode($IP_data);
   }
 
-
   /**
-  * Fetches the slug for the support page
-  *
-  * @return string
-  */
-  public function get_IP_root(){
+   * Fetch page data from WP for 'uip_support_page_id'
+   *
+   * @return WP Post object
+   */
+  public function get_IP_page_data(){
     $options =  get_option('issuepress_options');
-    return sanitize_title(get_the_title($options['upip_support_page_id']));
+    return get_post($options['upip_support_page_id']);
   }
 
+  /**
+  * Fetches the page data for the set IssuePress page and returns it in json for template vars
+  *
+  * @return json encoded string
+  */
+  public function get_IP_root(){
+    return json_encode($this->get_IP_page_data());
+  }
+
+  /** 
+   * Fetches the WP site data for use in the template
+   *
+   * @return json encoded string
+   */
+  public function get_site_data(){
+    return json_encode(array(
+      'name' => get_bloginfo('name'),
+      'description' => get_bloginfo('description'),
+      'url' => get_bloginfo('url'),
+      'wpurl' => get_bloginfo('wpurl')
+    ));
+  }
 
   /**
   * Utility function to output URL path of IP angular app for easy partials reference
@@ -477,7 +498,8 @@ class UP_IssuePress {
   * @return string
   */
   public function get_IP_login(){
-    return wp_login_url(site_url( '/'.$this->get_IP_root().'/'));
+    $post = $this->get_IP_page_data();
+    return wp_login_url(site_url( '/'. $post->post_name .'/'));
   }
 
   /**
@@ -486,7 +508,8 @@ class UP_IssuePress {
   * @return string
   */
   public function get_IP_logout(){
-    $url = wp_logout_url(site_url( '/'.$this->get_IP_root().'/'));
+    $post = $this->get_IP_page_data();
+    $url = wp_logout_url(site_url( '/'. $post->post_name .'/'));
     return str_replace('&amp;', '&', $url);
   }
 
