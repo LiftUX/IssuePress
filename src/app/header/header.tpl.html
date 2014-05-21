@@ -1,5 +1,5 @@
 <header ng-controller="HeaderCtrl">
-  <a class="logo" href="#/dashboard">IssuePress</a>
+  <a class="logo" href="#/dashboard">{{page_title}}</a>
   <nav>
     <ul>
       <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
@@ -8,6 +8,7 @@
       <li class="account active-user" data-ng-show="user">
       <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="300"></div>{{user.display_name}}</a>
       <ul>
+        <li><a ng-href="{{home.url}}" title="{{home.description}}">Back to {{home.name}}</a></li>
         <li><a ng-href="{{logout_link}}">Logout</a></li>
       </ul>
       </li>
