@@ -40,6 +40,16 @@ class UPIP_admin {
    */
   public function load_settings(){
 
+    $this->general_settings = (array) get_option( $this->general_settings_key );
+    $this->customize_settings = (array) get_option( $this->customize_settings_key );
+    
+//    No defaults for general settings
+//    $this->general_settings = array_merge( array(
+//    ), $this->general_settings );
+    
+    $this->customize_settings = array_merge( array(
+      'upip_customize_color' => '#936091'
+    ), $this->customize_settings );
 
   }
 
