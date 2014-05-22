@@ -10,7 +10,7 @@ class UPIP_admin {
   private $client;
   private $options_key = 'issuepress_options';
   private $general_settings_key = 'general';
-  private $customize_settings_key = 'customize';
+  private $custom_settings_key = 'custom';
 
   public function __construct(){
 
@@ -19,8 +19,9 @@ class UPIP_admin {
     add_action('init', array($this, 'load_settings'));
 
     // Register Settings for each tab
-    add_action('admin_init', array($this, 'register_general_settings'));
-    add_action('admin_init', array($this, 'register_customization_settings'));
+    add_action('admin_init', array($this, 'register_ip_settings'));
+    add_action('admin_init', array($this, 'register_general_section'));
+    add_action('admin_init', array($this, 'register_customization_section'));
 
     add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
     add_action('wp_ajax_upip-create-page', array($this,'ajax_create_page' ) );
@@ -32,7 +33,6 @@ class UPIP_admin {
     // Initialize a GitHub Client
     $this->client = new Github\Client();
 
-    //print_r($_POST);
   }
 
   /**
@@ -40,28 +40,31 @@ class UPIP_admin {
    */
   public function load_settings(){
 
-    $this->general_settings = (array) get_option( $this->general_settings_key );
-    $this->customize_settings = (array) get_option( $this->customize_settings_key );
+    $this->settings = (array) get_option( $this->options_key );
     
-//    No defaults for general settings
-//    $this->general_settings = array_merge( array(
-//    ), $this->general_settings );
-    
-    $this->customize_settings = array_merge( array(
-      'upip_customize_color' => '#936091'
-    ), $this->customize_settings );
+    $this->settings = array_merge( array(
+      'upip_gh_token' => '',
+      'upip_support_page_id' => '',
+      'upip_gh_repos' => array(),
 
+      'upip_custom_header' => 'http://',
+      'upip_custom_color' => '#936091'
+    ), $this->settings );
+
+  }
+
+  public function register_ip_settings(){
+    register_setting($this->options_key, $this->options_key, array($this,'settings_validate'));
   }
 
   /**
    * Registers the general settings section & fields
    */
-  public function register_general_settings(){
+  public function register_general_section(){
 
     $this->settings_tabs[$this->general_settings_key] = 'General';
 
     $section_key = 'section-general';
-    register_setting($this->general_settings_key, $this->general_settings_key, array($this,'general_settings_validate'));
 
     add_settings_section(
       $section_key,
@@ -110,32 +113,31 @@ class UPIP_admin {
   /**
    * Register the Customization section & fields
    */
-  public function register_customization_settings(){
-    $this->settings_tabs[$this->customize_settings_key] = 'Customize';
+  public function register_customization_section(){
+    $this->settings_tabs[$this->custom_settings_key] = 'Customize';
 
-    $section_key = 'section-customize';
-    register_setting($this->customize_settings_key, $this->customize_settings_key, array($this,'customize_settings_validate'));
+    $section_key = 'section-custom';
 
     add_settings_section(
       $section_key,
       'Customization Settings',
-      array($this,'customize_initial_setup'),
-      $this->customize_settings_key
+      array($this,'custom_initial_setup'),
+      $this->custom_settings_key
     );
 
     add_settings_field(
-      'upip_customize_header',
+      'upip_custom_header',
       'Header Image',
-      array($this,'customize_header'),
-      $this->customize_settings_key,
+      array($this,'custom_header'),
+      $this->custom_settings_key,
       $section_key
     );
 
     add_settings_field(
-      'upip_customize_color',
+      'upip_custom_color',
       'Main Color',
-      array($this,'customize_color'),
-      $this->customize_settings_key,
+      array($this,'custom_color'),
+      $this->custom_settings_key,
       $section_key
     );
 
@@ -163,16 +165,16 @@ class UPIP_admin {
    * Draw the Options Panel
    */
   public function draw_options_panel() { 
-    $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+    $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_settings_key;
 
   ?>
 
   <div class="wrap">
-    <h2><img src="<?php echo plugins_url("/assets/img/mark.svg", __FILE__ ); ?>" style="vertical-align:middle; top: -2px; position: relative;" width="32" height="32" alt=""> <?php _e("IssuePress Options Panel","issuepress"); ?></h2>
+    <h2><img src="<?php echo plugins_url("/assets/img/mark.svg", __FILE__ ); ?>" style="vertical-align:middle; top: -2px; position: relative;" width="32" height="32" alt=""> <?php _e("IssuePress Settings","issuepress"); ?></h2>
     <?php $this->render_admin_tabs(); ?>
     <form action="options.php" method="post">
     <?php
-      settings_fields( $tab );
+      settings_fields( $this->options_key );
       do_settings_sections( $tab );
       submit_button();
     ?>
@@ -257,10 +259,12 @@ class UPIP_admin {
    * Build the GitHub token field
    */
   public function general_gh_token() {
-    $issuepress_options = get_option('issuepress_options');
-    $github_token = $issuepress_options['upip_gh_token'];
-    echo '<input type="text" name="issuepress_options[upip_gh_token]" value="' . $github_token . '" />';
-    if( !$github_token ){
+?>
+
+    <input type="text" name="<?php echo $this->options_key; ?>[upip_gh_token]" value="<?php echo esc_attr( $this->settings['upip_gh_token'] ); ?>" />
+
+<?php
+    if( !$this->settings['upip_gh_token'] ){
       echo '<p>';
       echo sprintf( __('%1$sGenerate an access token%2$s and paste it here. We recommend setting up an IssuePress-specific Github account (with proper access to your repositories) for most installations.','issuepress') , '<a target="_blank" href="https://github.com/settings/tokens/new">', '</a>');
       echo '</p>';
@@ -272,10 +276,13 @@ class UPIP_admin {
    * Build the Support Page ID field
    */
   public function general_page_id() {
-    $issuepress_options = get_option('issuepress_options');
-    $support_page_id = $issuepress_options['upip_support_page_id'];
+    if(isset($this->settings['upip_support_page_id'])) {
+      $support_page_id = $this->settings['upip_support_page_id'];
+    } else {
+      $support_page_id = '';
+    }
 
-    $output = '<select id="upip_support_page" name="issuepress_options[upip_support_page_id]">';
+    $output = '<select id="upip_support_page" name="'. $this->options_key . '[upip_support_page_id]">';
     $output .= '<option value="">' . __('Select Page','IssuePress') . '</option>';
 
     $pages = get_pages(array(
@@ -311,8 +318,8 @@ class UPIP_admin {
     /**
      * Check if valid Github token in place
      */
-    if(!empty($issuepress_options['upip_gh_token'])) {
-      $github_token = $issuepress_options['upip_gh_token'];
+    if(!empty($this->settings['upip_gh_token'])) {
+      $github_token = $this->settings['upip_gh_token'];
     } else {
       echo '<p>';
       _e("No Github token entered. Please enter a valid personal token above to select repositories.","IssuePress");
@@ -323,8 +330,8 @@ class UPIP_admin {
     /**
      * Fetch current ip repo data or init blank array
      */
-    if(isset($issuepress_options['upip_gh_repos'])) {
-      $selected_repos = $issuepress_options['upip_gh_repos'];
+    if(isset($this->settings['upip_gh_repos'])) {
+      $selected_repos = $this->settings['upip_gh_repos'];
     } else {
       $selected_repos = array();
     }
@@ -383,7 +390,7 @@ class UPIP_admin {
 
   }
 
-  public function customize_initial_setup() {
+  public function custom_initial_setup() {
     wp_enqueue_media();
     wp_enqueue_script('my-admin-js');
 
@@ -402,7 +409,7 @@ class UPIP_admin {
 <?php
   }
 
-  public function customize_header() { ?>
+  public function custom_header() { ?>
 
     <script type="text/javascript">
       jQuery(document).ready(function($){
@@ -439,14 +446,14 @@ class UPIP_admin {
         });
       });
     </script>
-    <label for="image-upload">Enter a URL or upload an image</label><br>
-    <input id="image-url" type="text" size="36" name="image-url" value="http://" /> 
+    <label for="image-upload">Enter a URL or upload an image. We scale it to max height 65px, so make sure it looks good at that size.</label><br>
+    <input id="image-url" type="text" size="36" name="<?php echo $this->options_key; ?>[upip_custom_header]" value="<?php echo esc_attr( $this->settings['upip_custom_header'] ); ?>" /> 
     <input id="image-upload" class="button" name="image-upload" type="button" value="Upload Image" />
 
 <?php
   }
 
-  public function customize_color() { ?>
+  public function custom_color() { ?>
 
     <script type="text/javascript">
       jQuery(document).ready(function($){
@@ -455,7 +462,7 @@ class UPIP_admin {
         });
       });
     </script>
-    <input type="text" name="color" id="color" class="color-picker" value="#936091" />
+    <input type="text" name="<?php echo $this->options_key; ?>[upip_custom_color]" id="color" class="color-picker" value="<?php echo esc_attr( $this->settings['upip_custom_color'] ); ?>" />
 
 <?php
   }
@@ -464,6 +471,16 @@ class UPIP_admin {
    * End Field  Output
    */
 
+  public function settings_validate($input) {
+
+    if(array_key_exists('upip_gh_token', $input)) {
+      $input = $this->general_settings_validate($input);
+    } else {
+      $input = $this->custom_settings_validate($input);
+    }
+    
+    return array_merge( $this->settings, $input );
+  }
 
   /**
    * Validate the IssuePress General Settings
@@ -503,7 +520,7 @@ class UPIP_admin {
   /**
    * Validate IssuePress Customization Settings
    */
-  public function customize_settings_validate($input) {
+  public function custom_settings_validate($input) {
     return $input;
   }
 
