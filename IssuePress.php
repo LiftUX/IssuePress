@@ -100,6 +100,8 @@ class UP_IssuePress {
     add_action('admin_init', array($this, 'theme_updater'),0);
     add_action('admin_notices', array($this, 'permalink_notice'),0);
 
+    add_action('ip_head', array($this, 'print_custom_settings'), 30);
+
     register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );  
     register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
 
@@ -315,6 +317,30 @@ class UP_IssuePress {
     wp_print_styles('issuepress-css');
     // We only need this call since we've set up deps properly
     wp_print_scripts('issuepress');
+
+  }
+
+  /**
+   * Add Customized data
+   *
+   * @return void
+   */
+  public function print_custom_settings() { 
+
+    $opts = get_option('issuepress_options');
+
+    if(isset($opts['upip_custom_header']) && $opts['upip_custom_header'] != 'http://'){ ?>
+<script type="text/javascript">var IP_Custom_Header = <?php echo json_encode($opts['upip_custom_header']); ?></script>
+<?php
+    }
+
+    if(isset($opts['upip_custom_color']) && $opts['upip_custom_color'] != '#936091'){ 
+      $color = $opts['upip_custom_color']; 
+      $l_color = lighten_color($color, 25);
+?>
+<style type="text/css">a, .breadcrumb a, .issue-thread .comment .author-name, .issue-thread .comment .comment-tags a, .issue-list .issue-list-item .issue-title { color: <?php echo $color; ?>; }a:hover, .breadcrumb a:hover, .issue-thread .comment .author-name:hover, .issue-thread .comment .comment-tags a:hover, .issue-list .issue-list-item .issue-title:hover { color: <?php echo $l_color; ?>; }.submit,.search .live-search-results .issue-list-item .issue-link, .support-sections .support-section .support-section-following, .issue-list .issue-list-item .issue-link{ background-color: <?php echo $color; ?>;}.submit:hover,.search .live-search-results .issue-list-item .issue-link:hover, .support-sections .support-section .support-section-following:hover, .issue-list .issue-list-item .issue-link:hover { background-color: <?php echo $l_color; ?> ;}</style>
+<?php
+    }
   }
 
   
@@ -443,8 +469,10 @@ class UP_IssuePress {
    * @return json encoded string
    */
   public function get_site_data(){
+    $name = get_bloginfo('name');
+    $name = !empty($name) ? $name : 'Home Page';
     return json_encode(array(
-      'name' => get_bloginfo('name'),
+      'name' => $name,
       'description' => get_bloginfo('description'),
       'url' => get_bloginfo('url'),
       'wpurl' => get_bloginfo('wpurl')
