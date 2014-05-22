@@ -63,7 +63,7 @@ class UPIP_admin {
     add_settings_field(
       'upip_gh_token',
       'Github Token',
-      array($this,'github_token_field'),
+      array($this,'general_gh_token'),
       $this->general_settings_key,
       $section_key
     );
@@ -71,7 +71,7 @@ class UPIP_admin {
     add_settings_field(
       'upip_support_page_id',
       'Support Page',
-      array($this,'support_page_id_field'),
+      array($this,'general_page_id'),
       $this->general_settings_key,
       $section_key
     );
@@ -79,7 +79,7 @@ class UPIP_admin {
     add_settings_field(
       'upip_gh_repos',
       'Github Repositories',
-      array($this,'github_repos_field'),
+      array($this,'general_gh_repos'),
       $this->general_settings_key,
       $section_key
     );
@@ -237,12 +237,6 @@ class UPIP_admin {
   }
 
 
-  public function customize_initial_setup() {?>
-
-    <p><?php _e( 'Customize the look of your IssuePress templates below. <a href="http://issuepress.co/docs/" target="_blank" title="Read the documentation">Read the documentation</a> for more information.','IssuePress'); ?> </p>
-
-<?php
-  }
 
   /**
    * Begin Field output
@@ -252,7 +246,7 @@ class UPIP_admin {
   /**
    * Build the GitHub token field
    */
-  public function github_token_field() {
+  public function general_gh_token() {
     $issuepress_options = get_option('issuepress_options');
     $github_token = $issuepress_options['upip_gh_token'];
     echo '<input type="text" name="issuepress_options[upip_gh_token]" value="' . $github_token . '" />';
@@ -267,7 +261,7 @@ class UPIP_admin {
   /**
    * Build the Support Page ID field
    */
-  public function support_page_id_field() {
+  public function general_page_id() {
     $issuepress_options = get_option('issuepress_options');
     $support_page_id = $issuepress_options['upip_support_page_id'];
 
@@ -301,7 +295,7 @@ class UPIP_admin {
   /**
    * Build the repos field
    */
-  public function github_repos_field(){
+  public function general_gh_repos(){
     $issuepress_options = get_option('issuepress_options');
 
     /**
@@ -379,12 +373,81 @@ class UPIP_admin {
 
   }
 
-  public function customize_header() {
-    echo "header here";
+  public function customize_initial_setup() {
+    wp_enqueue_media();
+    wp_enqueue_script('my-admin-js');
+
+    wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_script(
+      'iris',
+      admin_url( 'js/iris.min.js' ),
+      array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ),
+      false,
+      1
+    ); 
+?>
+
+    <p><?php _e( 'Customize the look of your IssuePress templates below. <a href="http://issuepress.co/docs/" target="_blank" title="Read the documentation">Read the documentation</a> for more information.','IssuePress'); ?> </p>
+
+<?php
   }
 
-  public function customize_color() {
-    echo "color here";
+  public function customize_header() { ?>
+
+    <script type="text/javascript">
+      jQuery(document).ready(function($){
+
+        var custom_uploader;
+     
+        $('#image-upload').click(function(e) {
+          e.preventDefault();
+   
+          //If the uploader object has already been created, reopen the dialog
+          if (custom_uploader) {
+            custom_uploader.open();
+            return;
+          }
+   
+          //Extend the wp.media object
+          custom_uploader = wp.media.frames.file_frame = wp.media({
+            title: 'Choose Image For IssuePress Header',
+            button: {
+              text: 'Choose Image'
+            },
+            multiple: false
+          });
+   
+          //When a file is selected, grab the URL and set it as the text field's value
+          custom_uploader.on('select', function() {
+            attachment = custom_uploader.state().get('selection').first().toJSON();
+            $('#image-url').val(attachment.url);
+          });
+   
+          //Open the uploader dialog
+          custom_uploader.open();
+   
+        });
+      });
+    </script>
+    <label for="image-upload">Enter a URL or upload an image</label><br>
+    <input id="image-url" type="text" size="36" name="image-url" value="http://" /> 
+    <input id="image-upload" class="button" name="image-upload" type="button" value="Upload Image" />
+
+<?php
+  }
+
+  public function customize_color() { ?>
+
+    <script type="text/javascript">
+      jQuery(document).ready(function($){
+        $('.color-picker').iris({
+          palettes: ["#936091", "#5270cb", "#32a84e", "#d18023"]
+        });
+      });
+    </script>
+    <input type="text" name="color" id="color" class="color-picker" value="#936091" />
+
+<?php
   }
 
   /**
