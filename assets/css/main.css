@@ -556,6 +556,9 @@ header .logo {
   font-weight: 600;
   display: inline-block;
 }
+header .logo.custom-image img {
+  max-height: 65px;
+}
 header nav {
   display: inline-block;
   position: static;

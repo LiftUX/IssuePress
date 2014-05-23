@@ -1,5 +1,8 @@
 
-angular.module('header', ['user'])
+angular.module('header', [
+  'user',
+  'AppState',
+])
 
 .directive('ipHeader', function() {
   return {
@@ -9,7 +12,7 @@ angular.module('header', ['user'])
   };
 })
 
-.controller('HeaderCtrl', ['$rootScope', '$scope', '$location', '$route', 'IPUser', function ($rootScope, $scope, $location, $route, IPUser) {
+.controller('HeaderCtrl', ['$rootScope', '$scope', '$location', '$route', 'IPUser', 'IPAppState', function ($rootScope, $scope, $location, $route, IPUser, IPAppState) {
 
   $rootScope.$on('$routeChangeSuccess', function(scope, current) {
     $scope.loc = $location.$$url;
@@ -22,8 +25,14 @@ angular.module('header', ['user'])
     }
   });
 
+  $scope.page_title = IPAppState.root.post_title;
+  if(typeof IP_Custom_Header !== 'undefined'){
+    $scope.logo_src = IP_Custom_Header;
+  }
+
   $scope.loc = $location.$$url;
   $scope.user = IPUser.user;
+  $scope.home = IPAppState.site;
   $scope.login_link = IPUser.login_link + encodeURIComponent("#" + $scope.loc);
   $scope.logout_link = IPUser.logout_link;
 

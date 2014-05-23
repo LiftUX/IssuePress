@@ -3,7 +3,7 @@
 Plugin Name: IssuePress
 Plugin URI: http://issuepress.co/
 Description: Create a public support page for your private Github repositories, brought to you by UpThemes.
-Version: 1.0.11
+Version: 1.0.12
 Author: UpThemes
 Author URI: http://upthemes.com/
 */
@@ -99,6 +99,8 @@ class UP_IssuePress {
     add_action('widgets_init', array($this, 'register_IP_sidebars'), 0);
     add_action('admin_init', array($this, 'theme_updater'),0);
     add_action('admin_notices', array($this, 'permalink_notice'),0);
+
+    add_action('ip_head', array($this, 'print_custom_settings'), 30);
 
     register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );  
     register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
@@ -315,6 +317,30 @@ class UP_IssuePress {
     wp_print_styles('issuepress-css');
     // We only need this call since we've set up deps properly
     wp_print_scripts('issuepress');
+
+  }
+
+  /**
+   * Add Customized data
+   *
+   * @return void
+   */
+  public function print_custom_settings() { 
+
+    $opts = get_option('issuepress_options');
+
+    if(isset($opts['upip_custom_header']) && $opts['upip_custom_header'] != 'http://'){ ?>
+<script type="text/javascript">var IP_Custom_Header = <?php echo json_encode($opts['upip_custom_header']); ?></script>
+<?php
+    }
+
+    if(isset($opts['upip_custom_color']) && $opts['upip_custom_color'] != '#936091'){ 
+      $color = $opts['upip_custom_color']; 
+      $l_color = lighten_color($color, 25);
+?>
+<style type="text/css">a, .breadcrumb a, .issue-thread .comment .author-name, .issue-thread .comment .comment-tags a, .issue-list .issue-list-item .issue-title { color: <?php echo $color; ?>; }a:hover, .breadcrumb a:hover, .issue-thread .comment .author-name:hover, .issue-thread .comment .comment-tags a:hover, .issue-list .issue-list-item .issue-title:hover { color: <?php echo $l_color; ?>; }.submit,.search .live-search-results .issue-list-item .issue-link, .support-sections .support-section .support-section-following, .issue-list .issue-list-item .issue-link{ background-color: <?php echo $color; ?>;}.submit:hover,.search .live-search-results .issue-list-item .issue-link:hover, .support-sections .support-section .support-section-following:hover, .issue-list .issue-list-item .issue-link:hover { background-color: <?php echo $l_color; ?> ;}</style>
+<?php
+    }
   }
 
   
@@ -418,17 +444,40 @@ class UP_IssuePress {
     return json_encode($IP_data);
   }
 
-
   /**
-  * Fetches the slug for the support page
-  *
-  * @return string
-  */
-  public function get_IP_root(){
+   * Fetch page data from WP for 'uip_support_page_id'
+   *
+   * @return WP Post object
+   */
+  public function get_IP_page_data(){
     $options =  get_option('issuepress_options');
-    return sanitize_title(get_the_title($options['upip_support_page_id']));
+    return get_post($options['upip_support_page_id']);
   }
 
+  /**
+  * Fetches the page data for the set IssuePress page and returns it in json for template vars
+  *
+  * @return json encoded string
+  */
+  public function get_IP_root(){
+    return json_encode($this->get_IP_page_data());
+  }
+
+  /** 
+   * Fetches the WP site data for use in the template
+   *
+   * @return json encoded string
+   */
+  public function get_site_data(){
+    $name = get_bloginfo('name');
+    $name = !empty($name) ? $name : 'Home Page';
+    return json_encode(array(
+      'name' => $name,
+      'description' => get_bloginfo('description'),
+      'url' => get_bloginfo('url'),
+      'wpurl' => get_bloginfo('wpurl')
+    ));
+  }
 
   /**
   * Utility function to output URL path of IP angular app for easy partials reference
@@ -477,7 +526,8 @@ class UP_IssuePress {
   * @return string
   */
   public function get_IP_login(){
-    return wp_login_url(site_url( '/'.$this->get_IP_root().'/'));
+    $post = $this->get_IP_page_data();
+    return wp_login_url(site_url( '/'. $post->post_name .'/'));
   }
 
   /**
@@ -486,7 +536,8 @@ class UP_IssuePress {
   * @return string
   */
   public function get_IP_logout(){
-    $url = wp_logout_url(site_url( '/'.$this->get_IP_root().'/'));
+    $post = $this->get_IP_page_data();
+    $url = wp_logout_url(site_url( '/'. $post->post_name .'/'));
     return str_replace('&amp;', '&', $url);
   }
 

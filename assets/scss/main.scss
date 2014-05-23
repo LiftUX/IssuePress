@@ -64,6 +64,10 @@ header {
     text-transform:uppercase;
     font-weight:600;
     display:inline-block;
+
+    &.custom-image img {
+      max-height: 65px;
+    }
   }
 
   nav {

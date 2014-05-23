@@ -16,7 +16,8 @@ Template Name: IssuePress
     IP_Vars.API_PATH = "<?php echo $UP_IP->get_IP_API_path(); ?>";
     IP_Vars.repos = <?php echo $UP_IP->get_IP_repo_json(); ?>;
     IP_Vars.data = <?php echo $UP_IP->get_IP_data(); ?>;
-    IP_Vars.root = "<?php echo $UP_IP->get_IP_root(); ?>";
+    IP_Vars.root = <?php echo $UP_IP->get_IP_root(); ?>;
+    IP_Vars.site = <?php echo $UP_IP->get_site_data(); ?>;
     IP_Vars.user = <?php echo $UP_IP->get_IP_user(); ?>;
     IP_Vars.login = "<?php echo $UP_IP->get_IP_login(); ?>";
     IP_Vars.logout = "<?php echo $UP_IP->get_IP_logout(); ?>";
