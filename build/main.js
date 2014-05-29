@@ -35,14 +35,14 @@ angular.module('ui.breadcrumbs', [])
       if (typeof $routeParams.issue != 'undefined'){
         bcArray.push({
           href: path,
-          title: "Issue #" + $routeParams.issue
+          title: "Support Request #" + $routeParams.issue
         });
 
       // Check if it's a Create Issue template
       } else if(path === '/' + repo + '/new') {
         bcArray.push({
           href: path,
-          title: "Create Issue"
+          title: "Create Support Request"
         });
       }
 
@@ -2061,11 +2061,11 @@ angular.module('components.recentActivity', [
       $scope.itemAction = function(item) {
 
         if($scope.isEventType(item, "IssuesEvent")) {
-          return item.payload.action + ' an issue';
+          return item.payload.action + ' a support request';
         } else if ($scope.isEventType(item, "IssueCommentEvent")) {
           return 'made a comment';
         } else {
-          return 'updated an issue';
+          return 'updated an support request';
         }
 
       };
