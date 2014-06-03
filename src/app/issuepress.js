@@ -15,6 +15,7 @@ var IP = angular.module('issuepress', [
   'components.recentActivity',
   'components.ticketList',
   'components.issueThread',
+  'components.createIssueWidget',
   'ui.gravatar',
   'ui.timeago',
   'ui.markdown',
@@ -60,4 +61,3 @@ IP.run(function($rootScope, $templateCache, $location) {
     $rootScope.sidebar = tplPart;
   });
 });
-

@@ -1,0 +1,20 @@
+<section class="support-sections">
+  <div class="section-title">
+    {{title}}
+  </div>
+
+  <div data-ng-show="repo">
+    <a href="#/{{repo}}/new" class="support-section" title="Create a new support request in the {{repo}} Section">
+      <div class="support-section-title">Create New Support Request in {{repo}}</div>
+    </a>
+  </div>
+
+  <p data-ng-hide="repo">
+    <strong>Select the section you want to create a new support request in: </strong><br>
+    <select data-ng-model="selectedSection" data-ng-options="section.name for section in sections">
+      <option value="">Select Section</option>
+    </select>
+    <a data-ng-show="selectedSection" data-ng-href="#/{{selectedSection.name}}/new" class="" title="Create a new support request in {{selectedSection.name}}">Go</a>
+  </p>
+
+</section>

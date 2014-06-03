@@ -1920,6 +1920,28 @@ angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadc
 
 
 
+angular.module('components.createIssueWidget', ['AppState'])
+
+.directive('ipCreateIssueWidget', [function() {
+  return {
+    restrict: 'A',
+    scope: {
+      'title': '@title',
+    },
+    controller: ['$scope', '$element', '$attrs', '$routeParams', 'IPAppState', function($scope, $element, $attrs, $routeParams, IPAppState) {
+
+      $scope.repo = $routeParams.repo;
+
+      if(IPAppState.repos !== 'undefined') {
+        $scope.sections = IPAppState.repos;
+      }
+
+    }],
+    templateUrl: IP_PATH + '/app/components/create-issue-widget/create-issue-widget.tpl.html'
+  };
+}]);
+
+
 angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
 
 .directive('ipIssueComment', ['marked', function(marked) {
@@ -2442,6 +2464,7 @@ var IP = angular.module('issuepress', [
   'components.recentActivity',
   'components.ticketList',
   'components.issueThread',
+  'components.createIssueWidget',
   'ui.gravatar',
   'ui.timeago',
   'ui.markdown',
@@ -2487,7 +2510,6 @@ IP.run(function($rootScope, $templateCache, $location) {
     $rootScope.sidebar = tplPart;
   });
 });
-
 
 
 angular.module('repo', ['AppState'])
