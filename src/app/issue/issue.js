@@ -11,6 +11,8 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
     IPData.getIssueData(repo, $routeParams.issue).then(function(data){
       $scope.issue = data.issue;
       $scope.comments = data.comments;
+      console.log("data");
+      console.log(data);
     });
   };
 
@@ -38,5 +40,5 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
   $scope.$on('issueCommentSuccess', function(){
     $scope.fetchData();
   });
-  
+
 }]);
