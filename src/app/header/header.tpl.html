@@ -5,7 +5,6 @@
     <ul>
       <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
       <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
-      <li data-ng-show="repo"><a data-ng-href="#/{{repo}}/new">Create New Support Request</a></li>
       <li class="account active-user" data-ng-show="user">
       <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="300"></div>{{user.display_name}}</a>
       <ul>
