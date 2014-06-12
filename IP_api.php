@@ -21,6 +21,19 @@ class UPIP_api{
 
   private $test_mode = false;
 
+  private $meta_prepend = "
+
+
+***
+IssuePress Data:
+
+";
+
+private $meta_append = "
+
+Sent via [IssuePress](http://issuepress.co)
+";
+
   /**
    * Hook WordPress
    *
@@ -554,19 +567,10 @@ class UPIP_api{
 
     $meta_string = '';
     foreach($meta as $key => $value) {
-      $meta_string .= "$key: $value\n";
+      $meta_string .= "$key: \"$value\"\n";
     }
 
-    $body .= "
-
-
-***
-IssuePress Data:
-
-$meta_string
-
-Sent via [IssuePress](http://issuepress.co)
-";
+    $body .= $this->meta_prepend . $meta_string . $this->meta_append;
 
     return $body;
   }
@@ -579,16 +583,43 @@ Sent via [IssuePress](http://issuepress.co)
    */
   private function filter_body($issue) {
 
-    $element_regex = '/\*\*\*\sIssuePress Data:.*/ism';
+    $element_regex = '/'.preg_quote($this->meta_prepend, '/').'(.*)'.preg_quote($this->meta_append, '/').'/ism';
 
-    $issue['testingExtraKey'] = "Testing an extra key adding content";
-    $issue['ipOrigin'] = true;
 
-    preg_match($element_regex, $issue['body'], $meta);
-    $issue['ipMeta'] = $meta[0];
+    preg_match($element_regex, $issue['body'], $m);
+
+    if(!empty($m)) {
+      $issue['ipOrigin'] = true;
+      
+      $issue['ipMeta'] = $this->extract_meta($m[1]);
+    }
+
     $issue['body'] = preg_replace($element_regex, "", $issue['body']);
 
     return $issue;
+
+  }
+
+  /**
+   * Extract object with key/value pairs from string
+   *
+   * @param string String
+   * @return obj Object
+   */
+  private function extract_meta($string) {
+
+    $items = explode("\n", $string);
+
+    $obj;
+
+    foreach($items as $item) {
+      if(trim($item)) {
+        $i = explode(":", $item);
+        $obj[$i[0]] = trim($i[1]);
+      }
+    }
+
+    return $obj;
 
   }
 

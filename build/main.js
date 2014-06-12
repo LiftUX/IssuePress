@@ -2415,10 +2415,14 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
   $scope.fetchData = function() {
     // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
     IPData.getIssueData(repo, $routeParams.issue).then(function(data){
-      $scope.issue = data.issue;
-      $scope.comments = data.comments;
-      console.log("data");
-      console.log(data);
+
+      if(typeof data !== 'undefined') {
+        $scope.issue = data.issue;
+        $scope.comments = data.comments;
+      } else {
+        $scope.apiError = true;
+      }
+
     });
   };
 
