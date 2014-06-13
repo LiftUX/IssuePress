@@ -35,14 +35,14 @@ angular.module('ui.breadcrumbs', [])
       if (typeof $routeParams.issue != 'undefined'){
         bcArray.push({
           href: path,
-          title: "Issue #" + $routeParams.issue
+          title: "Support Request #" + $routeParams.issue
         });
 
       // Check if it's a Create Issue template
       } else if(path === '/' + repo + '/new') {
         bcArray.push({
           href: path,
-          title: "Create Issue"
+          title: "Create Support Request"
         });
       }
 

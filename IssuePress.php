@@ -3,7 +3,7 @@
 Plugin Name: IssuePress
 Plugin URI: http://issuepress.co/
 Description: Create a public support page for your private Github repositories, brought to you by UpThemes.
-Version: 1.0.12
+Version: 1.0.13
 Author: UpThemes
 Author URI: http://upthemes.com/
 */

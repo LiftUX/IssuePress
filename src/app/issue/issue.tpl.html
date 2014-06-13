@@ -9,13 +9,29 @@
       <h2>Loading Data</h2>
     </div>
 
+    <div class="comment" data-ng-show="apiError">
+      <h2>API Error</h2>
+    </div>
+
     <div class="comment" data-ng-class="{staff:isStaff(issue.user.login)}" data-ng-show="issue.id">
       <div class="comment-meta">
-        <span class="author">
-          <div data-gravatar-image gravatar-hash="{{issue.user.gravatar_id}}" s="300"></div>
-          <span class="author-name">{{issue.user.login}}</span>
-          <span class="author-action">created an issue</span>
-        </span>
+
+          <div data-ng-hide="issue.ipOrigin">
+            <span class="author">
+              <div data-gravatar-image gravatar-hash="{{issue.user.gravatar_id}}" s="300"></div>
+              <span class="author-name">{{issue.user.login}}</span>
+              <span class="author-action">created a support request</span>
+            </span>
+          </div>
+
+          <div data-ng-show="issue.ipOrigin">
+            <span class="author">
+              <div data-gravatar-image gravatar-hash="{{issue.ipMeta.gravatar_id}}" s="300"></div>
+              <span class="author-name">{{issue.ipMeta.username}}</span>
+              <span class="author-action">created a support request</span>
+            </span>
+          </div>
+
         <span class="comment-timeago">{{issue.created_at | timeago}}</span>
       </div>
       <div class="comment-content">

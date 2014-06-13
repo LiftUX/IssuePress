@@ -35,14 +35,14 @@ angular.module('ui.breadcrumbs', [])
       if (typeof $routeParams.issue != 'undefined'){
         bcArray.push({
           href: path,
-          title: "Issue #" + $routeParams.issue
+          title: "Support Request #" + $routeParams.issue
         });
 
       // Check if it's a Create Issue template
       } else if(path === '/' + repo + '/new') {
         bcArray.push({
           href: path,
-          title: "Create Issue"
+          title: "Create Support Request"
         });
       }
 
@@ -1920,6 +1920,28 @@ angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadc
 
 
 
+angular.module('components.createIssueWidget', ['AppState'])
+
+.directive('ipCreateIssueWidget', [function() {
+  return {
+    restrict: 'A',
+    scope: {
+      'title': '@title',
+    },
+    controller: ['$scope', '$element', '$attrs', '$routeParams', 'IPAppState', function($scope, $element, $attrs, $routeParams, IPAppState) {
+
+      $scope.repo = $routeParams.repo;
+
+      if(IPAppState.repos !== 'undefined') {
+        $scope.sections = IPAppState.repos;
+      }
+
+    }],
+    templateUrl: IP_PATH + '/app/components/create-issue-widget/create-issue-widget.tpl.html'
+  };
+}]);
+
+
 angular.module('components.issueThread', ['AppState', 'user', 'ui.markdown'])
 
 .directive('ipIssueComment', ['marked', function(marked) {
@@ -2061,11 +2083,11 @@ angular.module('components.recentActivity', [
       $scope.itemAction = function(item) {
 
         if($scope.isEventType(item, "IssuesEvent")) {
-          return item.payload.action + ' an issue';
+          return item.payload.action + ' a support request';
         } else if ($scope.isEventType(item, "IssueCommentEvent")) {
           return 'made a comment';
         } else {
-          return 'updated an issue';
+          return 'updated an support request';
         }
 
       };
@@ -2393,8 +2415,14 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
   $scope.fetchData = function() {
     // Set Data for this Scope from IPData service - fetch from cache, or from API otherwise
     IPData.getIssueData(repo, $routeParams.issue).then(function(data){
-      $scope.issue = data.issue;
-      $scope.comments = data.comments;
+
+      if(typeof data !== 'undefined') {
+        $scope.issue = data.issue;
+        $scope.comments = data.comments;
+      } else {
+        $scope.apiError = true;
+      }
+
     });
   };
 
@@ -2422,7 +2450,7 @@ function($scope, $location, $routeParams, $http, IPAppState, IPData, IPUser) {
   $scope.$on('issueCommentSuccess', function(){
     $scope.fetchData();
   });
-  
+
 }]);
 
 var IP = angular.module('issuepress', [
@@ -2442,6 +2470,7 @@ var IP = angular.module('issuepress', [
   'components.recentActivity',
   'components.ticketList',
   'components.issueThread',
+  'components.createIssueWidget',
   'ui.gravatar',
   'ui.timeago',
   'ui.markdown',
@@ -2487,7 +2516,6 @@ IP.run(function($rootScope, $templateCache, $location) {
     $rootScope.sidebar = tplPart;
   });
 });
-
 
 
 angular.module('repo', ['AppState'])

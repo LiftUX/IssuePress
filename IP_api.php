@@ -21,6 +21,19 @@ class UPIP_api{
 
   private $test_mode = false;
 
+  private $meta_prepend = "
+
+
+***
+IssuePress Data:
+
+";
+
+private $meta_append = "
+
+Sent via [IssuePress](http://issuepress.co)
+";
+
   /**
    * Hook WordPress
    *
@@ -102,7 +115,7 @@ class UPIP_api{
    */
   public function add_endpoint(){
 
-    // Add API endpoints 
+    // Add API endpoints
     add_rewrite_rule('^' . IP_API_PATH .'search/?','index.php?__ip_api=1&ip_search=1','top');
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/([^/]*)/?','index.php?__ip_api=1&ip_org=$matches[1]&ip_repo=$matches[2]&ip_issue=$matches[3]','top');
     add_rewrite_rule('^' . IP_API_PATH .'([^/]*)/([^/]*)/?','index.php?__ip_api=1&ip_org=$matches[1]&ip_repo=$matches[2]','top');
@@ -357,7 +370,7 @@ class UPIP_api{
 
     if( !isset($issue_data['title']) )
       $error = "Missing the issue title.";
-  
+
     if( !isset($issue_data['body'] ) )
       $error = "Missing the issue body.";
 
@@ -397,7 +410,7 @@ class UPIP_api{
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      
+
       $issue =  $this->filter_body($client->api('issue')->show($org, $repoName, $issue));
       $cache = $this->ip_cache_set($cacheKey, $issue);
     }
@@ -459,12 +472,12 @@ class UPIP_api{
 
 
   /**
-   * github API call to run a search 
+   * github API call to run a search
    *
    * @return string (response)
    */
   private function search($data){
-    
+
     if($data['repo'] == 'all'){
       $repos = $this->get_repos();
     } else {
@@ -500,7 +513,7 @@ class UPIP_api{
   /*** IPAPI Util Functions ***/
 
   /**
-   * Process Issue 
+   * Process Issue
    *
    * Does some things to the issue so that it's clear it is an IssuePress issue in github
    * (Add Tags, body header/footer info)
@@ -543,7 +556,7 @@ class UPIP_api{
 
 
   /**
-   * Add Isse Meta to Body 
+   * Add Isse Meta to Body
    *
    * Adds WP user/time meta to github issue body
    *
@@ -554,19 +567,10 @@ class UPIP_api{
 
     $meta_string = '';
     foreach($meta as $key => $value) {
-      $meta_string .= "$key: $value\n";
+      $meta_string .= "$key: \"$value\"\n";
     }
 
-    $body .= "
-
-
-***
-IssuePress Data:
-
-$meta_string
-
-Sent via [IssuePress](http://issuepress.co)
-";
+    $body .= $this->meta_prepend . $meta_string . $this->meta_append;
 
     return $body;
   }
@@ -575,15 +579,47 @@ Sent via [IssuePress](http://issuepress.co)
    * Filter Issue Body
    *
    * @param array issue Object from GitHub
-   * @return 
+   * @return
    */
   private function filter_body($issue) {
 
-    $element_regex = '/\*\*\*\sIssuePress Data:.*/ism';
+    $element_regex = '/'.preg_quote($this->meta_prepend, '/').'(.*)'.preg_quote($this->meta_append, '/').'/ism';
+
+
+    preg_match($element_regex, $issue['body'], $m);
+
+    if(!empty($m)) {
+      $issue['ipOrigin'] = true;
+      
+      $issue['ipMeta'] = $this->extract_meta($m[1]);
+    }
 
     $issue['body'] = preg_replace($element_regex, "", $issue['body']);
 
     return $issue;
+
+  }
+
+  /**
+   * Extract object with key/value pairs from string
+   *
+   * @param string String
+   * @return obj Object
+   */
+  private function extract_meta($string) {
+
+    $items = explode("\n", $string);
+
+    $obj;
+
+    foreach($items as $item) {
+      if(trim($item)) {
+        $i = explode(":", $item);
+        $obj[$i[0]] = trim($i[1]);
+      }
+    }
+
+    return $obj;
 
   }
 
@@ -611,7 +647,7 @@ Sent via [IssuePress](http://issuepress.co)
 
     if($has_label == true)
       return;
-    
+
     $client->api('issue')->labels()->create($owner, $repo, $label);
 
   }
@@ -663,7 +699,7 @@ Sent via [IssuePress](http://issuepress.co)
    * first checks if IP cache is enabled, proceeds if so.
    *
    * @param $key STRING
-   * @return TRUE if successful, FALSE otherwise 
+   * @return TRUE if successful, FALSE otherwise
    */
   private function ip_cache_clear($key='') {
     if(!$this->cacheIsOn || $key == '')
@@ -698,7 +734,7 @@ Sent via [IssuePress](http://issuepress.co)
     foreach($cacheKeys as $key){
 
       $tmp = $this->ip_cache_get($repo . '-' . $key);
-      
+
       // If there isn't a cache, create empty containters for proper json encoding
       if($tmp == false) {
 
@@ -707,7 +743,7 @@ Sent via [IssuePress](http://issuepress.co)
         } else {
           $tmp = array(); // array() looks like empty array
         }
-        
+
       }
 
       $repoCache[$key] = $tmp;
