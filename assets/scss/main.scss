@@ -732,6 +732,57 @@ section {
   }
 }
 
+.issue-listing-body {
+  margin-bottom: 1em;
+}
+
+.state-open {
+  @extend .submit;
+  background: #6cc644;
+
+  &:hover {
+    background: #6cc644;
+  }
+}
+
+.state-closed {
+  @extend .submit;
+  background: #bd2c00;
+
+  &:hover {
+    background: #bd2c00;
+  }
+}
+
+.ip-widget-nav {
+  font-size: .7em;
+  float: right;
+  position: relative;
+  top: 8px;
+}
+
+.sort span {
+
+  border-left: 1px solid #888888;
+  color: #888888;
+  cursor: pointer;
+  font-weight: normal;
+  padding: 0 5px 0 6px; 
+  
+
+  &.current {
+    font-weight: bold;
+  }
+  
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:first-child {
+    border-left: none;
+  }
+}
+
 
 
 /* .button {
