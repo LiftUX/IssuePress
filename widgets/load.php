@@ -10,6 +10,7 @@ include_once('message/ip-message.php');
 include_once('sections/ip-sections.php');
 include_once('recent-activity/ip-recent-activity.php');
 include_once('create-issue/create-issue.php');
+include_once('issue-listing/issue-listing.php');
 
 /**
  *
