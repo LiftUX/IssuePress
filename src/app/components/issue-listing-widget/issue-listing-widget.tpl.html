@@ -2,9 +2,9 @@
   <div class="section-title clearfix">
     {{title}}
     <div data-ng-show="items.length && !isLoading" class="sort ip-widget-nav">
-      <span class="current" href="#">View All</span>
-      <span href="#">Open</span>
-      <span href="#">Closed</span>
+      <span data-ng-click="setFilter('all')" data-ng-class="{'current': filterBy == 'all' }">View All</span>
+      <span data-ng-click="setFilter('open')" data-ng-class="{'current': filterBy == 'open' }">Open</span>
+      <span data-ng-click="setFilter('closed')" data-ng-class="{'current': filterBy == 'closed' }">Closed</span>
     </div>
   </div>
   <div class="issue-listing-list recent-activity-list">
@@ -13,10 +13,10 @@
       <h2>Loading...</h2>
     </div>
 
-    <div data-ng-repeat="item in items" data-ng-show="items.length && !isLoading" class="recent-activity-item"> 
+    <div data-ng-repeat="item in items" data-ng-show="items.length && !isLoading && checkFilter(item.state)" class="recent-activity-item"> 
       <div class="recent-activity-message">
         <a class="recent-activity-title" data-ng-href="#/{{repo}}/{{item.number}}">#{{item.number}} {{item.title}}</a>
-        <div class="issue-listing-body">{{item.body}}</div>
+        <div class="issue-listing-body">{{item.body | truncate:135}}</div>
         <footer class="recent-activity-meta">Last updated: {{item.updated_at | date:'MMM d, y'}}</footer>
       </div>
 

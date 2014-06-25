@@ -17,6 +17,25 @@ angular.module('components.issueListingWidget', [
       
       $scope.repo = $routeParams.repo;
 
+      $scope.filterBy = 'all';
+
+      $scope.setFilter = function(state) {
+        console.log("setting state to: " + state);
+        $scope.filterBy = state;
+      };
+
+      $scope.checkFilter = function(state) {
+
+        if($scope.filterBy === 'all' || $scope.filterBy === state) {
+          return true;
+        }
+
+        return false;
+
+      };
+
+
+
       $scope.isLoading = true;
 
       $scope.$watch("items", function(nVal, oVal) {

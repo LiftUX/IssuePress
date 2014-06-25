@@ -1708,6 +1708,29 @@ angular.module('ui.timeago', [])
   }
 });
 
+angular.module('ui.truncate', [])
+
+.filter('truncate', function(){
+  return function( text, length, ending ) {
+    if (isNaN(length))
+      length = 120;
+
+    if (ending === undefined)
+      ending = "...";
+
+    if (text.length <= length || text.length <= length) {
+      return text;
+    }
+    else {
+
+      var t = text.trim().split('\n');
+      text = t[0];
+
+      return String(text).substring(0, length) + ending;
+    }
+  };
+});
+
 
 angular.module('AppState', [])
 
@@ -1959,6 +1982,25 @@ angular.module('components.issueListingWidget', [
     controller: ['$scope', '$element', '$attrs', '$routeParams', 'IPAppState', function($scope, $element, $attrs, $routeParams, IPAppState) {
       
       $scope.repo = $routeParams.repo;
+
+      $scope.filterBy = 'all';
+
+      $scope.setFilter = function(state) {
+        console.log("setting state to: " + state);
+        $scope.filterBy = state;
+      };
+
+      $scope.checkFilter = function(state) {
+
+        if($scope.filterBy === 'all' || $scope.filterBy === state) {
+          return true;
+        }
+
+        return false;
+
+      };
+
+
 
       $scope.isLoading = true;
 
@@ -2508,6 +2550,7 @@ var IP = angular.module('issuepress', [
   'ui.gravatar',
   'ui.timeago',
   'ui.markdown',
+  'ui.truncate',
 ]);
 
 
@@ -2568,8 +2611,6 @@ angular.module('repo', ['AppState'])
       if(data){
         $scope.issues = data.issues;
         $scope.activity = data.activity;
-
-        console.log($scope.issues);
       }
     });
 
