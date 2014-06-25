@@ -20,6 +20,7 @@ var IP = angular.module('issuepress', [
   'ui.gravatar',
   'ui.timeago',
   'ui.markdown',
+  'ui.truncate',
 ]);
 
 
