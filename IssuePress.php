@@ -212,9 +212,9 @@ class UP_IssuePress {
       } else if ($widget_loc[1] == 'ip-section-main') {
 
         $sidebars_widgets[$widget_loc[1]] = array(
-          'ip_recent_activity-1',
+          'ip_issue_listing-1',
         );
-        $this->init_widget('ip_recent_activity', array('title' => 'Recent Activity'));
+        $this->init_widget('ip_issue_listing', array('title' => 'Issues'));
 
       }
 
