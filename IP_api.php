@@ -319,7 +319,12 @@ Sent via [IssuePress](http://issuepress.co)
     $cache = $this->ip_cache_get($cacheKey);
     if($cache === FALSE) {
       $client = $this->get_client();
-      $cache = $this->ip_cache_set($cacheKey, $client->api('issue')->all($org, $repoName, array('labels' => 'issuepress')));
+      $issues = $client->api('issue')->all($org, $repoName, array('labels' => 'issuepress', 'state' => 'all'));
+      foreach($issues as $i => $issue) {
+        $issues[$i] =  $this->filter_body($issue);
+      }
+      
+      $cache = $this->ip_cache_set($cacheKey, $issues);
     }
 
     return $cache;

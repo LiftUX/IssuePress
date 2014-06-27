@@ -1,0 +1,33 @@
+<section class="issue-listing-widget ip-widget recent-activity">
+  <div class="section-title clearfix">
+    {{title}}
+    <div data-ng-show="items.length && !isLoading" class="sort ip-widget-nav">
+      <span data-ng-click="setFilter('all')" data-ng-class="{'current': filterBy == 'all' }">View All</span>
+      <span data-ng-click="setFilter('open')" data-ng-class="{'current': filterBy == 'open' }">Open</span>
+      <span data-ng-click="setFilter('closed')" data-ng-class="{'current': filterBy == 'closed' }">Closed</span>
+    </div>
+  </div>
+  <div class="issue-listing-list recent-activity-list">
+
+    <div data-ng-show="isLoading">
+      <h2>Loading...</h2>
+    </div>
+
+    <div data-ng-repeat="item in filteredItems" data-ng-show="filteredItems.length && !isLoading" class="recent-activity-item"> 
+      <div class="recent-activity-message">
+        <a class="recent-activity-title" data-ng-href="#/{{repo}}/{{item.number}}">#{{item.number}} {{item.title}}</a>
+        <div class="issue-listing-body">{{item.body | truncate:135}}</div>
+        <footer class="recent-activity-meta">Last updated: {{item.updated_at | date:'MMM d, y'}}</footer>
+      </div>
+
+      <span class="recent-activity-timeago state-{{item.state}}">{{item.state}}</span>
+    </div>
+
+    <div data-ng-show="!filteredItems.length">
+      <p data-ng-show="filterBy === 'all'">No Support Requests</p>
+      <p data-ng-show="filterBy === 'open'">No Open Support Requests Currently</p>
+      <p data-ng-show="filterBy === 'closed'">No Closed Support Requests Currently</p>
+    </div>
+
+  </div>
+</section>

@@ -3,7 +3,7 @@
 Plugin Name: IssuePress
 Plugin URI: http://issuepress.co/
 Description: Create a public support page for your private Github repositories, brought to you by UpThemes.
-Version: 1.0.13
+Version: 1.0.14
 Author: UpThemes
 Author URI: http://upthemes.com/
 */
@@ -212,9 +212,9 @@ class UP_IssuePress {
       } else if ($widget_loc[1] == 'ip-section-main') {
 
         $sidebars_widgets[$widget_loc[1]] = array(
-          'ip_recent_activity-1',
+          'ip_issue_listing-1',
         );
-        $this->init_widget('ip_recent_activity', array('title' => 'Recent Activity'));
+        $this->init_widget('ip_issue_listing', array('title' => 'Support Requests'));
 
       }
 
@@ -290,8 +290,8 @@ class UP_IssuePress {
       'all');
 
     // Google's Angular
-    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js');
-    wp_register_script('ip_angular_route', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.min.js', array('ip_angular'));
+    wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js');
+    wp_register_script('ip_angular_route', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.min.js', array('ip_angular'));
 
     // The IP built file 
     wp_register_script(

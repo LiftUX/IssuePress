@@ -16,9 +16,11 @@ var IP = angular.module('issuepress', [
   'components.ticketList',
   'components.issueThread',
   'components.createIssueWidget',
+  'components.issueListingWidget',
   'ui.gravatar',
   'ui.timeago',
   'ui.markdown',
+  'ui.truncate',
 ]);
 
 

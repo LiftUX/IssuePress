@@ -1,4 +1,3 @@
-@import "http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700";
 /*! normalize.css 2012-03-11T12:53 UTC - http://github.com/necolas/normalize.css */
 /* =============================================================================
    HTML5 display definitions
@@ -6,6 +5,7 @@
 /*
  * Corrects block display not defined in IE6/7/8/9 & FF3
  */
+@import "http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700";
 article,
 aside,
 details,
@@ -702,7 +702,7 @@ textarea {
   resize: none;
 }
 
-.submit {
+.submit, .state-open, .state-closed {
   border-radius: .3em;
   background: #936091;
   color: #fff;
@@ -813,7 +813,7 @@ section {
   margin: 0;
   padding-right: 15%;
 }
-.search .submit {
+.search .submit, .search .state-open, .search .state-closed {
   position: absolute;
   top: 2px;
   right: 2px;
@@ -1097,6 +1097,48 @@ section {
 }
 .issue-list .issue-list-item .issue-link:hover {
   background-color: #b48cb2;
+}
+
+.issue-listing-body {
+  margin-bottom: 1em;
+}
+
+.state-open {
+  background: #6cc644;
+}
+.state-open:hover {
+  background: #6cc644;
+}
+
+.state-closed {
+  background: #bd2c00;
+}
+.state-closed:hover {
+  background: #bd2c00;
+}
+
+.ip-widget-nav {
+  font-size: .7em;
+  float: right;
+  position: relative;
+  top: 8px;
+}
+
+.sort span {
+  border-left: 1px solid #888888;
+  color: #888888;
+  cursor: pointer;
+  font-weight: normal;
+  padding: 0 5px 0 6px;
+}
+.sort span.current {
+  font-weight: bold;
+}
+.sort span:hover {
+  text-decoration: underline;
+}
+.sort span:first-child {
+  border-left: none;
 }
 
 /* .button {
