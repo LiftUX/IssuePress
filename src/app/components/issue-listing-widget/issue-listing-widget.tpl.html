@@ -13,7 +13,7 @@
       <h2>Loading...</h2>
     </div>
 
-    <div data-ng-repeat="item in items" data-ng-show="items.length && !isLoading && checkFilter(item.state)" class="recent-activity-item"> 
+    <div data-ng-repeat="item in filteredItems" data-ng-show="filteredItems.length && !isLoading" class="recent-activity-item"> 
       <div class="recent-activity-message">
         <a class="recent-activity-title" data-ng-href="#/{{repo}}/{{item.number}}">#{{item.number}} {{item.title}}</a>
         <div class="issue-listing-body">{{item.body | truncate:135}}</div>
@@ -23,8 +23,10 @@
       <span class="recent-activity-timeago state-{{item.state}}">{{item.state}}</span>
     </div>
 
-    <div data-ng-show="!items.length">
-      <p>No Recent Activity</p>
+    <div data-ng-show="!filteredItems.length">
+      <p data-ng-show="filterBy === 'all'">No Support Requests</p>
+      <p data-ng-show="filterBy === 'open'">No Open Support Requests Currently</p>
+      <p data-ng-show="filterBy === 'closed'">No Closed Support Requests Currently</p>
     </div>
 
   </div>

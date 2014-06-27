@@ -1979,20 +1979,27 @@ angular.module('components.issueListingWidget', [
       'title': '@widgetTitle',
       'items': '='
     },
-    controller: ['$scope', '$element', '$attrs', '$routeParams', 'IPAppState', function($scope, $element, $attrs, $routeParams, IPAppState) {
+    controller: ['$scope', '$element', '$attrs', '$routeParams',  '$filter', 'IPAppState', function($scope, $element, $attrs, $routeParams, $filter, IPAppState) {
       
       $scope.repo = $routeParams.repo;
+      $scope.filteredItems = [];
 
       $scope.filterBy = 'all';
 
       $scope.setFilter = function(state) {
-        console.log("setting state to: " + state);
         $scope.filterBy = state;
       };
 
-      $scope.checkFilter = function(state) {
+      $scope.$watch("filterBy", function(nVal, oVal){
+        if(nVal !== oVal) {
+          console.log("Updating filter");
+          $scope.filteredItems = $filter('filter')($scope.items, $scope.checkFilter);
+        }
+      });
 
-        if($scope.filterBy === 'all' || $scope.filterBy === state) {
+      $scope.checkFilter = function(i) {
+
+        if($scope.filterBy === 'all' || $scope.filterBy === i.state) {
           return true;
         }
 
@@ -2000,14 +2007,13 @@ angular.module('components.issueListingWidget', [
 
       };
 
-
-
       $scope.isLoading = true;
 
       $scope.$watch("items", function(nVal, oVal) {
         if(nVal) {
           $scope.isLoading = false;
           console.log(nVal);
+          $scope.filteredItems = nVal;
         }
       });
 
