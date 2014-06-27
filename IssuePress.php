@@ -214,7 +214,7 @@ class UP_IssuePress {
         $sidebars_widgets[$widget_loc[1]] = array(
           'ip_issue_listing-1',
         );
-        $this->init_widget('ip_issue_listing', array('title' => 'Issues'));
+        $this->init_widget('ip_issue_listing', array('title' => 'Support Requests'));
 
       }
 
