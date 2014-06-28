@@ -1,0 +1,10 @@
+header {
+  border-bottom:.2em solid $border-color;
+  margin-bottom:2.5em;
+  z-index:1;
+  padding:2em 0;
+
+  img{
+    max-height: 78px;
+  }
+}
