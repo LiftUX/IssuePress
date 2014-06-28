@@ -1,5 +1,6 @@
 @import "compass/css3";
-@import "normalize";
+@import "modules/variables";
+@import "partials/normalize";
 
 // Foundation
 @import
@@ -14,7 +15,7 @@
 //  "vendor/foundation/components/dropdown",
 //  "vendor/foundation/components/dropdown-buttons",
 //  "vendor/foundation/components/flex-video",
-//  "vendor/foundation/components/forms",
+  "vendor/foundation/components/forms",
 //  "vendor/foundation/components/icon-bar",
 //  "vendor/foundation/components/inline-lists",
 //  "vendor/foundation/components/joyride",
@@ -41,5 +42,4 @@
 //  "vendor/foundation/components/offcanvas",
   "vendor/foundation/components/visibility";
 
-@import "modules/variables";
-@import "partials/app";
+@import "partials/legacy";
