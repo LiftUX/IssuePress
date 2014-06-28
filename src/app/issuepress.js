@@ -21,6 +21,7 @@ var IP = angular.module('issuepress', [
   'ui.timeago',
   'ui.markdown',
   'ui.truncate',
+  'mm.foundation',
 ]);
 
 
