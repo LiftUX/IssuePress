@@ -8,14 +8,14 @@ angular.module('AppState', [])
    * Given a repo name, find the owner based on repos available
    */
   appState.getOwner = function(repo){
-    
+
     var owner = '';
     appState.repos.forEach(function(v,i){
       if(v.name === repo)
         owner = v.owner;
     });
 
-    return owner; 
+    return owner;
   };
 
   /**
@@ -137,7 +137,7 @@ angular.module('AppState', [])
 
     }
 
-    
+
 
   };
 
@@ -147,7 +147,7 @@ angular.module('AppState', [])
 
 
 .factory('IPAPI', ['$http', 'IPAppState', function($http, IPAppState){
-  
+
   var ipUrl = IPAppState.API_PATH;
   $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
@@ -156,28 +156,28 @@ angular.module('AppState', [])
     repo: function(repo){
       var org = IPAppState.getOwner(repo);
       return $http.get(ipUrl + org + '/' + repo).then(function(result) {
-        return result.data; 
+        return result.data;
       });
     },
 
     issue: function(repo, issue) {
       var org = IPAppState.getOwner(repo);
-      return $http.get(ipUrl + org + '/' + repo + '/' + issue).then(function(result) { 
-        return result.data; 
+      return $http.get(ipUrl + org + '/' + repo + '/' + issue).then(function(result) {
+        return result.data;
       });
     },
 
     issueNew: function(repo, issueData) {
       var org = IPAppState.getOwner(repo);
-      return $http.post(ipUrl + org + '/' + repo , issueData).then(function(result) { 
-        return result.data; 
+      return $http.post(ipUrl + org + '/' + repo , issueData).then(function(result) {
+        return result.data;
       });
     },
-  
+
     issueComment: function(repo, issue, commentData) {
       var org = IPAppState.getOwner(repo);
-      return $http.post(ipUrl + org + '/' + repo + '/' + issue, commentData).then(function(result) { 
-        return result.data; 
+      return $http.post(ipUrl + org + '/' + repo + '/' + issue, commentData).then(function(result) {
+        return result.data;
       });
     },
 

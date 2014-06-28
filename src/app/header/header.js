@@ -2,6 +2,7 @@
 angular.module('header', [
   'user',
   'AppState',
+  'mm.foundation.topbar'
 ])
 
 .directive('ipHeader', function() {

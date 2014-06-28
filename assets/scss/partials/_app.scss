@@ -660,12 +660,4 @@ section {
   }
 }
 
-
-
-/* .button {
-	background-color: fuchsia;
-
-	&:hover {
-		background-color: lighten($primary,15%) !important;
-	}
-} */
+@import 'header';

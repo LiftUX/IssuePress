@@ -50,9 +50,9 @@ module.exports = function(grunt) {
           interrupt: true,
         }
       },
-    }
-  });
+    },
 
+  });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-compass');

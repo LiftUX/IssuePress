@@ -1,31 +1,37 @@
 <header ng-controller="HeaderCtrl">
-  <nav class="top-bar" data-topbar>
+  <nav class="top-bar" data-topbar="">
     <ul class="title-area">
+      <!-- Title Area -->
       <li class="name">
         <h1><a href="#/dashboard">{{page_title}}</a>
           <a data-ng-show="!logo_src" class="logo" href=""></a>
           <a data-ng-show="logo_src" class="logo custom-image" href="#/dashboard"><img data-ng-src="{{logo_src}}" title="{{page_title}}"></a>
         </h1>
       </li>
-       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href=""><span>Menu</span></a></li>
     </ul>
 
-    <section class="top-bar-section">
-      <!-- Right Nav Section -->
+  <section class="top-bar-section">
       <ul class="right">
-        <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
-        <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
-        <li class="account active-user has-dropdown" data-ng-show="user">
-          <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="300"></div>{{user.display_name}}</a>
-        <ul class="dropdown">
-          <li><a ng-href="{{home.url}}" title="{{home.description}}">Back to {{home.name}}</a></li>
-          <li><a ng-href="{{logout_link}}">Logout</a></li>
-        </ul>
-        </li>
-        <li class="account" data-ng-hide="user"><a ng-href="{{login_link}}">Log in</a>
-      </ul>
 
+        <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
+
+        <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
+
+        <li class="account active-user has-dropdown not-click">
+
+          <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="26"></div> {{user.display_name}}</a>
+
+          <ul class="dropdown">
+            <li><a ng-href="{{home.url}}" title="{{home.description}}">Back to {{home.name}}</a></li>
+            <li><a ng-href="{{logout_link}}">Logout</a></li>
+          </ul>
+
+        </li>
+        <li class="account" data-ng-hide="user"><a ng-href="{{login_link}}">Log in</a></li>
+      </ul>
     </section>
   </nav>
+
 </header>
