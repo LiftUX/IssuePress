@@ -6,11 +6,11 @@ module.exports = function(grunt) {
     compass: {
       dist: {
         options: {
-          sassDir: 'assets/scss',
+          sassDir: 'src/styles',
           cssDir: 'assets/css',
           trace: true,
           force: true,
-          outputStyle: 'expanded',
+          outputStyle: 'compressed',
           environment: 'production'
         }
       }
@@ -40,11 +40,11 @@ module.exports = function(grunt) {
 
     watch: {
       css: {
-        files: 'assets/scss/**/*.scss',
+        files: 'src/styles/**/*.scss',
         tasks: ['compass']
       },
       scripts: {
-        files: ['src/**/*.js', 'Gruntfile.js' ],
+        files: ['app/**/*.js', 'Gruntfile.js' ],
         tasks: ['jshint', 'concat'], //, 'uglify'],
         options: {
           interrupt: true,
