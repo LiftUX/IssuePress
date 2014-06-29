@@ -1,7 +1,7 @@
 <section id="comment-form">
 
   <div class="comment" data-ng-if="!hasUser()">
-    <h3>You must <a href="{{loginLink}}">sign in</a> to submit a new request.</h3>
+    <h3>You must <a href="{{loginLink}}">sign in</a> to comment on this.</h3>
   </div>
 
   <form data-ng-submit="submitForm()" name="commentForm" novalidate class="comment new-comment">

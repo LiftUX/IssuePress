@@ -5,6 +5,10 @@
 
   <section class="issue-thread">
 
+    <div ng-hide="issue.id" class="loading">
+      Loading ...
+    </div>
+
     <div data-ng-show="apiError">
       <h2>API Error</h2>
     </div>

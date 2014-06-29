@@ -27,6 +27,13 @@ input[type="submit"]{
   @extend .radius;
 }
 
+.loading{
+  text-indent: 100%;
+  overflow: hidden;
+  background: url('../img/spinner.gif') no-repeat center center;
+  min-height: 160px;
+}
+
 .app-content {
   @extend .row;
   margin-bottom: 5rem;
