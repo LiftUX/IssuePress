@@ -1,12 +1,5 @@
 <div class="comment" data-ng-class="{staff:staff}">
-  <div class="comment-meta">
-    <a href="" class="author">
-      <div data-gravatar-image gravatar-hash="{{gravatarHash}}" s="300"></div>
-      <span class="author-name">{{author}}</span>
-      <span class="author-action">{{action}}</span>
-    </a>
-    <a href="" class="comment-timeago">1 month ago</a>
-  </div>
+
   <div class="comment-content">
     <div class="comment-title" data-ng-if="title">{{title}}</div>
     <div class="comment-body"><div data-markdown body="{{body}}"></div></div>
@@ -15,4 +8,17 @@
     </div>
     <a href="" class="follow-thread" data-ng-if="follow">Follow Thread</a>
   </div>
+
+  <div class="comment-meta">
+
+    <a href="" class="author">
+
+      <div data-gravatar-image gravatar-hash="{{gravatarHash}}" s="28"></div> <span class="author-name">{{author}}</span> <span class="author-action">{{action}}</span>
+
+    </a>
+
+    <span class="comment-timeago">1 month ago</span>
+
+  </div>
+
 </div>

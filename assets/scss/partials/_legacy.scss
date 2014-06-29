@@ -1,51 +1,61 @@
+@import "compass/css3";
+@import "../vendor/foundation/functions";
+
 * {
   @include box-sizing(border-box);
-  position:relative;
 }
 
-a {
-	color: $primary;
-
-	&:hover {
-		color: lighten($primary,15%);
-	}
+img[data-gravatar-image]{
+  @include border-radius(50% 50%);
+  margin-right: .5rem;
 }
 
-body {
-  background:#e2e2e2;
+textarea,
+input[type="text"],
+input[type="search"]{
+  @extend .radius;
+  @include box-shadow(inset 0 2px 4px rgba(0,0,0,.075));
 }
 
-.content {
-  @extend .wrap-content;
+textarea{
+  font-size: rem-calc(16);
+  min-height: 7em;
 }
 
-.full-column {
+input[type="submit"]{
+  @extend .button;
+  @extend .radius;
+}
 
+.app-content {
+  @extend .row;
+  margin-bottom: 5rem;
 }
 
 .left-column {
-  width:65%;
-  float:left;
+  @extend .columns;
+  @extend .large-8;
+  @extend .medium-12;
 
   .section-title {
-    font-size:1.3em;
+    font-size:rem-calc(18);
     font-weight:600;
-    padding-bottom:.7em;
-    border-bottom:.15em solid $border-color;
+    margin-bottom: rem-calc(18);
   }
 }
 
 .right-column {
-  width:35%;
-  float:left;
-  padding-left:2.4em;
+  @extend .columns;
+  @extend .large-4;
+  @extend .medium-12;
+
+  font-size:rem-calc(14);
 
   .section-title {
-    font-size:1.2em;
+    font-size:rem-calc(14);
     font-weight:600;
-    color:lighten($body-copy-color,25%);
-    padding-bottom:.7em;
-    border-bottom:.2em solid $border-color;
+    color:lighten($body-font-color,25%);
+    padding-bottom:1rem;
   }
 }
 
@@ -54,7 +64,7 @@ body {
   margin-bottom:1.75em;
 
   a {
-    color:$primary;
+    color:$primary-color;
     text-decoration:none;
     padding-right:.75em;
 
@@ -63,7 +73,7 @@ body {
       &:before {
         content:"";
         display:inline-block;
-        border-left:.3125em solid lighten($body-copy-color,40%);
+        border-left:.3125em solid lighten($body-font-color,40%);
         border-top:.3125em solid transparent;
         border-bottom:.3125em solid transparent;
         height:0;
@@ -74,83 +84,18 @@ body {
   }
 }
 
-form {
-  overflow:hidden;
-
-  .parsley-error {
-    border-color:$error-color;
-  }
-
-  .parsley-error-list {
-    position:absolute;
-    top:0;
-    right:0;
-    display:block;
-    pointer-events:none;
-    margin:0;
-    padding:0;
-
-    li {
-      padding:.5em .8em;
-      margin:.7em;
-      border-radius:.2em;
-      background:$error-color;
-      font-size:.8em;
-      font-weight:600;
-      color:#fff;
-    }
-  }
-}
-
-.textbox {
-  border-radius:.3em;
-  border:.15em solid $border-color;
-  display:block;
-  width:100%;
-  padding:.7em 1em;
-  margin-bottom:1em;
-
-  &:focus {
-    outline:none;
-    border-color:$outline-color;
-  }
-}
-
-textarea {
-  @extend .textbox;
-  height:8em;
-  resize:none;
-}
-
-.submit {
-  border-radius:.3em;
-  background:$primary;
-  color:#fff;
-  padding:.7em 1em;
-  text-decoration:none;
-  display:inline-block;
-  border:0;
-  float:right;
-  margin-bottom:.01em;
-}
-
 section {
   margin-bottom:2.5em;
-}
-
-.create-issue {
-  .section-title {
-    margin-bottom:1.4em;
-  }
 }
 
 .message {
   background: $message-color;
   border-radius:.3em;
-  border:.15em solid darken($message-color,10%);
+  line-height: 1.4;
+  border:2px solid darken($message-color,10%);
   padding:1.4em;
   text-align:center;
-  color: $body-copy-color;
+  color: $body-font-color;
 
   .message-title {
     font-size:1.2em;
@@ -161,11 +106,16 @@ section {
 
 .recent-activity {
 
+  .recent-activity-list{
+    border-top: 2px solid $border-color;
+  }
+
   .recent-activity-item {
     overflow:hidden;
-    border-bottom:.15em solid $border-color;
+    border-bottom:2px solid $border-color;
     padding:.8em 0;
     vertical-align:middle;
+    position: relative;
 
     .recent-activity-content {
       overflow:hidden;
@@ -192,9 +142,7 @@ section {
       width:87%;
 
       p {
-        margin:0;
-        font-size:.9em;
-        color:lighten($body-copy-color,25%);
+        font-size:1em;
       }
     }
 
@@ -215,23 +163,23 @@ section {
 
     .recent-activity-meta {
       margin:0 0 .5em 0;
-      color:lighten($body-copy-color,25%);
+      color:lighten($body-font-color,40%);
+      font-size: rem-calc(11);
     }
 
     .recent-activity-timeago {
       display:block;
       font-size:.7em;
-      font-weight: 400;
-      color: $message-color;
+      font-weight: 600;
       position:absolute;
       right:0;
       top:40%;
-      margin-top:-.5em;
+      text-transform: uppercase;
     }
   }
 
   a {
-    //color:$primary;
+    //color:$primary-color;
     font-weight:600;
     text-decoration:none;
   }
@@ -246,29 +194,19 @@ section {
     position: relative;
   }
 
-  .form-wrapper {
-    @extend .clearfix;
-    position: relative;
-  }
-
   .textbox {
-    z-index:1;
-    margin:0;
-    padding-right: 15%;
+    @extend .large;
+    margin-bottom: 0;
   }
 
-  .submit {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    z-index: 2;
-    width: 80px;
+  .submit{
+    display: none;
   }
 
   .spinner {
     position: absolute;
-    top: 11px;
-    right: 94px;
+    top: 8px;
+    right: 8px;
     width: 24px;
     height: 24px;
     display: block;
@@ -278,19 +216,16 @@ section {
     background: transparent url(../img/spinner.gif) no-repeat center center scroll;
   }
 
-
   .live-search-results {
-    margin-top:-.15em;
-    background-color: lighten($border-color,20%);
+    margin-top: -2px;
+    background-color: $panel-bg;
     border-radius:0 0 .3em .3em;
-    border:.15em solid $border-color;
+    border:1px solid $border-color;
     display:block;
     width:100%;
 
     .live-search-results-header {
       padding:.7em 1em;
-      border-top:.15em solid $border-color;
-      border-bottom:.15em solid $border-color;
       background:#fff;
       font-weight:600;
       font-size:1.1em;
@@ -303,13 +238,40 @@ section {
     }
 
     .issue-list-item {
-      border:0;
-      overflow:hidden;
-      padding:.7em 1em;
-      font-size:.9em;
+      line-height: 1.5;
+
+      a{
+        display: block;
+        background-color: white;
+        border:0;
+        overflow:hidden;
+        padding:.7em 1em;
+        font-size:.9em;
+
+        &:hover{
+          background-color: $primary-color;
+
+          *{
+            color: white;
+          }
+        }
+      }
+
+      &:nth-child(even) a{
+        background: rgba(0,0,0,.04);
+        @include transition(100ms background-color linear);
+
+        &:hover{
+          background-color: $primary-color;
+
+          *{
+            color: white;
+          }
+        }
+      }
 
       & + .issue-list-item {
-        border-top:.15em solid $border-color;
+        border-top:1 solid $border-color;
       }
 
       .issue-title {
@@ -323,23 +285,8 @@ section {
 
       .issue-date {
         float:left;
-        color:lighten($body-copy-color,40%);
+        color:lighten($body-font-color,40%);
         font-size:.9em;
-      }
-
-      .issue-link {
-        border-radius:.3em;
-        background-color:$primary;
-        color:#fff;
-        padding:.7em 1em;
-        font-size:.9em;
-        text-decoration:none;
-        display:inline-block;
-        float:right;
-
-        &:hover {
-			background-color: lighten($primary,15%);
-		}
       }
     }
   }
@@ -350,10 +297,10 @@ section {
   .section-nav {
 
     a {
-      color:$body-copy-color;
+      color:$body-font-color;
       text-decoration:none;
       display:inline-block;
-      border-bottom:.1em solid lighten($body-copy-color,40%);
+      border-bottom:.1em solid lighten($body-font-color,40%);
       font-weight:600;
       margin:1em 1em .5em 0;
       font-size:.9em;
@@ -362,7 +309,7 @@ section {
 
   /* add a bottom border to Section Repo only when it is in the left column */
   .left-column & .support-section {
-	  border-bottom: .15em solid $border-color;
+	  border-bottom: 2px solid $border-color;
   }
 
   .support-section {
@@ -371,27 +318,25 @@ section {
     padding:.7em 0;
 
     &:hover {
-
-
       .support-section-following {
-	      background-color: lighten($primary,15%);
+	      background-color: lighten($primary-color,15%);
       }
     }
 
     .support-section-title {
-      //color:$primary;
+      //color:$primary-color;
       font-weight:600;
     }
 
     .support-section-date {
-      color: lighten($body-copy-color,25%);
+      color: lighten($body-font-color,25%);
       font-size:.8em;
     }
 
     .support-section-following {
       float:right;
       border-radius:.3em;
-      background-color:$primary;
+      background-color:$primary-color;
       color:#fff;
       padding:.7em 1em;
       font-size:.9em;
@@ -406,196 +351,192 @@ section {
   .ticket {
     display:block;
     text-decoration:none;
-    border-bottom:.15em solid $border-color;
+    border-bottom:2px solid $border-color;
     padding:1em 0;
 
     .ticket-title {
-      //color:$primary;
+      //color:$primary-color;
       font-weight:600;
       display:block;
       margin-bottom:.3em;
     }
 
     .ticket-meta {
-      color:lighten($body-copy-color,40%);
+      color:lighten($body-font-color,40%);
       display:block;
       font-size:.9em;
       margin-bottom:.3em;
     }
 
     .ticket-comment {
-      color: lighten($body-copy-color,15%);
+      color: lighten($body-font-color,15%);
       display:block;
       font-size:.9em;
     }
   }
 }
 
-.issue-thread {
+.comment:not(.issue){
+  margin-bottom: 3rem;
 
-  form.comment {
-    overflow:hidden;
+  &.staff{
+    .comment-content{
+      border: 2px solid $primary-color;
 
-    .comment-content {
-      padding:0;
+      &:before{
+        border-top-color: $primary-color;
+      }
+
+      &:after{
+        border-top-color: $panel-bg;
+      }
+    }
+
+    .author-name:after{
+      content: "Staff";
+      background-color: $primary-color;
+      color: contrast-color($primary-color,#222,#fff,50%);
+      padding: 3px 5px;
+      text-transform: uppercase;
+      font-size: rem-calc(11);
+      @include border-radius($global-radius);
+      margin-left: 4px;
+      margin-right: 9px;
     }
   }
 
-  .comment {
-    margin-bottom:1em;
+  .comment-meta{
+    line-height: 28px;
+    color: lighten($body-font-color,30%);
+    margin-left: 15px;
+    position:relative;
+    font-size: rem-calc(14);
+  }
 
-    & + .comment {
-      margin-left:4em;
+  .author-name{
+    color: $body-font-color;
+  }
 
-      p {
-        margin:1em 0;
-      }
+  .comment-content{
+    @include border-radius($global-radius);
+    background-color: $panel-bg;
+    margin: 10px 0 20px;
+    color: lighten($body-font-color,15%);
+    padding: 4%;
+    position: relative;
+    border: 2px solid darken($panel-bg,10%);
+
+    &:before{
+      @include css-triangle(8px, darken($panel-bg,10%), top);
+      position: absolute;
+      bottom: -16px;
+      left: 20px;
+      z-index: 9999;
     }
 
-    &.staff {
-      margin-left:0;
-      margin-right:4em;
-
-      .comment-meta {
-        overflow:hidden;
-        margin-left:4em;
-        margin-right:-4em;
-      }
-
-      .author {
-        float:right;
-
-        img {
-          float:right;
-          margin-left:1em;
-          margin-right:0;
-        }
-      }
-
-      .comment-timeago {
-        float:left;
-      }
+    &:after{
+      @include css-triangle(8px, $panel-bg, top);
+      position: absolute;
+      bottom: -13px;
+      left: 20px;
+      z-index: 9999;
     }
 
-    .comment-meta {
-      margin-bottom:.5em;
-      height:3em;
-    }
-
-    .author {
-      text-decoration:none;
-
-      img {
-        border-radius:100%;
-        display:inline-block;
-        vertical-align:top;
-        margin-right:1em;
-        width:3em;
-      }
-    }
-
-    .author-name {
-      color:$primary;
-      top:1em;
-    }
-
-    .author-action {
-      top:1em;
-      color:$body-copy-color;
-    }
-
-    .comment-timeago {
-      float:right;
-      top:1em;
-      color:lighten($body-copy-color,40%);
-      text-decoration:none;
-    }
-
-    .comment-content {
-      border-radius:.3em;
-      background:#fafafa;
-      border:.15em solid $border-color;
-      padding:.4em 1.4em;
-      margin-left:4em;
-    }
-
-    .textarea-wrap {
-      margin-left:4em;
-    }
-
-    .comment-title {
-      font-size:1.4em;
-      font-weight:600;
-      margin-top:.7em;
-    }
-
-    .comment-tags {
-      margin-bottom:1em;
-
-      a {
-        text-decoration:none;
-        color:$primary;
-        font-weight:600;
-        font-size:.8em;
-        padding-right:.8em;
-      }
-
-      &:before {
-        content:"\e70c";
-        font-family:$icon;
-        color:$border-color;
-        top:.1em;
-        position:relative;
-        margin-right:.8em;
-      }
-    }
-
-    .follow-thread {
-      position:absolute;
-      bottom:-.15em;
-      right:-.15em;
-      color:$body-copy-color;
-      font-weight:600;
-      font-size:.9em;
-      text-decoration:none;
-      padding:.75em 1.5em;
-      background:lighten($primary,50%);
-      border-radius:.3em 0 .3em 0;
-      border-top:.15em solid lighten($primary,40%);
-      border-left:.15em solid lighten($primary,40%);
-      border:.15em solid lighten($primary,40%);
+    p:last-child{
+      margin-bottom: 0;
     }
   }
 }
 
+.comment.issue{
+  padding-bottom: 40px;
+  border-bottom: 1px solid $border-color;
+  margin-bottom: 40px;
+
+  .comment-title{
+    margin-bottom: .5rem;
+
+    strong{
+      color: lighten($body-font-color,35%);
+      font-weight: 100;
+    }
+  }
+
+  .comment-meta{
+    margin-bottom: 1.5rem;
+    font-size: .9rem;
+    color: lighten($body-font-color,45%);
+  }
+
+  .comment-tags{
+    span{
+      border: 2px solid $primary-color;
+      color: $primary-color;
+      padding: 5px 7px;
+      margin-right: 4px;
+      font-size: .8rem;
+      @include border-radius($global-radius);
+    }
+  }
+
+  .comment-body{
+    margin-bottom: 2rem;
+
+    p{
+      font-size: 16px;
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+  }
+}
+
+#comment-form{
+
+  .comment-meta{
+    float: left;
+  }
+
+  .help-block{
+    @extend .alert-box;
+    @extend .radius;
+  }
+
+  input,
+  button{
+    float: right;
+    @extend .radius;
+    @extend .primary;
+  }
+}
+
 .issue-list {
-  border-bottom:.15em solid $border-color;
+  border-bottom:2px solid $border-color;
 
   .issue-list-item {
     padding:1.4em 0;
-    border-top:.15em solid $border-color;
+    border-top:2px solid $border-color;
 
     .issue-title {
       font-size:1.3em;
       font-weight:600;
       margin-bottom:.2em;
-      color:$primary;
+      color:$primary-color;
     }
 
     .issue-date {
-      color:lighten($body-copy-color,40%);
+      color:lighten($body-font-color,40%);
       font-size:.9em;
       margin-bottom:.6em;
     }
 
     .issue-description {
-      color: lighten($body-copy-color,15%);
+      color: lighten($body-font-color,15%);
       margin-bottom:1em;
     }
 
     .issue-link {
       border-radius:.3em;
-      background-color:$primary;
+      background-color:$primary-color;
       color:#fff;
       padding:.7em 1em;
       font-size:.9em;
@@ -603,7 +544,7 @@ section {
       display:inline-block;
 
       &:hover {
-	      background-color: lighten($primary,15%);
+	      background-color: lighten($primary-color,15%);
       }
     }
   }
@@ -613,22 +554,21 @@ section {
   margin-bottom: 1em;
 }
 
-.state-open {
-  @extend .submit;
-  background: #6cc644;
+.state-open,
+.state-closed{
+  padding: 4px 7px;
+  @include border-radius($global-radius);
+  font-size: rem-calc(16);
+}
 
-  &:hover {
-    background: #6cc644;
-  }
+.state-open {
+  color: green;
+  border: 2px solid green;
 }
 
 .state-closed {
-  @extend .submit;
-  background: #bd2c00;
-
-  &:hover {
-    background: #bd2c00;
-  }
+  color: red;
+  border: 2px solid red;
 }
 
 .ip-widget-nav {
@@ -659,5 +599,3 @@ section {
     border-left: none;
   }
 }
-
-@import 'header';

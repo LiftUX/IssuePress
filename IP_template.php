@@ -32,38 +32,38 @@ Template Name: IssuePress
 </head>
 <body>
 
-
-<div class="content">
   <div ip-header></div>
 
-  <div class="left-column" data-ng-view>
+  <div class="app-content">
+
+    <div class="left-column" data-ng-view>
+    </div>
+
+    <div class="right-column" data-ng-switch="" on="sidebar">
+
+      <div data-ng-switch-when="dashboard.tpl.html">
+        <div data-ng-include=" 'ip-dashboard-side' "></div>
+      </div>
+
+      <div data-ng-switch-when="sections.tpl.html">
+        <div ng-include=" 'ip-sections-side' "></div>
+      </div>
+
+      <div data-ng-switch-when="repo.tpl.html">
+        <div ng-include=" 'ip-section-side' "></div>
+      </div>
+
+      <div data-ng-switch-when="issue.tpl.html">
+        <div ng-include=" 'ip-issue-side' "></div>
+      </div>
+
+      <!-- Note: no create issue declaration, it will not have a sidebar. -->
+
+      <div data-ng-switch-default></div>
+
+    </div>
+
   </div>
-
-  <div class="right-column" data-ng-switch="" on="sidebar">
-
-    <div data-ng-switch-when="dashboard.tpl.html">
-      <div data-ng-include=" 'ip-dashboard-side' "></div>
-    </div>
-
-    <div data-ng-switch-when="sections.tpl.html">
-      <div ng-include=" 'ip-sections-side' "></div>
-    </div>
-
-    <div data-ng-switch-when="repo.tpl.html">
-      <div ng-include=" 'ip-section-side' "></div>
-    </div>
-
-    <div data-ng-switch-when="issue.tpl.html">
-      <div ng-include=" 'ip-issue-side' "></div>
-    </div>
-
-    <!-- Note: no create issue declaration, it will not have a sidebar. -->
-
-    <div data-ng-switch-default></div>
-
-  </div>
-
-</div>
 
 </body>
 </html>

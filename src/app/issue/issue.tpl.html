@@ -5,62 +5,61 @@
 
   <section class="issue-thread">
 
-    <div class="comment" data-ng-hide="issue.id">
-      <h2>Loading Data</h2>
-    </div>
-
-    <div class="comment" data-ng-show="apiError">
+    <div data-ng-show="apiError">
       <h2>API Error</h2>
     </div>
 
-    <div class="comment" data-ng-class="{staff:isStaff(issue.user.login)}" data-ng-show="issue.id">
-      <div class="comment-meta">
+    <div class="comment issue" data-ng-class="{staff:isStaff(issue.user.login)}" data-ng-show="issue.id">
 
-          <div data-ng-hide="issue.ipOrigin">
-            <span class="author">
-              <div data-gravatar-image gravatar-hash="{{issue.user.gravatar_id}}" s="300"></div>
-              <span class="author-name">{{issue.user.login}}</span>
-              <span class="author-action">created a support request</span>
-            </span>
-          </div>
-
-          <div data-ng-show="issue.ipOrigin">
-            <span class="author">
-              <div data-gravatar-image gravatar-hash="{{issue.ipMeta.gravatar_id}}" s="300"></div>
-              <span class="author-name">{{issue.ipMeta.username}}</span>
-              <span class="author-action">created a support request</span>
-            </span>
-          </div>
-
-        <span class="comment-timeago">{{issue.created_at | timeago}}</span>
-      </div>
       <div class="comment-content">
-        <div class="comment-title" data-ng-if="title">{{issue.title}}</div>
-        <div ng-show="issue.body" class="comment-body"><div data-markdown>{{issue.body}}</div></div>
-        <div class="comment-tags" data-ng-show="issue.labels">
-          <a data-ng-repeat="label in issue.labels" href="">{{label.name}}</a>
+
+        <h1 class="comment-title" data-ng-if="issue.title"><strong data-bg-if="issue.number">#{{issue.number}} </strong>{{issue.title}}</h1>
+
+        <div class="comment-meta">
+
+          <span data-ng-hide="issue.ipOrigin">
+            <span class="author">
+              <span data-gravatar-image gravatar-hash="{{issue.user.gravatar_id}}" s="20"></span>
+              <span class="author-action">posted by</span> <span class="author-name">{{issue.user.login}}</span>
+            </span>
+          </span>
+
+          <span data-ng-show="issue.ipOrigin">
+            <span class="author">
+              <span data-gravatar-image gravatar-hash="{{issue.ipMeta.gravatar_id}}" s="20"></span>
+              <span class="author-action">posted by</span> <span class="author-name">{{issue.ipMeta.username}}</span>
+            </span>
+          </span>
+
+          <span class="comment-timeago">{{issue.created_at | timeago}}</span>
         </div>
-        <!--
-        <a href="" class="follow-thread" data-ng-if="follow">Follow Thread</a>
-        -->
+
+        <div ng-show="issue.body" class="comment-body"><div data-markdown>{{issue.body}}</div></div>
+
+        <div class="comment-tags" data-ng-show="issue.labels">
+          <span data-ng-repeat="label in issue.labels" href="">{{label.name}}</span>
+        </div>
+
       </div>
     </div>
 
-
     <div data-ng-repeat="comment in comments" class="comment" data-ng-class="{staff:isStaff(comment.user.login)}">
-      <div class="comment-meta">
-        <span class="author">
-          <div data-gravatar-image gravatar-hash="{{comment.user.gravatar_id}}" s="300"></div>
-          <span class="author-name">{{comment.user.login}}</span>
-          <span class="author-action">said</span>
-        </span>
-        <span href="" class="comment-timeago">{{comment.updated_at | timeago}}</span>
-      </div>
+
       <div class="comment-content">
         <div data-ng-show="comment.body" class="comment-body"><div data-markdown>{{comment.body}}</div></div>
       </div>
+
+      <div class="comment-meta">
+
+        <span class="author">
+          <span data-gravatar-image gravatar-hash="{{comment.user.gravatar_id}}" s="28"></span> <span class="author-action">Posted by</span> <span class="author-name">{{comment.user.login}}</span> <span href="" class="comment-timeago">{{comment.updated_at | timeago}}</span>
+        </span>
+
+
+      </div>
+
     </div>
-    
+
 
     <div data-ip-issue-form user="{{user}}"></div>
 

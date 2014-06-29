@@ -9,7 +9,7 @@ angular.module('components.search', ['AppState'])
     },
     templateUrl: IP_PATH + '/app/components/search/search.tpl.html',
     controller: ['$scope', '$element', '$attrs', '$timeout', 'IPAPI', function($scope, $element, $attrs, $timeout, IPAPI) {
-      
+
       $scope.q = '';
       $scope.isSearching = false;
       $scope.searchComplete = $scope.hasResults = $scope.lastQ = false;
@@ -42,7 +42,7 @@ angular.module('components.search', ['AppState'])
             $scope.isSearching = false;
             $scope.lastQ = $scope.q;
 
-            if(typeof data.data.response.items !== 'undefined') { 
+            if(typeof data.data.response.items !== 'undefined') {
               $scope.results = data.data.response.items;
             }
 
