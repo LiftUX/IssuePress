@@ -1245,10 +1245,10 @@ $topbar-link-font-size: rem-calc(14);
 // $topbar-menu-link-transform: uppercase;
 // $topbar-menu-link-font-size: rem-calc(13);
 // $topbar-menu-link-weight: $font-weight-bold;
-// $topbar-menu-link-color: #fff;
-// $topbar-menu-icon-color: #fff;
-// $topbar-menu-link-color-toggled: #888;
-// $topbar-menu-icon-color-toggled: #888;
+$topbar-menu-link-color: contrast-color($topbar-bg-color,#222,#fff,50%);
+$topbar-menu-icon-color: contrast-color($topbar-bg-color,#222,#fff,50%);
+$topbar-menu-link-color-toggled: #888;
+$topbar-menu-icon-color-toggled: #888;
 
 // Transitions and breakpoint styles
 // $topbar-transition-speed: 300ms;

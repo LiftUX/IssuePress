@@ -13,6 +13,8 @@ angular.module('header', [
   };
 })
 
+.directive('topBar')
+
 .controller('HeaderCtrl', ['$rootScope', '$scope', '$location', '$route', 'IPUser', 'IPAppState', function ($rootScope, $scope, $location, $route, IPUser, IPAppState) {
 
   $rootScope.$on('$routeChangeSuccess', function(scope, current) {
