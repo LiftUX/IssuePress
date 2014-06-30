@@ -225,7 +225,7 @@ class UP_IssuePress {
   }
 
 
-  /*
+  /**
    * Init Widget Util Function
    *
    * Initializes the content of a widget at specified index with array of settings
@@ -338,7 +338,53 @@ class UP_IssuePress {
       $color = $opts['upip_custom_color'];
       $l_color = lighten_color($color, 25);
 ?>
-<style type="text/css">a, .breadcrumb a, .issue-thread .comment .author-name, .issue-thread .comment .comment-tags a, .issue-list .issue-list-item .issue-title { color: <?php echo $color; ?>; }a:hover, .breadcrumb a:hover, .issue-thread .comment .author-name:hover, .issue-thread .comment .comment-tags a:hover, .issue-list .issue-list-item .issue-title:hover { color: <?php echo $l_color; ?>; }.submit,.search .live-search-results .issue-list-item .issue-link, .support-sections .support-section .support-section-following, .issue-list .issue-list-item .issue-link{ background-color: <?php echo $color; ?>;}.submit:hover,.search .live-search-results .issue-list-item .issue-link:hover, .support-sections .support-section .support-section-following:hover, .issue-list .issue-list-item .issue-link:hover { background-color: <?php echo $l_color; ?> ;}</style>
+<style type="text/css">
+a,
+.comment.issue .comment-tags span
+{
+  color: <?php echo $color; ?>;
+}
+
+a:hover
+{
+  color: <?php echo $l_color; ?>;
+}
+
+button,
+.button,
+input[type="submit"],
+.comment.issue .comment-tags span
+{
+  border-color: <?php echo $color; ?>;
+}
+
+.submit,
+.support-sections .support-section .support-section-following,
+.issue-list .issue-list-item .issue-link,
+.search .live-search-results .issue-list-item a:hover,
+.search .live-search-results .issue-list-item:nth-child(even) a:hover,
+.top-bar-section li:not(.has-form) a:not(.button):hover,
+.top-bar-section .dropdown li:not(.has-form):hover>a:not(.button),
+.top-bar-section ul li:hover:not(.has-form)>a,
+button,
+.button,
+input[type="submit"],
+button.disabled,
+button[disabled],
+.button.disabled,
+input.disabled[type="submit"],
+.button[disabled],
+input[disabled][type="submit"]
+{
+  background-color: <?php echo $color; ?>;
+}
+
+.button.primary:hover,
+.submit:hover
+{
+  background-color: <?php echo $l_color; ?>;
+}
+</style>
 <?php
     }
   }
