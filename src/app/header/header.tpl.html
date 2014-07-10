@@ -1,73 +1,39 @@
-<div id="app-header" ng-controller="TopBarDemoCtrl">
-  <div class="app-header-inner">
-    <top-bar>
-      <ul class="title-area">
-        <li class="name">
-          <h1><a href="#">My Site</a></h1>
-        </li>
-        <li toggle-top-bar class="menu-icon"><a href="#">Menu</a></li>
-      </ul>
-
-      <top-bar-section>
-        <!-- Right Nav Section -->
-        <ul class="right">
-          <li class="active"><a href="#">Active</a></li>
-          <li has-dropdown>
-            <a href="#">Dropdown</a>
-            <ul top-bar-dropdown>
-              <li><a href="#">First link in dropdown</a></li>
-            </ul>
-          </li>
-        </ul>
-
-        <!-- Left Nav Section -->
-        <ul class="left">
-          <li><a href="#">Left</a></li>
-        </ul>
-      </top-bar-section>
-    </top-bar>
-  </div>
-</div>
-
-
-
 <header id="app-header" ng-controller="HeaderCtrl">
   <div class="app-header-inner">
     <nav class="top-bar" data-topbar="">
       <ul class="title-area">
         <!-- Title Area -->
         <li class="name">
-
+          <h1><a href="#/dashboard"><img data-ng-show="logo_src" data-ng-src="{{logo_src}}" title="{{page_title}}">{{page_title}}</a>
+          </h1>
         </li>
-        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-        <li class="toggle-topbar menu-icon"><a href=""><span>Menu</span></a></li>
       </ul>
 
       <section class="top-bar-section">
 
-        <ul class="left">
+          <ul class="left">
 
-          <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
+            <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
 
-          <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
+            <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
 
-        </ul>
+          </ul>
 
-        <ul class="right">
+          <ul class="right">
 
-          <li class="account active-user has-dropdown not-click" data-ng-show="user">
+            <li class="account active-user has-dropdown not-click" data-ng-show="user">
 
-            <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="26"></div> {{user.display_name}}</a>
+              <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="26"></div> {{user.display_name}}</a>
 
-            <ul class="dropdown">
-              <li><a ng-href="{{home.url}}" title="{{home.description}}">Back to {{home.name}}</a></li>
-              <li><a ng-href="{{logout_link}}">Sign Out</a></li>
-            </ul>
+              <ul class="dropdown">
+                <li><a ng-href="{{home.url}}" title="{{home.description}}">Back to {{home.name}}</a></li>
+                <li><a ng-href="{{logout_link}}">Sign Out</a></li>
+              </ul>
 
-          </li>
-          <li class="account" data-ng-hide="user"><a ng-href="{{login_link}}">Sign In</a></li>
-        </ul>
-      </section>
+            </li>
+            <li class="account" data-ng-hide="user"><a ng-href="{{login_link}}">Sign In</a></li>
+          </ul>
+        </section>
     </nav>
   </div>
 </header>

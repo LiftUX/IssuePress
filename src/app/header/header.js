@@ -1,7 +1,6 @@
 angular.module('header', [
   'user',
   'AppState',
-  'mm.foundation.topbar'
 ])
 
 .directive('ipHeader', function() {
@@ -35,10 +34,6 @@ angular.module('header', [
   $scope.home = IPAppState.site;
   $scope.login_link = IPUser.login_link + encodeURIComponent("#" + $scope.loc);
   $scope.logout_link = IPUser.logout_link;
-
-  var TopBarDemoCtrl = function ($scope) {
-
-  };
 
   $scope.isNavbarActive = function (navBarPath) {
     return navBarPath === $scope.loc;
