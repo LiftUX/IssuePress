@@ -353,11 +353,13 @@ a:hover
 button,
 .button,
 input[type="submit"],
-.comment.issue .comment-tags span
+.comment.issue .comment-tags span,
+.comment:not(.issue).staff .comment-content
 {
   border-color: <?php echo $color; ?>;
 }
 
+.comment:not(.issue).staff .author-name:after,
 .submit,
 .support-sections .support-section .support-section-following,
 .issue-list .issue-list-item .issue-link,
