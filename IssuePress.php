@@ -380,7 +380,18 @@ input[disabled][type="submit"]
 }
 
 .button.primary:hover,
-.submit:hover
+.submit:hover,
+button.disabled:hover,
+button.disabled:focus,
+button[disabled]:hover,
+button[disabled]:focus, .button.disabled:hover,
+input.disabled[type="submit"]:hover,
+.button.disabled:focus,
+input.disabled[type="submit"]:focus,
+.button[disabled]:hover,
+input[disabled][type="submit"]:hover,
+.button[disabled]:focus,
+input[disabled][type="submit"]:focus
 {
   background-color: <?php echo $l_color; ?>;
 }
