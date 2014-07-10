@@ -359,6 +359,10 @@ input[type="submit"],
   border-color: <?php echo $color; ?>;
 }
 
+.comment:not(.issue).staff .comment-content:before{
+  border-top-color: <?php echo $color; ?>;
+}
+
 .comment:not(.issue).staff .author-name:after,
 .submit,
 .support-sections .support-section .support-section-following,
@@ -381,6 +385,12 @@ input[disabled][type="submit"]
   background-color: <?php echo $color; ?>;
 }
 
+button:hover,
+button:focus,
+.button:hover,
+input[type="submit"]:hover,
+.button:focus,
+input[type="submit"]:focus,
 .button.primary:hover,
 .submit:hover,
 button.disabled:hover,
