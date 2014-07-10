@@ -10,7 +10,7 @@ module.exports = function(grunt) {
           cssDir: 'assets/css',
           trace: true,
           force: true,
-          outputStyle: 'compressed',
+          outputStyle: 'expanded',
           environment: 'production'
         }
       }
@@ -44,15 +44,15 @@ module.exports = function(grunt) {
         tasks: ['compass']
       },
       scripts: {
-        files: ['app/**/*.js', 'Gruntfile.js' ],
+        files: ['src/**/*.js', 'Gruntfile.js' ],
         tasks: ['jshint', 'concat'], //, 'uglify'],
         options: {
           interrupt: true,
         }
       },
-    },
-
+    }
   });
+
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-compass');
