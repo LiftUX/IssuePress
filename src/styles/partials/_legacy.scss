@@ -78,7 +78,7 @@ input[type="submit"]{
   margin-bottom:1.75em;
 
   a {
-    color:$primary-color;
+    color: lighten($body-font-color,30%);
     text-decoration:none;
     padding-right:.75em;
 
