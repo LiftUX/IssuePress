@@ -1,10 +1,11 @@
 
 <section data-ng-controller="CreateIssueCtrl" class="create-issue">
 
+  <div data-ip-breadcrumbs></div>
+
   <div class="section-title">
     Create New Support Request
   </div>
-  <div data-ip-breadcrumbs></div>
 
   <form data-ng-submit="submitForm()" name="issueForm" novalidate>
 
@@ -14,7 +15,7 @@
         <p ng-show="issueForm.title.$invalid && !issueForm.title.$pristine" class="help-block">The support request title is required.</p>
       </div>
       <div class="input-wrap">
-        <textarea class="required" required name="body" data-ng-model="issue.body" placeholder="Tell us about what is going on"></textarea>
+        <textarea class="required" required name="body" data-ng-model="issue.body" placeholder="Description"></textarea>
         <p ng-show="issueForm.body.$invalid && !issueForm.body.$pristine" class="help-block">The support request body is required.</p>
       </div>
       <input type="hidden" name="meta" data-ng-model="issue.meta" />
@@ -22,7 +23,7 @@
     </div>
 
     <div data-ng-if="!hasUser()">
-      <h2>Sorry, but you must <a data-ng-href="{{loginLink}}">log in</a> to create a support request</h2>  
+      <h3>You must <a data-ng-href="{{loginLink}}">sign in</a> to create a new request.</h3>
     </div>
 
     <div data-ng-if="formSubmitted">

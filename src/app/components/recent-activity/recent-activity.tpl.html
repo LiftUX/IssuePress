@@ -2,7 +2,7 @@
   <div class="section-title">{{title}}</div>
   <div class="recent-activity-list">
 
-    <div data-ng-show="isLoading">
+    <div data-ng-show="isLoading" class="loading">
       <h2>Loading...</h2>
     </div>
 
@@ -14,12 +14,12 @@
       <a data-ng-href="{{getIPIssueLink(item)}}" class="recent-activity-title">{{item.payload.issue.title}}</a>
 
       <div data-ip-recent-activity-item-meta >
-        <p><strong>{{item.actor.login}}</strong> {{itemAction(item)}} | Section: <a data-ng-href="#/{{getIPRepo(item)}}/">{{getIPRepo(item)}}</a> | Last updated: {{item.payload.issue.updated_at | date:'MMM d, y'}}</p> 
+        <p><strong>{{item.actor.login}}</strong> {{itemAction(item)}} | Section: <a data-ng-href="#/{{getIPRepo(item)}}/">{{getIPRepo(item)}}</a> | Last updated: {{item.payload.issue.updated_at | date:'MMM d, y'}}</p>
       </div>
 
     </div>
 
-    <div data-ng-show="!items.length">
+    <div data-ng-show="!items.length && !isLoading">
       <p>No Recent Activity</p>
     </div>
 

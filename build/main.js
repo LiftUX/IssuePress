@@ -1741,14 +1741,14 @@ angular.module('AppState', [])
    * Given a repo name, find the owner based on repos available
    */
   appState.getOwner = function(repo){
-    
+
     var owner = '';
     appState.repos.forEach(function(v,i){
       if(v.name === repo)
         owner = v.owner;
     });
 
-    return owner; 
+    return owner;
   };
 
   /**
@@ -1870,7 +1870,7 @@ angular.module('AppState', [])
 
     }
 
-    
+
 
   };
 
@@ -1880,7 +1880,7 @@ angular.module('AppState', [])
 
 
 .factory('IPAPI', ['$http', 'IPAppState', function($http, IPAppState){
-  
+
   var ipUrl = IPAppState.API_PATH;
   $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
@@ -1889,28 +1889,28 @@ angular.module('AppState', [])
     repo: function(repo){
       var org = IPAppState.getOwner(repo);
       return $http.get(ipUrl + org + '/' + repo).then(function(result) {
-        return result.data; 
+        return result.data;
       });
     },
 
     issue: function(repo, issue) {
       var org = IPAppState.getOwner(repo);
-      return $http.get(ipUrl + org + '/' + repo + '/' + issue).then(function(result) { 
-        return result.data; 
+      return $http.get(ipUrl + org + '/' + repo + '/' + issue).then(function(result) {
+        return result.data;
       });
     },
 
     issueNew: function(repo, issueData) {
       var org = IPAppState.getOwner(repo);
-      return $http.post(ipUrl + org + '/' + repo , issueData).then(function(result) { 
-        return result.data; 
+      return $http.post(ipUrl + org + '/' + repo , issueData).then(function(result) {
+        return result.data;
       });
     },
-  
+
     issueComment: function(repo, issue, commentData) {
       var org = IPAppState.getOwner(repo);
-      return $http.post(ipUrl + org + '/' + repo + '/' + issue, commentData).then(function(result) { 
-        return result.data; 
+      return $http.post(ipUrl + org + '/' + repo + '/' + issue, commentData).then(function(result) {
+        return result.data;
       });
     },
 
@@ -1929,7 +1929,6 @@ angular.module('AppState', [])
 
 }]);
 
-
 angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadcrumbs', function(breadcrumbs) {
   return {
     restrict: 'A',
@@ -1940,8 +1939,6 @@ angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadc
     }
   };
 });
-
-
 
 angular.module('components.createIssueWidget', ['AppState'])
 
@@ -2263,7 +2260,7 @@ angular.module('components.search', ['AppState'])
     },
     templateUrl: IP_PATH + '/app/components/search/search.tpl.html',
     controller: ['$scope', '$element', '$attrs', '$timeout', 'IPAPI', function($scope, $element, $attrs, $timeout, IPAPI) {
-      
+
       $scope.q = '';
       $scope.isSearching = false;
       $scope.searchComplete = $scope.hasResults = $scope.lastQ = false;
@@ -2296,7 +2293,7 @@ angular.module('components.search', ['AppState'])
             $scope.isSearching = false;
             $scope.lastQ = $scope.q;
 
-            if(typeof data.data.response.items !== 'undefined') { 
+            if(typeof data.data.response.items !== 'undefined') {
               $scope.results = data.data.response.items;
             }
 
@@ -2441,7 +2438,6 @@ angular.module('fourohfour', [])
   }, 6000);
 
 }]);
-
 
 angular.module('header', [
   'user',
@@ -2599,7 +2595,6 @@ IP.run(function($rootScope, $templateCache, $location) {
     $rootScope.sidebar = tplPart;
   });
 });
-
 
 angular.module('repo', ['AppState'])
 

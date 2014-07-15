@@ -102,8 +102,8 @@ class UP_IssuePress {
 
     add_action('ip_head', array($this, 'print_custom_settings'), 30);
 
-    register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );  
-    register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );  
+    register_activation_hook( __FILE__, array( $this, 'init_IP_sidebar_widgets' ) );
+    register_deactivation_hook( __FILE__, array( $this, 'flush_rewrites' ) );
 
   }
 
@@ -140,9 +140,9 @@ class UP_IssuePress {
     if(get_query_var("pagename") == $IP_landing_name || get_query_var("page_id") == $IP_landing_id){
 
       $ip_tpl = $IP_dir . '/IP_template.php';
-      if(file_exists($ip_tpl)){ // Does the template exist? 
+      if(file_exists($ip_tpl)){ // Does the template exist?
         $this->print_scripts = true;
-        return $ip_tpl; 
+        return $ip_tpl;
       } else { // Fallback to original template if something is terribly wrong
         return $original_template;
       }
@@ -176,7 +176,7 @@ class UP_IssuePress {
 
 
   /**
-  * Initialize the IP sidebars with widgets after activiation 
+  * Initialize the IP sidebars with widgets after activiation
   *
   * @return void
   */
@@ -225,7 +225,7 @@ class UP_IssuePress {
   }
 
 
-  /*
+  /**
    * Init Widget Util Function
    *
    * Initializes the content of a widget at specified index with array of settings
@@ -284,7 +284,7 @@ class UP_IssuePress {
     // IP Styles
     wp_register_style(
       'issuepress-css',
-      plugins_url('assets/css/main.css', IP_MAIN_PLUGIN_FILE),
+      plugins_url('assets/css/app.css', IP_MAIN_PLUGIN_FILE),
       array(),
       '0.0.1',
       'all');
@@ -293,7 +293,7 @@ class UP_IssuePress {
     wp_register_script('ip_angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js');
     wp_register_script('ip_angular_route', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.min.js', array('ip_angular'));
 
-    // The IP built file 
+    // The IP built file
     wp_register_script(
       'issuepress',
       plugins_url('build/main.js', IP_MAIN_PLUGIN_FILE),
@@ -325,7 +325,7 @@ class UP_IssuePress {
    *
    * @return void
    */
-  public function print_custom_settings() { 
+  public function print_custom_settings() {
 
     $opts = get_option('issuepress_options');
 
@@ -334,16 +334,85 @@ class UP_IssuePress {
 <?php
     }
 
-    if(isset($opts['upip_custom_color']) && $opts['upip_custom_color'] != '#936091'){ 
-      $color = $opts['upip_custom_color']; 
+    if(isset($opts['upip_custom_color']) && $opts['upip_custom_color'] != '#936091'){
+      $color = $opts['upip_custom_color'];
       $l_color = lighten_color($color, 25);
 ?>
-<style type="text/css">a, .breadcrumb a, .issue-thread .comment .author-name, .issue-thread .comment .comment-tags a, .issue-list .issue-list-item .issue-title { color: <?php echo $color; ?>; }a:hover, .breadcrumb a:hover, .issue-thread .comment .author-name:hover, .issue-thread .comment .comment-tags a:hover, .issue-list .issue-list-item .issue-title:hover { color: <?php echo $l_color; ?>; }.submit,.search .live-search-results .issue-list-item .issue-link, .support-sections .support-section .support-section-following, .issue-list .issue-list-item .issue-link{ background-color: <?php echo $color; ?>;}.submit:hover,.search .live-search-results .issue-list-item .issue-link:hover, .support-sections .support-section .support-section-following:hover, .issue-list .issue-list-item .issue-link:hover { background-color: <?php echo $l_color; ?> ;}</style>
+<style type="text/css">
+a,
+.comment.issue .comment-tags span
+{
+  color: <?php echo $color; ?>;
+}
+
+a:hover
+{
+  color: <?php echo $l_color; ?>;
+}
+
+button,
+.button,
+input[type="submit"],
+.comment.issue .comment-tags span,
+.comment:not(.issue).staff .comment-content
+{
+  border-color: <?php echo $color; ?>;
+}
+
+.comment:not(.issue).staff .comment-content:before{
+  border-top-color: <?php echo $color; ?>;
+}
+
+.comment:not(.issue).staff .author-name:after,
+.submit,
+.support-sections .support-section .support-section-following,
+.issue-list .issue-list-item .issue-link,
+.search .live-search-results .issue-list-item a:hover,
+.search .live-search-results .issue-list-item:nth-child(even) a:hover,
+.top-bar-section li:not(.has-form) a:not(.button):hover,
+.top-bar-section .dropdown li:not(.has-form):hover>a:not(.button),
+.top-bar-section ul li:hover:not(.has-form)>a,
+button,
+.button,
+input[type="submit"],
+button.disabled,
+button[disabled],
+.button.disabled,
+input.disabled[type="submit"],
+.button[disabled],
+input[disabled][type="submit"]
+{
+  background-color: <?php echo $color; ?>;
+}
+
+button:hover,
+button:focus,
+.button:hover,
+input[type="submit"]:hover,
+.button:focus,
+input[type="submit"]:focus,
+.button.primary:hover,
+.submit:hover,
+button.disabled:hover,
+button.disabled:focus,
+button[disabled]:hover,
+button[disabled]:focus, .button.disabled:hover,
+input.disabled[type="submit"]:hover,
+.button.disabled:focus,
+input.disabled[type="submit"]:focus,
+.button[disabled]:hover,
+input[disabled][type="submit"]:hover,
+.button[disabled]:focus,
+input[disabled][type="submit"]:focus
+{
+  background-color: <?php echo $l_color; ?>;
+}
+</style>
 <?php
     }
   }
 
-  
+
   /**
   * Create Labels for selected IP repos
   *
@@ -351,11 +420,11 @@ class UP_IssuePress {
   */
   public function create_IP_labels($old, $new) {
 
-    if(empty($new['upip_gh_repos'])){ 
+    if(empty($new['upip_gh_repos'])){
       return;
     }
 
-    foreach($new['upip_gh_repos'] as $r){ 
+    foreach($new['upip_gh_repos'] as $r){
       $this->ip_api->create_label($r, array( "name" => "issuepress", "color" => "936091"));
     }
 
@@ -365,17 +434,17 @@ class UP_IssuePress {
 
 
   /**
-  * Clear IP cache  
+  * Clear IP cache
   *
   * @return void
   */
   public function clear_IP_cache($old, $new) {
 
-    if(empty($old['upip_gh_repos'])){ 
+    if(empty($old['upip_gh_repos'])){
       return;
     }
 
-    foreach($old['upip_gh_repos'] as $r){ 
+    foreach($old['upip_gh_repos'] as $r){
       $this->ip_api->ip_clear_repo_cache($r);
     }
 
@@ -418,7 +487,7 @@ class UP_IssuePress {
   */
   public function get_IP_data(){
 
-    $IP_data = new ArrayObject(); 
+    $IP_data = new ArrayObject();
     $options =  get_option('issuepress_options');
 
     if(!array_key_exists('upip_gh_repos', $options))
@@ -428,7 +497,7 @@ class UP_IssuePress {
 
 
       $repoCache = $this->ip_api->ip_get_repo_cache($item);
-      
+
       $IP_data["$item"] = array(
         'name' => $item,
         'repo' => $repoCache['repo'],
@@ -463,7 +532,7 @@ class UP_IssuePress {
     return json_encode($this->get_IP_page_data());
   }
 
-  /** 
+  /**
    * Fetches the WP site data for use in the template
    *
    * @return json encoded string
@@ -606,7 +675,7 @@ class UP_IssuePress {
   <?php
   }
 
-  public function permalink_notice() { 
+  public function permalink_notice() {
     if ( get_option('permalink_structure') ) {
       return;
     }
@@ -614,7 +683,7 @@ class UP_IssuePress {
   ?>
     <div class="error">
       <p><?php _e( 'IssuePress requires pretty permalinks to be set.', 'IssuePress' ); ?> <a href="<?php echo admin_url('options-permalink.php'); ?>" title="Update Permalinks Now">Update Permalinks Now</a></p>
-    </div> 
+    </div>
   <?php
   }
 

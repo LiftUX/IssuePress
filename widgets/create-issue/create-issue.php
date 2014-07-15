@@ -18,10 +18,12 @@ if(!class_exists('ip_create_issue')){
       extract($instance);
 
       $title = apply_filters('widget_title', $title);
-      if(!$title)
-        $title = '';
 
-      $ng_html =  '<div data-ip-create-issue-widget title="'. $title .'"></div>';
+      if( $title ){
+        $ng_html =  '<div data-ip-create-issue-widget title="'. $title .'"></div>';
+      } else {
+        $ng_html =  '<div data-ip-create-issue-widget></div>';
+      }
 
       echo $ng_html;
     }

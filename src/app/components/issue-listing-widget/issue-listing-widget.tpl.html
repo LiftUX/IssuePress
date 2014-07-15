@@ -4,29 +4,30 @@
     <div data-ng-show="items.length && !isLoading" class="sort ip-widget-nav">
       <span data-ng-click="setFilter('all')" data-ng-class="{'current': filterBy == 'all' }">View All</span>
       <span data-ng-click="setFilter('open')" data-ng-class="{'current': filterBy == 'open' }">Open</span>
-      <span data-ng-click="setFilter('closed')" data-ng-class="{'current': filterBy == 'closed' }">Closed</span>
+      <span data-ng-click="setFilter('closed')" data-ng-class="{'current': filterBy == 'closed' }">Resolved</span>
     </div>
   </div>
   <div class="issue-listing-list recent-activity-list">
 
-    <div data-ng-show="isLoading">
+    <div data-ng-show="isLoading" class="loading">
       <h2>Loading...</h2>
     </div>
 
-    <div data-ng-repeat="item in filteredItems" data-ng-show="filteredItems.length && !isLoading" class="recent-activity-item"> 
+    <div data-ng-repeat="item in filteredItems" data-ng-show="filteredItems.length && !isLoading" class="recent-activity-item">
       <div class="recent-activity-message">
         <a class="recent-activity-title" data-ng-href="#/{{repo}}/{{item.number}}">#{{item.number}} {{item.title}}</a>
-        <div class="issue-listing-body">{{item.body | truncate:135}}</div>
-        <footer class="recent-activity-meta">Last updated: {{item.updated_at | date:'MMM d, y'}}</footer>
+        <p class="issue-listing-body">{{item.body | truncate:135}}</p>
+        <footer class="recent-activity-meta">updated on {{item.updated_at | date:'MMM d, y'}}</footer>
       </div>
 
-      <span class="recent-activity-timeago state-{{item.state}}">{{item.state}}</span>
+      <span data-ng-show="item.state === 'open'" class="recent-activity-timeago state-{{item.state}}">{{item.state}}</span>
+      <span data-ng-show="item.state === 'closed'" class="recent-activity-timeago state-{{item.state}}">Resolved</span>
     </div>
 
-    <div data-ng-show="!filteredItems.length">
-      <p data-ng-show="filterBy === 'all'">No Support Requests</p>
-      <p data-ng-show="filterBy === 'open'">No Open Support Requests Currently</p>
-      <p data-ng-show="filterBy === 'closed'">No Closed Support Requests Currently</p>
+    <div data-ng-show="!filteredItems.length && !isLoading">
+      <p data-ng-show="filterBy === 'all'">No items</p>
+      <p data-ng-show="filterBy === 'open'">There are no open items</p>
+      <p data-ng-show="filterBy === 'closed'">There are no resolved items</p>
     </div>
 
   </div>

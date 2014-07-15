@@ -1,4 +1,3 @@
-
 angular.module('header', [
   'user',
   'AppState',

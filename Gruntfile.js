@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     compass: {
       dist: {
         options: {
-          sassDir: 'assets/scss',
+          sassDir: 'src/styles',
           cssDir: 'assets/css',
           trace: true,
           force: true,
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 
     watch: {
       css: {
-        files: 'assets/scss/**/*.scss',
+        files: 'src/styles/**/*.scss',
         tasks: ['compass']
       },
       scripts: {

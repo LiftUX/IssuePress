@@ -1,18 +1,39 @@
-<header ng-controller="HeaderCtrl">
-  <a data-ng-show="!logo_src" class="logo" href="#/dashboard">{{page_title}}</a>
-  <a data-ng-show="logo_src" class="logo custom-image" href="#/dashboard"><img data-ng-src="{{logo_src}}" title="{{page_title}}"></a>
-  <nav>
-    <ul>
-      <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
-      <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
-      <li class="account active-user" data-ng-show="user">
-      <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="300"></div>{{user.display_name}}</a>
-      <ul>
-        <li><a ng-href="{{home.url}}" title="{{home.description}}">Back to {{home.name}}</a></li>
-        <li><a ng-href="{{logout_link}}">Logout</a></li>
+<header id="app-header" ng-controller="HeaderCtrl">
+  <div class="app-header-inner">
+    <nav class="top-bar" data-topbar="">
+      <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+          <h1><a href="#/dashboard"><img data-ng-show="logo_src" data-ng-src="{{logo_src}}" title="{{page_title}}">{{page_title}}</a>
+          </h1>
+        </li>
       </ul>
-      </li>
-      <li class="account" data-ng-hide="user"><a ng-href="{{login_link}}">Log in</a></li>
-    </ul>
-  </nav>
+
+      <section class="top-bar-section">
+
+          <ul class="left">
+
+            <li><a data-ng-class="{active:isNavbarActive('/dashboard')}" href="#/dashboard">Dashboard</a></li>
+
+            <li><a data-ng-class="{active:isNavbarActive('/sections')}" href="#/sections">Support Sections</a></li>
+
+          </ul>
+
+          <ul class="right">
+
+            <li class="account active-user has-dropdown not-click" data-ng-show="user">
+
+              <a href=""><div data-gravatar-image gravatar-hash="{{user.gravatar_id}}" s="26"></div> {{user.display_name}}</a>
+
+              <ul class="dropdown">
+                <li><a ng-href="{{home.url}}" title="{{home.description}}">Back to {{home.name}}</a></li>
+                <li><a ng-href="{{logout_link}}">Sign Out</a></li>
+              </ul>
+
+            </li>
+            <li class="account" data-ng-hide="user"><a ng-href="{{login_link}}">Sign In</a></li>
+          </ul>
+        </section>
+    </nav>
+  </div>
 </header>

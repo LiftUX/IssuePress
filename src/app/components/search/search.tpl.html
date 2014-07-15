@@ -5,8 +5,7 @@
       <!-- Error Message, uncomment and style when design comes through..
       <p ng-show="searchForm.q.$invalid && !searchForm.q.$pristine" class="help-block">The issue title is required.</p>
       -->
-      <input data-ng-model="q" class="textbox required" required name="q" type="text" placeholder="Search For An Issue"/>
-      <input ng-disabled="searchForm.$invalid" class="submit" type="submit" value="Search" />
+      <input data-ng-model="q" class="textbox required" required name="q" type="text" placeholder="Search"/>
       <span data-ng-show="isSearching" class="spinner">Searching</span>
     </div>
     <div class="live-search-results" data-ng-show="searchComplete">
@@ -21,13 +20,14 @@
       </div>
 
       <div class="issue-list-item" data-ng-repeat="result in results">
-        <a data-ng-href="#/{{getRepoFromResult(result.url)}}/{{result.number}}" class="issue-link">View</a>
-        <div class="issue-title">
-          <a data-ng-href="#/{{getRepoFromResult(result.url)}}/{{result.number}}">{{result.title}}</a>
-        </div>
-        <div class="issue-date">
-          Section: <a data-ng-href="#/{{getRepoFromResult(result.url)}}">{{getRepoFromResult(result.url)}}</a> | Last Updated: {{result.updated_at | date:'MMM d, y'}}
-        </div>
+        <a data-ng-href="#/{{getRepoFromResult(result.url)}}/{{result.number}}" class="issue-link">
+          <div class="issue-title">
+            {{result.title}}
+          </div>
+          <div class="issue-date">
+            Section: {{getRepoFromResult(result.url)}} &bull; Last Updated: {{result.updated_at | date:'MMM d, y'}}
+          </div>
+        </a>
       </div>
     </div>
   </form>

@@ -1,4 +1,3 @@
-
 angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadcrumbs', function(breadcrumbs) {
   return {
     restrict: 'A',
@@ -9,4 +8,3 @@ angular.module('components.breadcrumbs', ['ui.breadcrumbs']).directive('ipBreadc
     }
   };
 });
-
