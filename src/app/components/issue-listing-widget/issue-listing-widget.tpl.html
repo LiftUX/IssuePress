@@ -24,7 +24,7 @@
       <span data-ng-show="item.state === 'closed'" class="recent-activity-timeago state-{{item.state}}">Resolved</span>
     </div>
 
-    <div data-ng-show="!filteredItems.length">
+    <div data-ng-show="!filteredItems.length && !isLoading">
       <p data-ng-show="filterBy === 'all'">No items</p>
       <p data-ng-show="filterBy === 'open'">There are no open items</p>
       <p data-ng-show="filterBy === 'closed'">There are no resolved items</p>
