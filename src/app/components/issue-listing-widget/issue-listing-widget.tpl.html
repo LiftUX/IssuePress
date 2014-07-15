@@ -20,7 +20,8 @@
         <footer class="recent-activity-meta">updated on {{item.updated_at | date:'MMM d, y'}}</footer>
       </div>
 
-      <span class="recent-activity-timeago state-{{item.state}}">{{item.state}}</span>
+      <span data-ng-show="item.state === 'open'" class="recent-activity-timeago state-{{item.state}}">{{item.state}}</span>
+      <span data-ng-show="item.state === 'closed'" class="recent-activity-timeago state-{{item.state}}">Resolved</span>
     </div>
 
     <div data-ng-show="!filteredItems.length">
