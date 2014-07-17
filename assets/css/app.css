@@ -2532,11 +2532,11 @@ meta.foundation-mq-topbar {
 }
 
 /* Wrapped around .top-bar to contain to grid width */
-.contain-to-grid {
+.contain-to-grid, .app-header-inner {
   width: 100%;
   background: white;
 }
-.contain-to-grid .top-bar {
+.contain-to-grid .top-bar, .app-header-inner .top-bar {
   margin-bottom: 50px;
 }
 
@@ -2933,7 +2933,7 @@ meta.foundation-mq-topbar {
     background: white;
   }
 
-  .contain-to-grid .top-bar {
+  .contain-to-grid .top-bar, .app-header-inner .top-bar {
     max-width: 960px;
     margin: 0 auto;
     margin-bottom: 50px;
