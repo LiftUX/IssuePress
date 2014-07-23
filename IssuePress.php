@@ -1,27 +1,27 @@
 <?php
 /**
- * IssuePress - Simple Support On WordPress
+ * IssuePress
  *
- * Provide simple support to your users right on your WordPress site.
+ * Simple support, right on WordPress!
  *
  * @package   IssuePress
  * @author    Matthew Simo <matthew.simo@liftux.com>
  * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2014 Your Name or Company Name
+ * @link      http://issuepress.co
+ * @copyright 2014 Matthew Simo
  *
  * @wordpress-plugin
- * Plugin Name:       IssuePress 
- * Plugin URI:        http://issuepress.co/ 
- * Description:       Simple support for your users, brought to you by UpThemes.
+ * Plugin Name:       IssuePress
+ * Plugin URI:        http://issuepress.co
+ * Description:       Simple support, right on WordPress!
  * Version:           1.0.0
- * Author:            UpThemes 
- * Author URI:        http://upthemes.com/
+ * Author:            Matthew Simo
+ * Author URI:        
  * Text Domain:       issuepress
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
- * GitHub Plugin URI: https://github.com/UpThemes/IssuePress
+ * GitHub Plugin URI: 
  */
 
 // If this file is called directly, abort.
@@ -38,15 +38,10 @@ require_once( plugin_dir_path( __FILE__ ) . 'public/class-issuepress.php' );
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
- *
  */
 register_activation_hook( __FILE__, array( 'IssuePress', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'IssuePress', 'deactivate' ) );
 
-/*
- * Plugins Loaded Action
- *
- */
 add_action( 'plugins_loaded', array( 'IssuePress', 'get_instance' ) );
 
 /*----------------------------------------------------------------------------*
@@ -54,6 +49,7 @@ add_action( 'plugins_loaded', array( 'IssuePress', 'get_instance' ) );
  *----------------------------------------------------------------------------*/
 
 /*
+ * @TODO:
  *
  * If you want to include Ajax within the dashboard, change the following
  * conditional to:

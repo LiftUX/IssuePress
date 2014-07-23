@@ -6,15 +6,15 @@
  * @author    Matthew Simo <matthew.simo@liftux.com>
  * @license   GPL-2.0+
  * @link      http://issuepress.co
- * @copyright 2014 UpThemes 
+ * @copyright 2014 Matthew Simo
  */
 
 /**
- * Plugin class. This class should ideally be used to work with the
+ * IssuePress class. This class should ideally be used to work with the
  * public-facing side of the WordPress site.
  *
  * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-plugin-name-admin.php`
+ * functionality, then refer to `class-issuepress-admin.php`
  *
  * @package IssuePress
  * @author  Matthew Simo <matthew.simo@liftux.com>
@@ -73,10 +73,9 @@ class IssuePress {
 
 		/* Define custom functionality.
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
-		 * /
+		 */
 		add_action( '@TODO', array( $this, 'action_method_name' ) );
 		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
-*/
 
 	}
 
@@ -131,9 +130,9 @@ class IssuePress {
 
 					switch_to_blog( $blog_id );
 					self::single_activate();
-
-					restore_current_blog();
 				}
+
+				restore_current_blog();
 
 			} else {
 				self::single_activate();
@@ -169,9 +168,9 @@ class IssuePress {
 					switch_to_blog( $blog_id );
 					self::single_deactivate();
 
-					restore_current_blog();
-
 				}
+
+				restore_current_blog();
 
 			} else {
 				self::single_deactivate();

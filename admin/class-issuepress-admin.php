@@ -1,24 +1,22 @@
 <?php
 /**
- * IssuePress Admin
+ * IssuePress
  *
- * @package   IssuePress Admin
+ * @package   IssuePress_Admin
  * @author    Matthew Simo <matthew.simo@liftux.com>
  * @license   GPL-2.0+
  * @link      http://issuepress.co
- * @copyright 2014 UpThemes 
+ * @copyright 2014 Matthew Simo
  */
 
 /**
- * Plugin class. This class should ideally be used to work with the
+ * IssuePress_Admin class. This class should ideally be used to work with the
  * administrative side of the WordPress site.
  *
  * If you're interested in introducing public-facing
  * functionality, then refer to `class-plugin-name.php`
  *
- * @TODO: Rename this class to a proper name for your plugin.
- *
- * @package IssuePress Admin
+ * @package IssuePress_Admin
  * @author  Matthew Simo <matthew.simo@liftux.com>
  */
 class IssuePress_Admin {
@@ -80,10 +78,9 @@ class IssuePress_Admin {
 		 *
 		 * Read more about actions and filters:
 		 * http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
-		 * /
+		 */
 		add_action( '@TODO', array( $this, 'action_method_name' ) );
 		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
-*/
 
 	}
 
@@ -169,14 +166,12 @@ class IssuePress_Admin {
 		 *
 		 * @TODO:
 		 *
-		 * - Change 'Page Title' to the title of your plugin admin page
-		 * - Change 'Menu Text' to the text for menu item for the plugin settings page
 		 * - Change 'manage_options' to the capability you see fit
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
 		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'Page Title', $this->plugin_slug ),
-			__( 'Menu Text', $this->plugin_slug ),
+			__( 'IssuePress Settings', $this->plugin_slug ),
+			__( 'IssuePress', $this->plugin_slug ),
 			'manage_options',
 			$this->plugin_slug,
 			array( $this, 'display_plugin_admin_page' )
