@@ -56,11 +56,16 @@ class IssuePress_Admin {
 			return;
 		} */
 
+    $this->admin_includes();
+
 		/*
 		 * Call $plugin_slug from public plugin class.
 		 */
 		$plugin = IssuePress::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
+
+    // Run anything that the plugin might require in 'init' action
+    add_action( 'init', array( $this, 'on_init' ) );
 
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
@@ -109,6 +114,67 @@ class IssuePress_Admin {
 
 		return self::$instance;
 	}
+
+  public static function admin_includes(){
+    
+  }
+
+  /**
+   * Called when wordpress action 'init' is fired.
+   *
+   * @since 1.0.0
+   *
+   * @return Void.
+   */
+  public static function on_init(){
+
+
+    // Create Support Request Custom Post Type
+    $support_request_labels = apply_filters( 'ip_support_request_labels', array(
+      'name' => __( 'Support Requests' ),
+      'singular_name' => __( 'Support Request' ),
+    ));
+
+    $support_request_args = array(
+      'labels' => $support_request_labels,
+      'public' => true,
+      'has_archive' => false,
+    );
+
+    register_post_type( 'ip_support_request', apply_filters( 'ip_support_request_post_type_args', $support_request_args)); 
+
+
+    // Create Support Request Sections Custom Taxonomy
+    $support_section_labels = apply_filters( 'ip_support_section_labels', array(
+        'name' => __( 'Support Sections' ),
+        'singular_name' => __( 'Support Section' ),
+        'add_new_item' => __( 'Add New Support Section' ),
+        'new_item_name' => __( 'New Support Section' )
+    ));
+
+    $support_section_args = apply_filters( 'ip_support_section_args', array(
+      'labels' => $support_section_labels 
+    ));
+
+    register_taxonomy( 'ip_support_section', 'ip_support_request', $support_section_args);
+
+
+    // Create Support Request Labels Custom Taxonomy
+    $support_label_labels = apply_filters( 'ip_support_label_labels', array(
+      'name' => __( 'Support Labels' ),
+      'singular_name' => __( 'Support Label' ),
+      'add_new_item' => __( 'Add New Support Label' ),
+      'new_item_name' => __( 'New Support Label' )
+    ));
+
+    $support_label_args = apply_filters( 'ip_support_label_args', array(
+      'labels' => $support_label_labels 
+    ));
+
+    register_taxonomy( 'ip_support_label', 'ip_support_request', $support_label_args);
+
+  }
+
 
 	/**
 	 * Register and enqueue admin-specific style sheet.

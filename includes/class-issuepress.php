@@ -10,11 +10,16 @@
  */
 
 /**
- * IssuePress class. This class should ideally be used to work with the
- * public-facing side of the WordPress site.
+ * IssuePress class. This class should ideally be used to work with 
+ * general functionality that could/should effect both public-facing
+ * & admin sides of the WordPress site.
  *
- * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-issuepress-admin.php`
+ * If you're interested in introducing exclusively administrative or dashboard
+ * functionality, then refer to `admin/class-issuepress-admin.php`
+ *
+ * If you're interested in introducing exclusively public-facing 
+ * functionality, then refer to `public/class-issuepress-public.php`
+ *
  *
  * @package IssuePress
  * @author  Matthew Simo <matthew.simo@liftux.com>
@@ -64,12 +69,17 @@ class IssuePress {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
+    // Run anything that the plugin might require in 'init' action
+    add_action( 'init', array( $this, 'on_init' ) );
+
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+
 
 		/* Define custom functionality.
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
@@ -89,6 +99,17 @@ class IssuePress {
 	public function get_plugin_slug() {
 		return $this->plugin_slug;
 	}
+
+  /**
+   * Called when wordpress action 'init' is fired.
+   *
+   * @since 1.0.0
+   *
+   * @return Void.
+   */
+  public static function on_init(){
+
+  }
 
 	/**
 	 * Return an instance of this class.
@@ -231,6 +252,8 @@ class IssuePress {
 	 */
 	private static function single_activate() {
 		// @TODO: Define activation functionality here
+    //
+
 	}
 
 	/**

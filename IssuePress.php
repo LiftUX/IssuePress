@@ -30,10 +30,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /*----------------------------------------------------------------------------*
- * Public-Facing Functionality
+ * Shared Functionality
  *----------------------------------------------------------------------------*/
 
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-issuepress.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/class-issuepress.php' );
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
@@ -64,5 +64,10 @@ if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-issuepress-admin.php' );
 	add_action( 'plugins_loaded', array( 'IssuePress_Admin', 'get_instance' ) );
+
+} else if ( !is_admin() ) {
+
+	require_once( plugin_dir_path( __FILE__ ) . 'public/class-issuepress-public.php' );
+	add_action( 'plugins_loaded', array( 'IssuePress_Public', 'get_instance' ) );
 
 }
