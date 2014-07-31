@@ -10,4 +10,16 @@
  */
 
 
-echo "<h2>Extensions</h2>";
+$extensions = $this->plugin->extensions;
+
+echo "<ul id='issuepress-extensions'>";
+foreach ($extensions as $ext) {
+?>
+
+  <li class="ip-extension <?php echo $ext['id']; ?>">
+    <h4><?php echo $ext['name']; ?></h4>
+    <p><?php echo $ext['opts']['description']; ?></p>
+  </li>
+
+<?php
+}

@@ -58,6 +58,15 @@ class IssuePress {
 	 */
 	protected static $instance = null;
 
+  /**
+   * Extensions in use.
+   *
+   * @since 1.0.0
+   *
+   * @var array
+   */
+  public $extensions = array(array('id'=> 'test','name'=> 'Test Name', 'opts' => array('description'=>"No description")));
+
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.

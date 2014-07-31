@@ -34,6 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  *----------------------------------------------------------------------------*/
 
 require_once( plugin_dir_path( __FILE__ ) . 'includes/class-issuepress.php' );
+include_once( plugin_dir_path( __FILE__ ) . 'includes/class-issuepress-extension.php' );
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.

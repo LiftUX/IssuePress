@@ -30,6 +30,15 @@ class IssuePress_Admin {
 	 */
 	protected static $instance = null;
 
+  /**
+   * Slug of the plugin
+   *
+   * @since 1.0.0
+   *
+   * @var string
+   */
+  protected $plugin;
+
 	/**
 	 * Slug of the plugin screen.
 	 *
@@ -66,8 +75,8 @@ class IssuePress_Admin {
 		/*
 		 * Call $plugin_slug from public plugin class.
 		 */
-		$plugin = IssuePress::get_instance();
-		$this->plugin_slug = $plugin->get_plugin_slug();
+		$this->plugin = IssuePress::get_instance();
+		$this->plugin_slug = $this->plugin->get_plugin_slug();
     $this->options_key = $this->plugin_slug . '_options';
 
     // Register Settings for each tab
