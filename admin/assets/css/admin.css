@@ -2,3 +2,8 @@
   color: green;
   padding: 5px;
 }
+
+#toplevel_page_issuepress_options.current .wp-menu-image img {
+  opacity: 1;
+}
+

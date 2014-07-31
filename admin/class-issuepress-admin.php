@@ -91,6 +91,7 @@ class IssuePress_Admin {
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+    add_action( 'admin_print_styles', array($this, 'resize_icon' ) );
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
@@ -308,6 +309,18 @@ class IssuePress_Admin {
 
 	}
 
+  /**
+   * Resizes the IssuePress menu icon (retina icon hack)
+   *
+   * @since 1.0.0
+   *
+   * @return void
+   */
+  public function resize_icon(){
+    echo '<style type="text/css">#toplevel_page_issuepress_options img{ width: 16px; height: 16px; margin-top: 0; }</style>';
+    return;
+  }
+
 	/**
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
 	 *
@@ -315,25 +328,13 @@ class IssuePress_Admin {
 	 */
 	public function add_plugin_admin_menu() {
 
-		/*
-		 * Add a settings page for this plugin to the Settings menu.
-		 *
-		 * NOTE:  Alternative menu locations are available via WordPress administration menu functions.
-		 *
-		 *        Administration Menus: http://codex.wordpress.org/Administration_Menus
-		 *
-		 * @TODO:
-		 *
-		 * - Change 'manage_options' to the capability you see fit
-		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
-		 */
 		$this->plugin_screen_hook_suffix = add_menu_page(
 			__( 'IssuePress Settings', $this->plugin_slug ),
 			__( 'IssuePress', $this->plugin_slug ),
 			'manage_options',
       $this->options_key,
 			array( $this, 'render_admin_page' ),
-      plugins_url("/assets/img/issuepress-wordpress-icon-32x32.png", __FILE__ ), 
+      plugins_url("assets/img/issuepress-wordpress-icon-32x32.png", __FILE__ ), 
       140
 		);
 
