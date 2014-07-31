@@ -39,6 +39,11 @@ class IssuePress_Admin {
 	 */
 	protected $plugin_screen_hook_suffix = null;
 
+  private $settings = array();
+  private $options_key;
+  private $general_settings_key = 'general';
+  private $extensions_key = 'extensions';
+
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
@@ -63,9 +68,16 @@ class IssuePress_Admin {
 		 */
 		$plugin = IssuePress::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
+    $this->options_key = $this->plugin_slug . '_options';
+
+    // Register Settings for each tab
+    add_action('admin_init', array($this, 'register_ip_settings'));
+    add_action('admin_init', array($this, 'register_general_section'));
+    add_action('admin_init', array($this, 'register_extensions_section'));
 
     // Run anything that the plugin might require in 'init' action
     add_action( 'init', array( $this, 'on_init' ) );
+    add_action( 'init', array( $this, 'load_settings' ) );
 
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
@@ -173,9 +185,80 @@ class IssuePress_Admin {
 
     register_taxonomy( 'ip_support_label', 'ip_support_request', $support_label_args);
 
+
+
+  }
+
+  /**
+   * Loads tabs settings from DB into their own arrays.
+   */
+  public function load_settings(){
+
+    $this->settings = (array) get_option( $this->options_key );
+
+    $this->settings = array_merge( array(
+      'ip_test_setting' => '',
+      'ip_license_key' => '',
+    ), $this->settings );
+
+  }
+
+  /**
+   * Registers the IP Settings 
+   */
+  public function register_ip_settings(){
+    register_setting($this->options_key, $this->options_key, array($this,'settings_validate'));
   }
 
 
+  /**
+   * Registers the general settings section & fields
+   */
+  public function register_general_section(){
+
+    $this->settings_tabs[$this->general_settings_key] = 'General';
+
+    $section_key = 'section-general';
+
+    add_settings_section(
+      $section_key,
+      'General Settings',
+      array($this,'render_general_section'),
+      $this->general_settings_key
+    );
+
+    add_settings_field(
+      'ip_license_key',
+      'License Key',
+      array($this,'render_license_key_field'),
+      $this->general_settings_key,
+      $section_key
+    );
+
+
+  }
+
+  /**
+   * Register the Extensions section & fields
+   */
+  public function register_extensions_section(){
+    $this->settings_tabs[$this->extensions_key] = 'Extensions';
+
+    $section_key = 'section-custom';
+
+    add_settings_section(
+      $section_key,
+      'IssuePress Extensions',
+      array($this,'render_extensions_section'),
+      $this->extensions_key
+    );
+
+  }
+
+
+
+
+  
 	/**
 	 * Register and enqueue admin-specific style sheet.
 	 *
@@ -235,24 +318,78 @@ class IssuePress_Admin {
 		 * - Change 'manage_options' to the capability you see fit
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
-		$this->plugin_screen_hook_suffix = add_options_page(
+		$this->plugin_screen_hook_suffix = add_menu_page(
 			__( 'IssuePress Settings', $this->plugin_slug ),
 			__( 'IssuePress', $this->plugin_slug ),
 			'manage_options',
-			$this->plugin_slug,
-			array( $this, 'display_plugin_admin_page' )
+      $this->options_key,
+			array( $this, 'render_admin_page' ),
+      plugins_url("/assets/img/issuepress-wordpress-icon-32x32.png", __FILE__ ), 
+      140
 		);
 
 	}
+
+
+  /**
+   * Render Methods for Admin Settings Pages & Sections
+   *
+   * Each is bound to either a WP page, section, or field register call and
+   * should typically includes the corresponding template view in `admin/views/`
+   */
+
 
 	/**
 	 * Render the settings page for this plugin.
 	 *
 	 * @since    1.0.0
 	 */
-	public function display_plugin_admin_page() {
+	public function render_admin_page() {
+
 		include_once( 'views/admin.php' );
+
 	}
+
+  /**
+   * Render the Tabs for the admin page
+   */
+  public function render_admin_tabs() {
+
+    include_once( 'views/admin-tabs.php' );
+
+  }
+
+  /**
+   * General Settings Initial Setup
+   * Binds some stuff so we can use ajax to create a page
+   */
+  public function render_general_section() {
+
+    include_once( 'views/general.php' );
+
+  }
+
+  /**
+   * Build the License Key field
+   */
+  public function render_license_key_field() {
+
+    include_once( 'views/general/license-key.php' );
+
+  }
+
+
+  /**
+   * Extensions Tab Initial Setup
+   * Binds stuff before rendering fields
+   */
+  public function render_extensions_section() {
+
+    include_once( 'views/extensions.php' );
+
+  }
+
+
 
 	/**
 	 * Add settings action link to the plugins page.
