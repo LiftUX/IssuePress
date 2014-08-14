@@ -2,10 +2,10 @@
 /**
  * IssuePress
  *
- * @package	 IssuePress
- * @author		Matthew Simo <matthew.simo@liftux.com>
- * @license	 GPL-2.0+
- * @link			http://issuepress.co
+ * @package   IssuePress
+ * @author    Matthew Simo <matthew.simo@liftux.com>
+ * @license   GPL-2.0+
+ * @link      http://issuepress.co
  * @copyright 2014 Matthew Simo
  */
 
@@ -65,7 +65,15 @@ class IssuePress {
 	 *
 	 * @var      array
 	 */
-	public $extensions = array(array('id'=> 'test','name'=> 'Test Name', 'opts' => array('description'=>"No description")));
+	public $extensions = array(
+							array(
+								'id' 	=> 'test',
+								'name'	=> __( 'Test Name', 'issuepress' ),
+								'opts'  => array(
+										'description' => __( 'No description', 'issuepress' )
+										)
+									)
+								);
 
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
