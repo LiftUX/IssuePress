@@ -111,9 +111,9 @@ class IssuePress_Admin {
 		$this->options_key = $this->plugin_slug . '_options';
 
 		// Register Settings for each tab
-		add_action('admin_init', array($this, 'register_ip_settings'));
-		add_action('admin_init', array($this, 'register_general_section'));
-		add_action('admin_init', array($this, 'register_extensions_section'));
+		add_action( 'admin_init', array( $this, 'register_ip_settings') );
+		add_action( 'admin_init', array( $this, 'register_general_section') );
+		add_action( 'admin_init', array( $this, 'register_extensions_section') );
 
 		// Run anything that the plugin might require in 'init' action
 		add_action( 'init', array( $this, 'on_init' ) );
@@ -122,7 +122,7 @@ class IssuePress_Admin {
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-		add_action( 'admin_print_styles', array($this, 'resize_icon' ) );
+		add_action( 'admin_print_styles', array( $this, 'resize_icon' ) );
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
@@ -172,47 +172,47 @@ class IssuePress_Admin {
 
 		// Create Support Request Custom Post Type
 		$support_request_labels = apply_filters( 'ip_support_request_labels', array(
-			'name' => __( 'Support Requests' ),
-			'singular_name' => __( 'Support Request' ),
+			'name'          => __( 'Support Requests', $this->plugin_slug ),
+			'singular_name' => __( 'Support Request', $this->plugin_slug ),
 		));
 
 		$support_request_args = array(
-			'labels' => $support_request_labels,
-			'public' => true,
+			'labels'      => $support_request_labels,
+			'public'      => true,
 			'has_archive' => false,
 		);
 
-		register_post_type( 'ip_support_request', apply_filters( 'ip_support_request_post_type_args', $support_request_args));
+		register_post_type( 'ip_support_request', apply_filters( 'ip_support_request_post_type_args', $support_request_args ) );
 
 
 		// Create Support Request Sections Custom Taxonomy
 		$support_section_labels = apply_filters( 'ip_support_section_labels', array(
-				'name' => __( 'Support Sections' ),
-				'singular_name' => __( 'Support Section' ),
-				'add_new_item' => __( 'Add New Support Section' ),
-				'new_item_name' => __( 'New Support Section' )
+				'name'           => __( 'Support Sections', $this->plugin_slug ),
+				'singular_name'  => __( 'Support Section', $this->plugin_slug ),
+				'add_new_item'   => __( 'Add New Support Section', $this->plugin_slug ),
+				'new_item_name'  => __( 'New Support Section', $this->plugin_slug )
 		));
 
 		$support_section_args = apply_filters( 'ip_support_section_args', array(
 			'labels' => $support_section_labels
 		));
 
-		register_taxonomy( 'ip_support_section', 'ip_support_request', $support_section_args);
+		register_taxonomy( 'ip_support_section', 'ip_support_request', $support_section_args );
 
 
 		// Create Support Request Labels Custom Taxonomy
 		$support_label_labels = apply_filters( 'ip_support_label_labels', array(
-			'name' => __( 'Support Labels' ),
-			'singular_name' => __( 'Support Label' ),
-			'add_new_item' => __( 'Add New Support Label' ),
-			'new_item_name' => __( 'New Support Label' )
+			'name'          => __( 'Support Labels', $this->plugin_slug ),
+			'singular_name' => __( 'Support Label', $this->plugin_slug ),
+			'add_new_item'  => __( 'Add New Support Label', $this->plugin_slug ),
+			'new_item_name' => __( 'New Support Label', $this->plugin_slug )
 		));
 
 		$support_label_args = apply_filters( 'ip_support_label_args', array(
 			'labels' => $support_label_labels
 		));
 
-		register_taxonomy( 'ip_support_label', 'ip_support_request', $support_label_args);
+		register_taxonomy( 'ip_support_label', 'ip_support_request', $support_label_args );
 
 
 
@@ -227,7 +227,7 @@ class IssuePress_Admin {
 
 		$this->settings = array_merge( array(
 			'ip_test_setting' => '',
-			'ip_license_key' => '',
+			'ip_license_key'  => '',
 		), $this->settings );
 
 	}
@@ -236,7 +236,7 @@ class IssuePress_Admin {
 	 * Registers the IP Settings
 	 */
 	public function register_ip_settings(){
-		register_setting($this->options_key, $this->options_key, array($this,'settings_validate'));
+		register_setting( $this->options_key, $this->options_key, array( $this, 'settings_validate' ) );
 	}
 
 
@@ -245,14 +245,14 @@ class IssuePress_Admin {
 	 */
 	public function register_general_section(){
 
-		$this->settings_tabs[$this->general_settings_key] = 'General';
+		$this->settings_tabs[ $this->general_settings_key ] = __( 'General' , $this->plugin_slug );
 
 		$section_key = 'section-general';
 
 		add_settings_section(
 			$section_key,
 			'General Settings',
-			array($this,'render_general_section'),
+			array( $this, 'render_general_section' ),
 			$this->general_settings_key
 		);
 
@@ -271,14 +271,14 @@ class IssuePress_Admin {
 	 * Register the Extensions section & fields
 	 */
 	public function register_extensions_section(){
-		$this->settings_tabs[$this->extensions_key] = 'Extensions';
+		$this->settings_tabs[ $this->extensions_key ] = 'Extensions';
 
 		$section_key = 'section-custom';
 
 		add_settings_section(
 			$section_key,
 			'IssuePress Extensions',
-			array($this,'render_extensions_section'),
+			array( $this, 'render_extensions_section' ),
 			$this->extensions_key
 		);
 
