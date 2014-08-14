@@ -143,6 +143,13 @@ class IssuePress {
 			'not_found_in_trash'  => __( 'Not found in Trash', 'issuepress' ),
 		) );
 
+		$rewrite = array(
+			'slug'                => apply_filters( 'ip_base_rewrite_slug', 'support' ),
+			'with_front'          => true,
+			'pages'               => true,
+			'feeds'               => true,
+		);
+
 		$support_request_args = array(
 			'label'               => __( 'ip_support_request', 'issuepress' ),
 			'description'         => __( 'Customer support requests.', 'issuepress' ),
@@ -160,13 +167,13 @@ class IssuePress {
 			'menu_position'       => 24,
 			'can_export'          => true,
 			'has_archive'         => true,
+			'rewrite'             => $rewrite,
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
 			'capability_type'     => 'page',
 		);
 
 		register_post_type( 'ip_support_request', apply_filters( 'ip_support_request_post_type_args', $support_request_args ) );
-
 
 		// Create Support Request Sections Custom Taxonomy
 		$support_section_labels = apply_filters( 'ip_support_section_labels', array(
