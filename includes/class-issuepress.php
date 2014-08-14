@@ -68,9 +68,9 @@ class IssuePress {
 	public $extensions = array(
 							array(
 								'id' 	=> 'test',
-								'name'	=> __( 'Test Name', 'issuepress' ),
+								'name'	=> 'Test Name',
 								'opts'  => array(
-										'description' => __( 'No description', 'issuepress' )
+										'description' => 'No description'
 										)
 									)
 								);
