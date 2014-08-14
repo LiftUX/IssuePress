@@ -10,14 +10,14 @@
  */
 
 /**
- * IssuePress class. This class should ideally be used to work with 
+ * IssuePress class. This class should ideally be used to work with
  * general functionality that could/should effect both public-facing
  * & admin sides of the WordPress site.
  *
  * If you're interested in introducing exclusively administrative or dashboard
  * functionality, then refer to `admin/class-issuepress-admin.php`
  *
- * If you're interested in introducing exclusively public-facing 
+ * If you're interested in introducing exclusively public-facing
  * functionality, then refer to `public/class-issuepress-public.php`
  *
  *
