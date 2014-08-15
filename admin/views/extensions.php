@@ -1,3 +1,11 @@
+<!--
+
+<code><pre>
+<?php var_dump($args); ?>
+</pre></code>
+
+-->
+
 <?php
 /**
  * Represents the view for the extensions settings tab. It includes the fields for this settings section.
@@ -11,15 +19,17 @@
 
 
 $extensions = $this->plugin->extensions;
-
-echo "<ul id='issuepress-extensions'>";
+echo "<ul id='issuepress-extensions-list'>";
 foreach ($extensions as $ext) {
 ?>
 
   <li class="ip-extension <?php echo $ext['id']; ?>">
-    <h4><?php echo $ext['name']; ?></h4>
-    <p><?php echo $ext['opts']['description']; ?></p>
+
+    <?php do_settings_sections( 'ip-gh-sync' ); ?>
+    
   </li>
 
 <?php
 }
+
+echo "</ul>";

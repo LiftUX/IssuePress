@@ -9,11 +9,14 @@
 
 #issuepress-extensions-list {
   border-bottom: 1px solid #ccc;
-}
-#issuepress-extensions-list li.ip-extension {
-  border-top: 1px solid #ccc;
-}
-#issuepress-extensions-list .form-table {
-  width: 90%;
-  margin-left: 10%;
+
+  li.ip-extension {
+    border-top: 1px solid #ccc;
+  }
+
+
+  .form-table {
+    width: 90%;
+    margin-left: 10%;
+  }
 }

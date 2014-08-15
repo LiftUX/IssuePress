@@ -65,7 +65,16 @@ class IssuePress {
    *
    * @var array
    */
-  public $extensions = array(array('id'=> 'test','name'=> 'Test Name', 'opts' => array('description'=>"No description")));
+  public $extensions = array();
+
+  /**
+   * Settings for the class
+   *
+   * @since 1.0.0
+   *
+   * @var array
+   */
+  protected $settings = array('ip_ext_github_sync_name'=>'Some Value');
 
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
@@ -108,6 +117,31 @@ class IssuePress {
 	public function get_plugin_slug() {
 		return $this->plugin_slug;
 	}
+
+
+  /**
+   * Return the plugin settings keys.
+   *
+   * @since   1.0.0
+   *
+   * @return  Plugin Settings variable.
+   */
+  public function get_plugin_settings(){
+    return $this->settings;
+  }
+
+
+  /**
+   * Set the plugin settings keys.
+   *
+   * @since   1.0.0
+   *
+   * @return  Plugin Settings variable.
+   */
+  public function set_plugin_settings($keys = array()){
+    return $this->settings = $keys;
+  }
+
 
   /**
    * Called when wordpress action 'init' is fired.

@@ -48,7 +48,7 @@ class IssuePress_Admin {
 	 */
 	protected $plugin_screen_hook_suffix = null;
 
-  private $settings = array();
+  protected $settings = array();
   private $options_key;
   private $general_settings_key = 'general';
   private $extensions_key = 'extensions';
@@ -209,7 +209,10 @@ class IssuePress_Admin {
     $this->settings = array_merge( array(
       'ip_test_setting' => '',
       'ip_license_key' => '',
+      'ip_ext_github_sync_name' => ''
     ), $this->settings );
+
+    $this->plugin->set_plugin_settings( $this->settings );
 
   }
 
@@ -254,7 +257,7 @@ class IssuePress_Admin {
   public function register_extensions_section(){
     $this->settings_tabs[$this->extensions_key] = 'Extensions';
 
-    $section_key = 'section-custom';
+    $section_key = 'section-extensions';
 
     add_settings_section(
       $section_key,
@@ -263,8 +266,22 @@ class IssuePress_Admin {
       $this->extensions_key
     );
 
+    do_action( $this->plugin_slug . '_extensions_settings_fields');
+
   }
 
+  public function settings_validate($input) {
+
+    return $input;
+
+//    if(array_key_exists('upip_gh_token', $input)) {
+//      $input = $this->general_settings_validate($input);
+//    } else {
+//      $input = $this->custom_settings_validate($input);
+//    }
+//    
+//    return array_merge( $this->settings, $input );
+  }
 
 
 
@@ -393,7 +410,7 @@ class IssuePress_Admin {
    * Extensions Tab Initial Setup
    * Binds stuff before rendering fields
    */
-  public function render_extensions_section() {
+  public function render_extensions_section($args) {
 
     include_once( 'views/extensions.php' );
 

@@ -22,7 +22,7 @@ if(!class_exists('IP_Extension')){
      *
      * @var object
      */
-    private $plugin;
+    protected $plugin;
 
     /**
      * This Extension's ID
@@ -49,29 +49,42 @@ if(!class_exists('IP_Extension')){
      *
      * @var array
      */
-    protected $ext_options;
+    protected $ext_meta;
 
-    function __construct( $ext_id, $ext_name, $ext_options = array(), $ext_dependancies = array() ) {
+    function __construct( $ext_id, $ext_name, $ext_meta = array(), $ext_dependancies = array() ) {
 
 		  $this->plugin = IssuePress::get_instance();
+      $this->options_key = $this->plugin->get_plugin_slug() . '_options';
+
       $this->ext_id = $ext_id;
       $this->ext_name = $ext_name;
-      $this->ext_options = $ext_options;
+      $this->ext_options = $ext_meta;
       
-      $this->register_extension($ext_id, $ext_name, $ext_options);
+      $this->register_extension($ext_id, $ext_name, $ext_meta);
+
     }
 
     /**
      * Register the extension with IssuePress Core
      */
-    public function register_extension($id, $name, $opts){
+    public function register_extension($id, $name, $meta){
 
       array_push($this->plugin->extensions, array(
         'id' => $id, 
         'name' => $name, 
-        'opts' => $opts
+        'meta' => $meta
       ));
 
+    }
+
+    /**
+     * Default Render Extention Section View
+     */
+    public function render_extension_section() { ?>
+
+        <p><?php echo $this->meta['description']; ?></p>
+
+<?php
     }
 
 

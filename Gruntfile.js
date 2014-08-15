@@ -71,7 +71,7 @@ module.exports = function(grunt) {
       },
       gruntfile: {
         files: ['Gruntfile.js'],
-        tasks: ['jsint'],
+        tasks: ['jshint'],
         options: {
           interrupt: true,
         }
