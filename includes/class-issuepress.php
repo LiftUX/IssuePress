@@ -118,6 +118,32 @@ class IssuePress {
 		return $this->plugin_slug;
 	}
 
+
+
+  /**
+   * Return the plugin settings keys.
+   *
+   * @since   1.0.0
+   *
+   * @return  Plugin Settings variable.
+   */
+  public function get_plugin_settings(){
+    return $this->settings;
+  }
+
+
+  /**
+   * Set the plugin settings keys.
+   *
+   * @since   1.0.0
+   *
+   * @return  Plugin Settings variable.
+   */
+  public function set_plugin_settings($keys = array()){
+    return $this->settings = $keys;
+  }
+
+
 	/**
 	 * Called when wordpress action 'init' is fired.
 	 *
