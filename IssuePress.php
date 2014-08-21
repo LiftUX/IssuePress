@@ -16,12 +16,12 @@
  * Description:       Simple support, right on WordPress!
  * Version:           1.0.0
  * Author:            Matthew Simo
- * Author URI:        
+ * Author URI:
  * Text Domain:       issuepress
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
- * GitHub Plugin URI: 
+ * GitHub Plugin URI:
  */
 
 // If this file is called directly, abort.

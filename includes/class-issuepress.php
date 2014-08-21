@@ -10,28 +10,28 @@
  */
 
 /**
- * IssuePress class. This class should ideally be used to work with 
+ * IssuePress class. This class should ideally be used to work with
  * general functionality that could/should effect both public-facing
  * & admin sides of the WordPress site.
  *
  * If you're interested in introducing exclusively administrative or dashboard
  * functionality, then refer to `admin/class-issuepress-admin.php`
  *
- * If you're interested in introducing exclusively public-facing 
+ * If you're interested in introducing exclusively public-facing
  * functionality, then refer to `public/class-issuepress-public.php`
  *
  *
  * @package IssuePress
- * @author  Matthew Simo <matthew.simo@liftux.com>
+ * @author	Matthew Simo <matthew.simo@liftux.com>
  */
 class IssuePress {
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
 	 *
-	 * @since   1.0.0
+	 * @since	 1.0.0
 	 *
-	 * @var     string
+	 * @var		 string
 	 */
 	const VERSION = '1.0.0';
 
@@ -87,8 +87,8 @@ class IssuePress {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-    // Run anything that the plugin might require in 'init' action
-    add_action( 'init', array( $this, 'on_init' ) );
+		// Run anything that the plugin might require in 'init' action
+		add_action( 'init', array( $this, 'on_init' ) );
 
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
@@ -112,52 +112,128 @@ class IssuePress {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @return    Plugin slug variable.
+	 * @return   Plugin slug variable.
 	 */
 	public function get_plugin_slug() {
 		return $this->plugin_slug;
 	}
 
+	/**
+	 * Called when wordpress action 'init' is fired.
+	 *
+	 * @since    1.0.0
+	 *
+	 * @return   Void.
+	 */
+	public static function on_init(){
 
-  /**
-   * Return the plugin settings keys.
-   *
-   * @since   1.0.0
-   *
-   * @return  Plugin Settings variable.
-   */
-  public function get_plugin_settings(){
-    return $this->settings;
-  }
+		// Create Support Request Custom Post Type
+		$support_request_labels = apply_filters( 'ip_support_request_labels', array(
+			'name'                => _x( 'Support Requests', 'Post Type General Name', 'issuepress' ),
+			'singular_name'       => _x( 'Support Request', 'Post Type Singular Name', 'issuepress' ),
+			'menu_name'           => __( 'Support', 'issuepress' ),
+			'parent_item_colon'   => __( 'Parent Request:', 'issuepress' ),
+			'all_items'           => __( 'All Support Requests', 'issuepress' ),
+			'view_item'           => __( 'View Request', 'issuepress' ),
+			'add_new_item'        => __( 'Add New Request', 'issuepress' ),
+			'add_new'             => __( 'Add New', 'issuepress' ),
+			'edit_item'           => __( 'Edit Request', 'issuepress' ),
+			'update_item'         => __( 'Update Request', 'issuepress' ),
+			'search_items'        => __( 'Search Request', 'issuepress' ),
+			'not_found'           => __( 'Not found', 'issuepress' ),
+			'not_found_in_trash'  => __( 'Not found in Trash', 'issuepress' ),
+		) );
 
+		$rewrite = array(
+			'slug'                => apply_filters( 'ip_base_rewrite_slug', 'support' ),
+			'with_front'          => true,
+			'pages'               => true,
+			'feeds'               => true,
+		);
 
-  /**
-   * Set the plugin settings keys.
-   *
-   * @since   1.0.0
-   *
-   * @return  Plugin Settings variable.
-   */
-  public function set_plugin_settings($keys = array()){
-    return $this->settings = $keys;
-  }
+		$support_request_args = array(
+			'label'               => __( 'ip_support_request', 'issuepress' ),
+			'description'         => __( 'Customer support requests.', 'issuepress' ),
+			'labels'              => $support_request_labels,
+			'public'              => true,
+			'has_archive'         => false,
+			'menu_icon'           => 'dashicons-sos',
+			'supports'            => array( 'title', 'editor', 'comments', ),
+			'hierarchical'        => false,
+			'public'              => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_nav_menus'   => true,
+			'show_in_admin_bar'   => true,
+			'menu_position'       => 24,
+			'can_export'          => true,
+			'has_archive'         => true,
+			'rewrite'             => $rewrite,
+			'exclude_from_search' => false,
+			'publicly_queryable'  => true,
+			'capability_type'     => 'page',
+		);
 
+		register_post_type( 'ip_support_request', apply_filters( 'ip_support_request_post_type_args', $support_request_args ) );
 
-  /**
-   * Called when wordpress action 'init' is fired.
-   *
-   * @since 1.0.0
-   *
-   * @return Void.
-   */
-  public static function on_init(){
+		// Create Support Request Sections Custom Taxonomy
+		$support_section_labels = apply_filters( 'ip_support_section_labels', array(
+			'name'                       => _x( 'Sections', 'Taxonomy General Name', 'issuepress' ),
+			'singular_name'              => _x( 'Section', 'Taxonomy Singular Name', 'issuepress' ),
+			'menu_name'                  => __( 'Sections', 'issuepress' ),
+			'all_items'                  => __( 'All Sections', 'issuepress' ),
+			'parent_item'                => __( 'Parent Section', 'issuepress' ),
+			'parent_item_colon'          => __( 'Parent Section:', 'issuepress' ),
+			'new_item_name'              => __( 'New Section Name', 'issuepress' ),
+			'add_new_item'               => __( 'Add New Section', 'issuepress' ),
+			'edit_item'                  => __( 'Edit Section', 'issuepress' ),
+			'update_item'                => __( 'Update Section', 'issuepress' ),
+			'separate_items_with_commas' => __( 'Separate sections with commas', 'issuepress' ),
+			'search_items'               => __( 'Search Sections', 'issuepress' ),
+			'add_or_remove_items'        => __( 'Add or remove sections', 'issuepress' ),
+			'choose_from_most_used'      => __( 'Choose from the most used sections', 'issuepress' ),
+			'not_found'                  => __( 'Not Found', 'issuepress' ),
+		) );
 
-  }
+		$support_section_args = apply_filters( 'ip_support_section_args', array(
+			'labels' 				=> $support_section_labels,
+			'show_admin_column'     => true,
+		));
+
+		register_taxonomy( 'ip_support_section', 'ip_support_request', $support_section_args );
+
+		// Create Support Request Labels Custom Taxonomy
+		$support_label_labels = apply_filters( 'ip_support_label_labels', array(
+			'name'                       => _x( 'Labels', 'Taxonomy General Name', 'issuepress' ),
+			'singular_name'              => _x( 'Label', 'Taxonomy Singular Name', 'issuepress' ),
+			'menu_name'                  => __( 'Labels', 'issuepress' ),
+			'all_items'                  => __( 'All Labels', 'issuepress' ),
+			'parent_item'                => __( 'Parent Label', 'issuepress' ),
+			'parent_item_colon'          => __( 'Parent Label:', 'issuepress' ),
+			'new_item_name'              => __( 'New Label Name', 'issuepress' ),
+			'add_new_item'               => __( 'Add New Label', 'issuepress' ),
+			'edit_item'                  => __( 'Edit Label', 'issuepress' ),
+			'update_item'                => __( 'Update Label', 'issuepress' ),
+			'separate_items_with_commas' => __( 'Separate labels with commas', 'issuepress' ),
+			'search_items'               => __( 'Search Labels', 'issuepress' ),
+			'add_or_remove_items'        => __( 'Add or remove labels', 'issuepress' ),
+			'choose_from_most_used'      => __( 'Choose from the most used labels', 'issuepress' ),
+			'not_found'                  => __( 'Not Found', 'issuepress' ),
+		) );
+
+		$support_label_args = apply_filters( 'ip_support_label_args', array(
+			'labels' 				=> $support_label_labels,
+			'show_admin_column'     => true,
+		));
+
+		register_taxonomy( 'ip_support_label', 'ip_support_request', $support_label_args );
+
+	}
 
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @since     1.0.0
+	 * @since    1.0.0
 	 *
 	 * @return    object    A single instance of this class.
 	 */
@@ -185,7 +261,7 @@ class IssuePress {
 
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
-			if ( $network_wide  ) {
+			if ( $network_wide	) {
 
 				// Get all blog ids
 				$blog_ids = self::get_blog_ids();
@@ -295,7 +371,7 @@ class IssuePress {
 	 */
 	private static function single_activate() {
 		// @TODO: Define activation functionality here
-    //
+		//
 
 	}
 
@@ -339,32 +415,6 @@ class IssuePress {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
-	}
-
-	/**
-	 * NOTE:  Actions are points in the execution of a page or process
-	 *        lifecycle that WordPress fires.
-	 *
-	 *        Actions:    http://codex.wordpress.org/Plugin_API#Actions
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Action_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function action_method_name() {
-		// @TODO: Define your action hook callback here
-	}
-
-	/**
-	 * NOTE:  Filters are points of execution in which WordPress modifies data
-	 *        before saving it or sending it to the browser.
-	 *
-	 *        Filters: http://codex.wordpress.org/Plugin_API#Filters
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function filter_method_name() {
-		// @TODO: Define your filter hook callback here
 	}
 
 }
