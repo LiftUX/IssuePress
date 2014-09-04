@@ -32,18 +32,16 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * The code that runs during plugin activation.
+ * It's action is documented in includes/class-issuepress-activator.php 
  */
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-issuepress-activator.php';
+register_activation_hook( __FILE__, array( 'IssuePress_Activator', 'activate' ) );
 
 /**
  * The code that runs during plugin deactivation.
+ * It's action is documented in includes/class-issuepress-deactivator.php
  */
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-issuepress-deactivator.php';
-
-/** This action is documented in includes/class-issuepress-activator.php */
-register_activation_hook( __FILE__, array( 'IssuePress_Activator', 'activate' ) );
-
-/** This action is documented in includes/class-issuepress-deactivator.php */
 register_deactivation_hook( __FILE__, array( 'IssuePress_Deactivator', 'deactivate' ) );
 
 /**
@@ -51,6 +49,7 @@ register_deactivation_hook( __FILE__, array( 'IssuePress_Deactivator', 'deactiva
  * dashboard-specific hooks, and public-facing site hooks.
  */
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-issuepress.php';
+include_once( plugin_dir_path( __FILE__ ) . 'includes/class-issuepress-extension.php' );
 
 /**
  * Begins execution of the plugin.
