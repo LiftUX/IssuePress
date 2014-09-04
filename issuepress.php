@@ -1,24 +1,24 @@
 <?php
 
 /**
- * The plugin bootstrap file
+ * The IssuePress bootstrap file
  *
  * This file is read by WordPress to generate the plugin information in the plugin
  * Dashboard. This file also includes all of the dependencies used by the plugin,
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://example.com
+ * @link              http://issuepress.co
  * @since             1.0.0
  * @package           IssuePress
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress Plugin Boilerplate
- * Plugin URI:        http://example.com/issuepress-uri/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress dashboard.
+ * Plugin Name:       IssuePress
+ * Plugin URI:        http://issuepress.co/
+ * Description:       Professional Support right in WordPress.
  * Version:           1.0.0
- * Author:            Your Name or Your Company
- * Author URI:        http://example.com/
+ * Author:            UpThemes
+ * Author URI:        http://upthemes.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       issuepress
