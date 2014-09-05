@@ -49,6 +49,10 @@ register_deactivation_hook( __FILE__, array( 'IssuePress_Deactivator', 'deactiva
  * dashboard-specific hooks, and public-facing site hooks.
  */
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-issuepress.php';
+
+/**
+ * The extension parent class, used for easy extension creation.
+ */
 include_once( plugin_dir_path( __FILE__ ) . 'includes/class-issuepress-extension.php' );
 
 /**
@@ -64,6 +68,7 @@ function run_issuepress() {
 
 	$plugin = new IssuePress();
 	$plugin->run();
+	return $plugin;
 
 }
-run_issuepress();
+$IssuePress = run_issuepress();

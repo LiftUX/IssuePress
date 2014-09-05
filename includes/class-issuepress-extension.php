@@ -53,8 +53,9 @@ if(!class_exists('IP_Extension')){
 
     function __construct( $ext_id, $ext_name, $ext_meta = array(), $ext_dependancies = array() ) {
 
-			$this->plugin = IssuePress::get_instance();
-      $this->options_key = $this->plugin->get_plugin_slug() . '_options';
+			global $IssuePress;
+			$this->plugin = $IssuePress;
+      $this->options_key = $this->plugin->get_plugin_name() . '_options';
 
       $this->ext_id = $ext_id;
       $this->ext_name = $ext_name;
@@ -67,7 +68,7 @@ if(!class_exists('IP_Extension')){
 		 * Register the extension with IssuePress Core
 		 */
 		public function register_extension($id, $name, $meta){
-			array_push($this->plugin->extensions, array(
+			$this->plugin->add_extension(array(
 				'id' => $id, 
 				'name' => $name, 
 				'meta' => $meta
