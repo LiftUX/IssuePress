@@ -57,6 +57,15 @@ class IssuePress {
 	 */
 	protected $version;
 
+  /**
+   * Extensions in use.
+   *
+   * @since 1.0.0
+   *
+   * @var array
+   */
+  protected $extensions = array();
+
 	/**
 	 * Define the core functionality of the plugin.
 	 *
@@ -150,10 +159,19 @@ class IssuePress {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new IssuePress_Admin( $this->get_plugin_name(), $this->get_version() );
+		$ip_admin = new IssuePress_Admin( $this->get_plugin_name(), $this->get_version(), $this );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $ip_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $ip_admin, 'enqueue_scripts' );
+
+		$this->loader->add_action( 'admin_init', $ip_admin, 'register_ip_settings' );
+		$this->loader->add_action( 'admin_init', $ip_admin, 'register_general_section' );
+		$this->loader->add_action( 'admin_init', $ip_admin, 'register_extensions_section' );
+
+
+		$this->loader->add_action( 'admin_menu', $ip_admin, 'register_admin_menu' );
+
+		$this->loader->add_filter( 'plugin_action_links_' . $this->get_plugin_name(), $ip_admin, 'add_action_links' );
 
 	}
 
@@ -166,10 +184,10 @@ class IssuePress {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new IssuePress_Public( $this->get_plugin_name(), $this->get_version() );
+		$ip_public = new IssuePress_Public( $this->get_plugin_name(), $this->get_version(), $this );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $ip_public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $ip_public, 'enqueue_scripts' );
 
 	}
 
@@ -211,6 +229,25 @@ class IssuePress {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Retrieve the current extensions.
+	 *
+	 * @since			1.0.0
+	 * @return		array 		The current arrays in use.
+	 */
+	public function get_extensions() {
+		return $this->extensions;
+	}
+
+	/**
+	 * Add an extension to the list of active extensions.
+	 *
+	 * @since			1.0.0
+	 */
+	public function add_extension($extension) {
+		array_push($this->extensions, $extension);
 	}
 
 }
