@@ -61,10 +61,19 @@ class IssuePress {
    * Extensions in use.
    *
    * @since 1.0.0
-   *
+   * @access protected
    * @var array
    */
   protected $extensions = array();
+
+	/**
+   * Settings for the class
+   *
+   * @since 1.0.0
+   * @access protected
+   * @var array
+   */
+  protected $settings = array('ip_ext_github_sync_name'=>'Some Value');
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -230,6 +239,29 @@ class IssuePress {
 	public function get_version() {
 		return $this->version;
 	}
+
+	/**
+	 * Return the plugin settings keys.
+	 *
+   * @since   1.0.0
+   *
+   * @return  Plugin Settings variable.
+   */
+  public function get_plugin_settings(){
+    return $this->settings;
+  }
+
+
+  /**
+   * Set the plugin settings keys.
+   *
+   * @since   1.0.0
+   *
+   * @return  Plugin Settings variable.
+   */
+  public function set_plugin_settings($keys = array()){
+    return $this->settings = $keys;
+  }
 
 	/**
 	 * Retrieve the current extensions.

@@ -18,8 +18,6 @@
  * @link				http://issuepress.co
  */
 
-var_dump($this);
-
 $extensions = $this->plugin->get_extensions();
 echo "<ul id='issuepress-extensions-list'>";
 foreach ($extensions as $ext) {
