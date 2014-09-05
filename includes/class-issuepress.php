@@ -73,7 +73,7 @@ class IssuePress {
    * @access protected
    * @var array
    */
-  protected $settings = array('ip_ext_github_sync_name'=>'Some Value');
+  protected $settings = array('ip_license_key' => '', 'ip_ext_github_sync_name'=>'Some Value');
 
 	/**
 	 * Define the core functionality of the plugin.

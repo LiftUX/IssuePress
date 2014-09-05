@@ -88,6 +88,8 @@ class IssuePress_Admin {
 		$this->name = $name;
 		$this->version = $version;
 		$this->plugin = $instance;
+		$this->plugin_settings = $this->plugin->get_plugin_settings();
+
 
 		$this->options_key = $name . '_options';
 	}
