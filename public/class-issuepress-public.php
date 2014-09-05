@@ -41,16 +41,26 @@ class IssuePress_Public {
 	private $version;
 
 	/**
+	 * Instance of IssuePress class
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 * @var		object			$plugin			This is the instance of the IssuePress class.
+	 */
+	private $plugin;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
 	 * @var      string    $name       The name of the plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $name, $version ) {
+	public function __construct( $name, $version, $instance ) {
 
 		$this->name = $name;
 		$this->version = $version;
+		$this->plugin = $instance;
 
 	}
 
