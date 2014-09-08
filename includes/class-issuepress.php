@@ -198,6 +198,9 @@ class IssuePress {
 		$this->loader->add_action( 'wp_enqueue_scripts', $ip_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $ip_public, 'enqueue_scripts' );
 
+		$this->loader->add_action( 'init', $ip_public, 'register_post_types' );
+		$this->loader->add_action( 'init', $ip_public, 'register_taxonomies' );
+
 	}
 
 	/**
