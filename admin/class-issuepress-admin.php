@@ -107,7 +107,7 @@ class IssuePress_Admin {
 			'manage_options',
 			$this->options_key,
 			array( $this, 'render_admin_page' ),
-			plugins_url("assets/img/issuepress-wordpress-icon-32x32.png", __FILE__ ),
+			plugins_url("img/issuepress-wordpress-icon-32x32.png", __FILE__ ),
 			140
 		);
 

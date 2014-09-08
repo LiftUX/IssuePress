@@ -16,7 +16,7 @@
 
 <div class="wrap">
 
-	<h2><img src="<?php echo plugins_url("../assets/img/mark.svg", __FILE__ ); ?>" style="vertical-align:middle; top: -2px; position: relative;" width="32" height="32" alt=""> <?php echo esc_html( get_admin_page_title() ); ?></h2>
+	<h2><img src="<?php echo plugins_url("../img/mark.svg", __FILE__ ); ?>" style="vertical-align:middle; top: -2px; position: relative;" width="32" height="32" alt=""> <?php echo esc_html( get_admin_page_title() ); ?></h2>
 	<?php $this->render_admin_tabs(); ?>
 	<form action="options.php" method="post">
 	<?php
