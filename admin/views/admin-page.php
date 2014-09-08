@@ -22,7 +22,7 @@
 	<?php
 
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_key;
-		settings_fields( $this->options_key );
+		settings_fields( $this->plugin->get_options_key() );
 		do_settings_sections( $tab );
 		submit_button();
 

@@ -41,13 +41,13 @@ class IssuePress_Admin {
 	private $version;
 
 	/**
-	 * The Options Key
+	 * Instance of IssuePress class
 	 *
-	 * @since		1.0.0
-	 * @access	private
-	 * @var 		string		$options_key	$name . '_options'.
+	 * @since 1.0.0
+	 * @access private
+	 * @var		object			$plugin			This is the instance of the IssuePress class.
 	 */
-	private $options_key;
+	private $plugin;
 
 	/**
 	 * Settings section name.
@@ -68,15 +68,6 @@ class IssuePress_Admin {
 	private $extensions_key = 'extensions';
 
 	/**
-	 * Instance of IssuePress class
-	 *
-	 * @since 1.0.0
-	 * @access private
-	 * @var		object			$plugin			This is the instance of the IssuePress class.
-	 */
-	private $plugin;
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -90,8 +81,6 @@ class IssuePress_Admin {
 		$this->plugin = $instance;
 		$this->plugin_settings = $this->plugin->get_plugin_settings();
 
-
-		$this->options_key = $name . '_options';
 	}
 
 	/**
@@ -105,7 +94,7 @@ class IssuePress_Admin {
 			__( 'IssuePress Settings', $this->name ),
 			__( 'IssuePress', $this->name ),
 			'manage_options',
-			$this->options_key,
+			$this->plugin->get_options_key(),
 			array( $this, 'render_admin_page' ),
 			plugins_url("img/issuepress-wordpress-icon-32x32.png", __FILE__ ),
 			140
@@ -119,7 +108,7 @@ class IssuePress_Admin {
 	 * @since		1.0.0
 	 */
 	public function register_ip_settings(){
-		register_setting( $this->options_key, $this->options_key, array( $this, 'settings_validate' ) );
+		register_setting( $this->plugin->get_options_key(), $this->plugin->get_options_key(), array( $this, 'settings_validate' ) );
 	}
 
 
@@ -297,7 +286,7 @@ class IssuePress_Admin {
 	 * Extensions Tab Initial Setup
 	 * Binds stuff before rendering fields
 	 *
-	 * @since 1.0.0
+	 * @since		1.0.0
 	 */
 	public function render_extensions_section() {
 
@@ -312,12 +301,25 @@ class IssuePress_Admin {
 	 */
 	public function add_action_links( $links ) {
 
-		return array_merge(
-			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->name ) . '">' . __( 'Settings', 'issuepress' ) . '</a>'
-			),
-			$links
-		);
+		return $links;
+
+	}
+
+	/**
+	 * Add meta links to the plugins page.
+	 *
+	 * @since		1.0.0
+	 */
+	public function add_meta_links( $links, $file ) {
+
+    if($file == $this->plugin->get_plugin_basename()) {
+
+      array_push($links, '<a target="_blank" href="http://issuepress.co/docs/">Documentation</a>');
+      array_push($links, '<a href="' . admin_url( 'admin.php?page=' . $this->plugin->get_options_key() ) . '">' . __( 'Settings', $this->name ) . '</a>');
+
+    }
+
+    return $links;
 
 	}
 

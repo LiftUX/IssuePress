@@ -14,6 +14,6 @@
 	echo '<h2 class="nav-tab-wrapper">';
 	foreach ( $this->settings_tabs as $tab_key => $tab_caption ) {
 		$active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-		echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->options_key . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+		echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->plugin->get_options_key() . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
 	}
 	echo '</h2>';
