@@ -1,0 +1,29 @@
+.ip-alert {
+  color: green;
+  padding: 5px;
+}
+
+#toplevel_page_issuepress_options img {
+	width: 16px;
+	height: 16px;
+	margin-top: 0; 
+}
+
+#toplevel_page_issuepress_options.current .wp-menu-image img {
+  opacity: 1;
+}
+
+#issuepress-extensions-list {
+  border-bottom: 1px solid #ccc;
+
+  li.ip-extension {
+    border-top: 1px solid #ccc;
+  }
+
+
+  .form-table {
+    width: 90%;
+    margin-left: 10%;
+  }
+}
+
