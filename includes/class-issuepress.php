@@ -57,6 +57,24 @@ class IssuePress {
 	 */
 	protected $version;
 
+	/**
+	 * The Options Key
+	 *
+	 * @since		1.0.0
+	 * @access	protected
+	 * @var 		string		$options_key	$plugin_name . '_options'.
+	 */
+	protected $options_key;
+
+	/**
+	 * The Plugin Basename
+	 *
+	 * @since		1.0.0
+	 * @access	protected
+	 * @var 		string		
+	 */
+	protected $plugin_basename;
+
   /**
    * Extensions in use.
    *
@@ -87,6 +105,8 @@ class IssuePress {
 	public function __construct() {
 
 		$this->plugin_name = 'issuepress';
+		$this->options_key = $this->plugin_name . '_options';
+		$this->plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_name . '.php' );
 		$this->version = '1.0.0';
 
 		$this->load_dependencies();
@@ -180,7 +200,8 @@ class IssuePress {
 
 		$this->loader->add_action( 'admin_menu', $ip_admin, 'register_admin_menu' );
 
-		$this->loader->add_filter( 'plugin_action_links_' . $this->get_plugin_name(), $ip_admin, 'add_action_links' );
+		$this->loader->add_filter( 'plugin_action_links_' . $this->plugin_basename, $ip_admin, 'add_action_links' );
+    $this->loader->add_filter( 'plugin_row_meta', $ip_admin, 'add_meta_links', 10, 2);
 
 	}
 
@@ -200,6 +221,8 @@ class IssuePress {
 
 		$this->loader->add_action( 'init', $ip_public, 'register_post_types' );
 		$this->loader->add_action( 'init', $ip_public, 'register_taxonomies' );
+
+		$this->loader->add_action( 'init', $ip_public, 'load_settings' );
 
 	}
 
@@ -266,6 +289,25 @@ class IssuePress {
     return $this->settings = $keys;
   }
 
+	/**
+	 * Retrieve the plugin's options key.
+	 *
+	 * @since			1.0.0
+	 * @return		string		$plugin_name . '_key';
+	 */
+	public function get_options_key() {
+		return $this->options_key;
+	}
+
+	/**
+	 * Retrieve the plugin's basename.
+	 *
+	 * @since			1.0.0
+	 * @return		string		$plugin_basename;
+	 */
+	public function get_plugin_basename() {
+		return $this->plugin_basename;
+	}
 	/**
 	 * Retrieve the current extensions.
 	 *
