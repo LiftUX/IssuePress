@@ -11,6 +11,6 @@
  */
 ?>
 
-<input type="text" name="<?php echo $this->options_key; ?>[ip_license_key]" value="<?php echo esc_attr( $this->plugin_settings['ip_license_key'] ); ?>" />
+<input type="text" name="<?php echo $this->plugin->get_options_key(); ?>[ip_license_key]" value="<?php echo esc_attr( $this->plugin->get_plugin_setting_by_key('ip_license_key') ); ?>" />
 
 <?php settings_errors('ip_license_key'); ?>
