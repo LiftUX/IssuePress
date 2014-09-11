@@ -79,7 +79,6 @@ class IssuePress_Admin {
 		$this->name = $name;
 		$this->version = $version;
 		$this->plugin = $instance;
-		$this->plugin_settings = $this->plugin->get_plugin_settings();
 
 	}
 
@@ -171,15 +170,21 @@ class IssuePress_Admin {
 	 */
   public function settings_validate($input) {
 
-    return $input;
+		$settings = (array) get_option( $this->plugin->get_options_key() );
+    $settings =  array_merge( $settings , $input );
 
-//    if(array_key_exists('upip_gh_token', $input)) {
-//      $input = $this->general_settings_validate($input);
-//    } else {
-//      $input = $this->custom_settings_validate($input);
-//    }
-//    
-//    return array_merge( $this->settings, $input );
+
+		// Remove key/value if value is empty
+		foreach( $settings as $key => $value ) {
+
+			if( empty($value) ) {
+				unset($settings[$key]);
+			}
+
+		}
+
+		return $settings;
+
   }
 
 
