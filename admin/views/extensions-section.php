@@ -23,9 +23,9 @@ echo "<ul id='issuepress-extensions-list'>";
 foreach ($extensions as $ext) {
 ?>
 
-	<li class="ip-extension <?php echo $ext['id']; ?>">
+	<li class="ip-extension-section <?php echo $ext['id']; ?>">
 
-    <?php do_settings_sections( 'ip-gh-sync' ); ?>
+    <?php do_settings_sections( $ext['id'] ); ?>
     
   </li>
 

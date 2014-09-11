@@ -16,7 +16,7 @@
 #issuepress-extensions-list {
   border-bottom: 1px solid #ccc;
 }
-#issuepress-extensions-list li.ip-extension {
+#issuepress-extensions-list li.ip-extension-section {
   border-top: 1px solid #ccc;
 }
 #issuepress-extensions-list .form-table {
