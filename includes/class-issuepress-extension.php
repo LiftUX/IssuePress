@@ -55,13 +55,14 @@ if(!class_exists('IP_Extension')){
 
 			global $IssuePress;
 			$this->plugin = $IssuePress;
-      $this->options_key = $this->plugin->get_plugin_name() . '_options';
+      $this->options_key = $this->plugin->get_options_key();
 
       $this->ext_id = $ext_id;
       $this->ext_name = $ext_name;
       $this->ext_options = $ext_meta;
       
       $this->register_extension($ext_id, $ext_name, $ext_meta);
+
 		}
 
 		/**
@@ -84,6 +85,22 @@ if(!class_exists('IP_Extension')){
 
 <?php
     }
+
+
+		/**
+		 *  Adds a default setting for given key
+		 *
+		 *  @since		1.0.0
+		 */
+		public function add_setting_default( $settings, $field_key, $field_value ) {
+
+			if( !array_key_exists( $field_key, $settings ) || empty($settings[$field_key]) ) {
+				$settings[$field_key] = $field_value;
+			}
+			
+			return $settings;
+
+		}
 
 
 	}
