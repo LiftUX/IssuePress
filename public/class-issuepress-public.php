@@ -188,22 +188,6 @@ class IssuePress_Public {
 
 	}
 
-	/**
-	 * Loads tabs settings from DB into their own arrays.
-	 *
-	 * @since		1.0.0
-	 */
-	public function load_settings(){
-
-		$this->settings = (array) get_option( $this->plugin->get_options_key() );
-
-		$this->settings = array_merge( array(
-			'ip_test_setting' => '',
-			'ip_license_key'  => '',
-		), $this->settings );
-
-	}
-
 
 
 	/**

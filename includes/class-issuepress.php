@@ -109,11 +109,14 @@ class IssuePress {
 		$this->plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_name . '.php' );
 		$this->version = '1.0.0';
 
+
+		$this->load_settings();
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		$this->loader->add_action( 'init', $this, 'load_settings', 10 );
 	}
 
 	/**
@@ -222,8 +225,6 @@ class IssuePress {
 		$this->loader->add_action( 'init', $ip_public, 'register_post_types' );
 		$this->loader->add_action( 'init', $ip_public, 'register_taxonomies' );
 
-		$this->loader->add_action( 'init', $ip_public, 'load_settings' );
-
 	}
 
 	/**
@@ -267,6 +268,27 @@ class IssuePress {
 	}
 
 	/**
+	 * Loads settings from DB
+	 *
+	 * @since		1.0.0
+	 */
+	public function load_settings(){
+
+		$settings = (array) get_option( $this->get_options_key() );
+
+		$default_settings = apply_filters( 'ip_default_settings', array(
+			'ip_test_setting' => 'IP TEST SETTING DEFAULT',
+			'ip_license_key'  => 'IP LICENSE DEFAULT'
+		));
+
+		// Set up default initial settings.
+		$this->set_plugin_settings( array_merge( $default_settings, $settings ) );
+
+	}
+
+
+
+	/**
 	 * Return the plugin settings keys.
 	 *
    * @since   1.0.0
@@ -285,9 +307,25 @@ class IssuePress {
    *
    * @return  Plugin Settings variable.
    */
-  public function set_plugin_settings($keys = array()){
-    return $this->settings = $keys;
+  public function set_plugin_settings($settings = array()){
+    return $this->settings = $settings;
   }
+
+	/**
+	 * Get a single plugin setting by key.
+	 *
+	 * @since		1.0.0
+	 * @return	Plugin setting by key
+	 */
+	public function get_plugin_setting_by_key( $key ) {
+		$settings = $this->get_plugin_settings();
+
+		if( array_key_exists( $key, $settings ) ) {
+			return $settings[$key];
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Retrieve the plugin's options key.
