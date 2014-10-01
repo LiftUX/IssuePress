@@ -1,5 +1,5 @@
 
-## Official repo for the IssuePress plugin for Wordpress
+## Official repo for the IssuePress plugin for WordPress
 
 The plugin creates a page template that loads an angular app that interacts with the github v3 api.
 
