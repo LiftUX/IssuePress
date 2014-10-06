@@ -102,6 +102,15 @@ class IssuePress_Admin {
 	}
 
 	/**
+	 * Removes the Custom Taxonomy Meta Box from Support Request Edit Screens
+	 *
+	 * @since			1.0.0
+	 */
+	public function remove_sections_metabox() {
+		remove_meta_box( get_ip_support_section_taxonomy() . 'div', get_ip_support_request_post_type(), 'side' );
+	}
+
+	/**
 	 * Add Metabox for the Support Requests CPT
 	 *
 	 * @since		1.0.0
@@ -129,31 +138,7 @@ class IssuePress_Admin {
 	 */
 	public function render_support_meta_box( $support_request ) {
 
-		$status = get_support_request_status( $support_request->ID );
-
-		// Support Request Status - defaults to 'open'
-?>
-		<p>
-			<label for="ip_support_status"><?php _e( 'Status:', $this->name ); ?></label>
-			<select name="ip_support_status">
-				<option value="open" ><?php _e( 'Open', $this->name ); ?></option>
-				<option value="closed" ><?php _e( 'Closed', $this->name ); ?></option>
-			</select>
-		</p>
-
-<?php
-		// Support Request Section - No default
-?>
-		<p>
-			<label for="ip_support_section"><?php _e( 'Section:', $this->name ); ?></label>
-			<select name="ip_support_section">
-				<option value="">-- Select a Section --</option>
-			</select>
-		</p>
-
-<?php
-
-		wp_nonce_field( 'ip_support_meta_box', 'ip_support_meta_box_nonce' );
+		include_once( 'views/support-meta-box.php' );
 
 	}
 
@@ -164,18 +149,28 @@ class IssuePress_Admin {
 	 */
 	public function save_support_request_meta( $support_request_ID ) {
 
-		if( isset( $_REQUEST['ip_support_status'] ) ) {
-			update_post_meta( $support_request_ID, 'status', $_REQUEST['ip_support_status']);
+		// If there isn't ip_support_status && ip_support_section exit
+		if( empty( $_REQUEST['ip_support_status'] ) && empty( $_REQUEST['ip_support_section'] ) ) {
+			return;
 		}
 
+		// Set Defaults
+		$status = 'open';
+		$section = get_ip_default_section();
+
+		if( isset( $_REQUEST['ip_support_status'] ) ) {
+			$status = $_REQUEST['ip_support_status'];
+		}
+
+		update_post_meta( $support_request_ID, 'status', $_REQUEST['ip_support_status']);
+
+
 		// Add section updating based on Default section setting
-		
-//		if( isset( $_REQUEST['ip_support_section'] ) ) {
-//			// Set Section
-//			echo "<!-- SET SECTION \n\n";
-//			var_dump( $_REQUEST['ip_support_section'] );
-//			echo "\n\n -->\n";
-//		}
+		if( isset( $_REQUEST['ip_support_section'] ) ) {
+			$section = $_REQUEST['ip_support_section'];
+		}
+
+		wp_set_post_terms( $support_request_ID, $section, get_ip_support_section_taxonomy() );
 
 	}
 

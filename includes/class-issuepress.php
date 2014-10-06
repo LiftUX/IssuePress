@@ -225,13 +225,14 @@ class IssuePress {
 		$this->loader->add_action( 'admin_init', $ip_admin, 'register_general_section' );
 		$this->loader->add_action( 'admin_init', $ip_admin, 'register_extensions_section' );
 
-		$this->loader->add_filter( 'manage_ip_support_request_posts_columns', $ip_admin, 'add_status_column' );
-		$this->loader->add_action( 'manage_ip_support_request_posts_custom_column', $ip_admin, 'add_status_column_data', 10, 2 );
-		$this->loader->add_filter( 'manage_edit-ip_support_request_sortable_columns', $ip_admin, 'sortable_status_column' );
+		$this->loader->add_filter( 'manage_' . get_ip_support_request_post_type() . '_posts_columns', $ip_admin, 'add_status_column' );
+		$this->loader->add_action( 'manage_' . get_ip_support_request_post_type() . '_posts_custom_column', $ip_admin, 'add_status_column_data', 10, 2 );
+		$this->loader->add_filter( 'manage_edit-' . get_ip_support_request_post_type() . '_sortable_columns', $ip_admin, 'sortable_status_column' );
 		$this->loader->add_filter( 'request', $ip_admin, 'status_column_orderby' );
 
 		$this->loader->add_action( 'add_meta_boxes', $ip_admin, 'add_meta_boxes' );
-		$this->loader->add_action( 'save_post_ip_support_request', $ip_admin, 'save_support_request_meta' );
+		$this->loader->add_action( 'add_meta_boxes_' . get_ip_support_request_post_type(), $ip_admin, 'remove_sections_metabox' );
+		$this->loader->add_action( 'save_post_' . get_ip_support_request_post_type() , $ip_admin, 'save_support_request_meta' );
 
 		$this->loader->add_action( 'admin_menu', $ip_admin, 'register_admin_menu' );
 

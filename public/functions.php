@@ -138,6 +138,19 @@ function get_ip_sections ( $args = array( 'hide_empty' => false ) ) {
 
 }
 
+/**
+ * Return array of Support Sections by Request ID
+ *
+ * @since			1.0.0
+ * @uses			wp_get_post_terms()
+ * @return		Array		The list of sections a post has set.
+ */
+function get_ip_sections_by_id ( $support_request_id, $args = array() ) {
+
+	return wp_get_post_terms( $support_request_id, get_ip_support_section_taxonomy(), $args );
+
+}
+
 
 /**
  * Returns the Support Section Permalink
