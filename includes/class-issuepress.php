@@ -40,6 +40,15 @@ class IssuePress {
 	protected $loader;
 
 	/**
+	 * The template loader that's responsible for loading template parts for the plugin.
+	 *
+	 * @since			1.0.0
+	 * @access		protected
+	 * @var				IssuePress_Template_loader	$template_loader		Loads template parts for the plugin
+	 */
+	protected $template_loader;
+
+	/**
 	 * The unique identifier of this plugin.
 	 *
 	 * @since    1.0.0
@@ -106,7 +115,7 @@ class IssuePress {
 
 		$this->plugin_name = 'issuepress';
 		$this->options_key = $this->plugin_name . '_options';
-		$this->plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_name . '.php' );
+		$this->plugin_basename = plugin_basename( ISSUEPRESS_PLUGIN_DIR . $this->plugin_name . '.php' );
 		$this->version = '1.0.0';
 
 
@@ -141,26 +150,40 @@ class IssuePress {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-issuepress-loader.php';
+		require_once ISSUEPRESS_PLUGIN_DIR . 'includes/class-issuepress-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-issuepress-i18n.php';
+		require_once ISSUEPRESS_PLUGIN_DIR . 'includes/class-issuepress-i18n.php';
+
+		/**
+		 * The class responsible for finding & loading templates
+		 */
+		require_once ISSUEPRESS_PLUGIN_DIR . 'includes/class-issuepress-template-loader.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the Dashboard.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-issuepress-admin.php';
+		require_once ISSUEPRESS_PLUGIN_DIR . 'admin/class-issuepress-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-issuepress-public.php';
+		require_once ISSUEPRESS_PLUGIN_DIR . 'public/class-issuepress-public.php';
 
+		/**
+		 * Expose IP Functions
+		 */
+		require_once ISSUEPRESS_PLUGIN_DIR . 'public/functions.php';
+
+
+		// Instantiate some of our newly required classes
 		$this->loader = new IssuePress_Loader();
+		$this->template_loader = new IssuePress_Template_Loader();
+
 
 	}
 
@@ -200,11 +223,25 @@ class IssuePress {
 		$this->loader->add_action( 'admin_init', $ip_admin, 'register_general_section' );
 		$this->loader->add_action( 'admin_init', $ip_admin, 'register_extensions_section' );
 
+		$this->loader->add_filter( 'manage_ip_support_request_posts_columns', $ip_admin, 'add_status_column' );
+		$this->loader->add_action( 'manage_ip_support_request_posts_custom_column', $ip_admin, 'add_status_column_data', 10, 2 );
+		$this->loader->add_filter( 'manage_edit-ip_support_request_sortable_columns', $ip_admin, 'sortable_status_column' );
+		$this->loader->add_filter( 'request', $ip_admin, 'status_column_orderby' );
+
+		$this->loader->add_action( 'add_meta_boxes', $ip_admin, 'add_meta_boxes' );
+		$this->loader->add_action( 'save_post_ip_support_request', $ip_admin, 'save_support_request_meta' );
 
 		$this->loader->add_action( 'admin_menu', $ip_admin, 'register_admin_menu' );
 
 		$this->loader->add_filter( 'plugin_action_links_' . $this->plugin_basename, $ip_admin, 'add_action_links' );
     $this->loader->add_filter( 'plugin_row_meta', $ip_admin, 'add_meta_links', 10, 2);
+
+		$this->loader->add_action( 'wp_ajax_ip-create-page', $ip_admin, 'ajax_create_page' );
+
+		$this->loader->add_action( 'template_redirect',			$ip_admin, 'ip_template_redirect', 8 );
+		$this->loader->add_action( 'ip_template_redirect',	$ip_admin, 'ip_post_request' );
+		$this->loader->add_action( 'ip_post_request', 			$ip_admin, 'ip_new_support_request_handler' );
+
 
 	}
 
@@ -224,6 +261,10 @@ class IssuePress {
 
 		$this->loader->add_action( 'init', $ip_public, 'register_post_types' );
 		$this->loader->add_action( 'init', $ip_public, 'register_taxonomies' );
+		$this->loader->add_action( 'init', $ip_public, 'register_shortcodes' );
+
+		$this->loader->add_action( 'parse_query', 			$ip_public, 'parse_query' );
+		$this->loader->add_filter( 'template_include', 	$ip_public, 'template_include' );
 
 	}
 
@@ -363,6 +404,17 @@ class IssuePress {
 	 */
 	public function add_extension($extension) {
 		array_push($this->extensions, $extension);
+	}
+
+
+	/**
+	 * Get the template loader.
+	 *
+	 * @since			1.0.0
+	 * @return		Class		The Template Loader Class Instance
+	 */
+	public function get_template_loader() {
+		return $this->template_loader;
 	}
 
 }
