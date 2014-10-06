@@ -216,6 +216,8 @@ class IssuePress {
 
 		$ip_admin = new IssuePress_Admin( $this->get_plugin_name(), $this->get_version(), $this );
 
+		$this->loader->add_action( 'admin_notices', $ip_admin, 'deferred_admin_notices' );
+
 		$this->loader->add_action( 'admin_enqueue_scripts', $ip_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $ip_admin, 'enqueue_scripts' );
 

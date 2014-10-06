@@ -18,18 +18,20 @@
  * @since      1.0.0
  * @package    IssuePress
  * @subpackage IssuePress/includes
- * @author     Your Name <email@example.com>
+ * @author     Matthew Simo <matthew.simo@liftux.com>
  */
 class IssuePress_Deactivator {
 
 	/**
-	 * Short Description. (use period)
+	 * Deactivation Method 
 	 *
-	 * Long Description.
+	 * Fired during plugin deactivation.
 	 *
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
+
+		delete_option('ip_deferred_admin_notices'); 
 
 	}
 

@@ -23,14 +23,26 @@
 class IssuePress_Activator {
 
 	/**
-	 * Short Description. (use period)
+	 * Fired During Activation 
 	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
+	 * @since    	1.0.0
 	 */
 	public static function activate() {
 
+		// Flush Rewrites
+		flush_rewrite_rules();
+
+		// Add Activation Notice
+		$notices = get_option('ip_deferred_admin_notices', array());
+		$notices[] = array(
+			'message' => __( 'Welcome to IssuePress - To get started', 'issuepress' ) . ' <a href="' . admin_url('edit-tags.php?taxonomy=ip_support_section&post_type=ip_support_request') . '" target="_blank" title="Add Support Sections">' . __( "add your support sections", 'issuepress' ) . '</a> &amp; <a href="' . admin_url('admin.php?page=issuepress_options') . '" target="_blank" title="IP Settings Page">' . __( "set your IP settings", 'issuepress' ) . '</a>.',
+			'class'		=> "updated"
+		);
+
+		update_option( 'ip_deferred_admin_notices', $notices );
+
 	}
+
+
 
 }

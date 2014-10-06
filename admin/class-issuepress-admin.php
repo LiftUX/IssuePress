@@ -402,8 +402,6 @@ class IssuePress_Admin {
 			$request_section = get_ip_default_section();
 		}
 
-
-
 		$support_request_data = apply_filters( 'ip_new_support_request_pre_insert', array(
 			'post_author'			=> $request_author,
 			'post_title'			=> $request_title,
@@ -422,8 +420,6 @@ class IssuePress_Admin {
 			do_action( 'ip_new_support_request_post_insert', $support_request_id );
 
 		}
-
-
 
 	}
 
@@ -472,6 +468,23 @@ class IssuePress_Admin {
 
 		wp_enqueue_script( $this->name, plugin_dir_url( __FILE__ ) . 'js/issuepress-admin.js', array( 'jquery' ), $this->version, FALSE );
 
+	}
+
+	/**
+	 * Deferred Admin Notices Method
+	 *
+	 * Displays the admin notices stored in the ip_deferred_admin_notices option.
+	 *
+	 * @since			1.0.0
+	 */
+	public function deferred_admin_notices() {
+		if ($notices = get_option('ip_deferred_admin_notices')) {
+			foreach ($notices as $notice) {
+				$class = $notice['class'] ? $notice['class'] : 'updated';
+				echo '<div class="' . $class . '"><p>' . $notice['message'] . '</p></div>';
+			}
+			delete_option('ip_deferred_admin_notices');
+		}
 	}
 
 
