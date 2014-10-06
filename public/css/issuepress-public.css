@@ -1,4 +1,17 @@
-/**
- * All of the CSS for your public-facing functionality should be
- * included in this file.
- */
+.ip-form label {
+  margin: 0 0 5px 0;
+  display: block;
+}
+.ip-form input, .ip-form select, .ip-form button, .ip-form textarea {
+  margin: 0 0 20px 0;
+  display: block;
+}
+
+#ip-support-request-title {
+  max-width: 400px;
+}
+
+#ip-support-request-description {
+  max-width: 100%;
+  height: 150px;
+}
