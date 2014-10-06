@@ -1,10 +1,3 @@
-<!--
-
-<code><pre>
-<?php var_dump($args); ?>
-</pre></code>
-
--->
 
 <?php
 /**
@@ -19,17 +12,33 @@
  */
 
 $extensions = $this->plugin->get_extensions();
+
 echo "<ul id='issuepress-extensions-list'>";
-foreach ($extensions as $ext) {
-?>
 
-	<li class="ip-extension-section <?php echo $ext['id']; ?>">
+if ( !empty($extensions) ) {
 
-    <?php do_settings_sections( $ext['id'] ); ?>
-    
-  </li>
+	foreach ($extensions as $ext) {
+	?>
+
+		<li class="ip-extension-section <?php echo $ext['id']; ?>">
+
+			<?php do_settings_sections( $ext['id'] ); ?>
+			
+		</li>
+
+	<?php
+	}
+
+} else { ?>
+
+	<li class="ip-extension-section ip-no-extensions">
+		<h4><?php _e("There are currently no IssuePress extensions installed.", $this->name); ?></h4>
+		<p><?php _e("Visit the <a href='http://issuepress.co/extensions'>extensions</a> listing to find them.", $this->name); ?></p>
+	</li>
 
 <?php
 }
 
 echo "</ul>";
+
+

@@ -20,18 +20,18 @@
 	<?php $this->render_admin_tabs(); ?>
 	<form action="options.php" method="post">
 	<?php
-
-// TESTING CODE
-
-echo '<h2>get_option</h2><code><pre>';
-var_dump( get_option($this->plugin->get_options_key()) );
-echo '</pre></code>';
-
-
-echo '<h2>get_plugin_settings</h2><code><pre>';
-var_dump( $this->plugin->get_plugin_settings() );
-echo '</pre></code>';
-
+//
+//// TESTING CODE
+//
+//echo '<h2>get_option</h2><code><pre>';
+//var_dump( get_option($this->plugin->get_options_key()) );
+//echo '</pre></code>';
+//
+//
+//echo '<h2>get_plugin_settings</h2><code><pre>';
+//var_dump( $this->plugin->get_plugin_settings() );
+//echo '</pre></code>';
+//
 // TESTING CODE
 
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->general_key;
