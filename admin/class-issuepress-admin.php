@@ -354,10 +354,6 @@ class IssuePress_Admin {
 	 */
 	public function ip_post_request() {
 
-		// Bail if not a POST action
-		if ( ! bbp_is_post_request() )
-			return;
-
 		// Bail if no action
 		if ( empty( $_POST['action'] ) )
 			return;
