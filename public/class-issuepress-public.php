@@ -7,7 +7,7 @@
  * @since      1.0.0
  *
  * @package    IssuePress
- * @subpackage IssuePress/includes
+ * @subpackage IssuePress/public
  */
 
 /**
@@ -89,12 +89,10 @@ class IssuePress_Public {
 			'not_found_in_trash'  => __( 'Not found in Trash', $this->name ),
 		) );
 
-		$rewrite = array(
-			'slug'                => apply_filters( 'ip_base_rewrite_slug', 'support' ),
-			'with_front'          => true,
-			'pages'               => true,
-			'feeds'               => true,
-		);
+		$rewrites = apply_filters( 'ip_support_request_rewrite_args', array(
+			'slug'                => apply_filters( 'ip_base_rewrite_slug', 'support-requests' ),
+			'with_front'          => false,
+		) );
 
 		$support_request_args = array(
 			'label'               => __( 'ip_support_request', $this->name ),
@@ -113,10 +111,10 @@ class IssuePress_Public {
 			'menu_position'       => 24,
 			'can_export'          => true,
 			'has_archive'         => true,
-			'rewrite'             => $rewrite,
+			'rewrite'             => $rewrites,
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
-			'capability_type'     => 'page',
+			'capability_type'     => 'page'
 		);
 
 		register_post_type( 'ip_support_request', apply_filters( 'ip_support_request_post_type_args', $support_request_args ) );
@@ -151,10 +149,16 @@ class IssuePress_Public {
 			'not_found'                  => __( 'Not Found', $this->name ),
 		) );
 
+		$support_section_rewrites = apply_filters( 'ip_support_section_rewrites', array(
+			'slug'				=> apply_filters( 'ip_secion_rewrite_slug', 'support-sections' ),
+			'with_front'	=> false
+		) );
+
 		$support_section_args = apply_filters( 'ip_support_section_args', array(
 			'labels' 							=> $support_section_labels,
 			'show_admin_column'		=> true,
 			'hierarchical'				=> true,
+			'rewrite'							=> $support_section_rewrites
 		));
 
 		register_taxonomy( 'ip_support_section', 'ip_support_request', $support_section_args );
@@ -189,11 +193,95 @@ class IssuePress_Public {
 	}
 
 
+	/**
+	 * IP Parse Query method, checks for IP during parse_query action.
+	 *
+	 * @since			1.0.0
+	 */
+	public function parse_query( $query ) {
+
+		// Bail if $posts_query is not the main loop
+		if ( ! $query->is_main_query() )
+			return;
+
+		// Bail if filters are suppressed on this query
+		if ( true === $query->get( 'suppress_filters' ) )
+			return;
+
+		// Bail if in admin
+		if ( is_admin() )
+			return;
+
+		do_action( 'ip_parse_query', $query );
+
+	}	
+
+	/** 
+	 * IP Template Include Method called on WP template_include filter
+	 *
+	 * @since			1.0.0
+	 */
+	public function template_include( $template ) {
+
+		return apply_filters( 'ip_template_include', $template );
+
+	}
+
+
+	/**
+	 * Register shortcodes for IssuePress
+	 *
+	 * @since			1.0.0
+	 */
+	public function register_shortcodes() {
+
+		add_shortcode( 'ip_support_form', 		array($this, "shortcode_support_form") );
+		add_shortcode( 'ip_support_sections', array($this, "shortcode_support_sections") );
+		add_shortcode( 'ip_support_search_form', array($this, "shortcode_support_search_form") );
+
+	}
+
+
+	/**
+	 * Create Support Request Form shortcode method
+	 *
+	 * @since			1.0.0
+	 */
+	public function shortcode_support_form() {
+
+		$template_loader = $this->plugin->get_template_loader();
+		return $template_loader->get_clean_template_part( 'support', 'form' );
+
+	}
+
+	/**
+	 * Create Support Request Sections shortcode method
+	 *
+	 * @since			1.0.0
+	 */
+	public function shortcode_support_sections() {
+
+		$template_loader = $this->plugin->get_template_loader();
+		return $template_loader->get_clean_template_part( 'support', 'sections' );
+
+	}
+
+	/**
+	 * Create Support Request Search Form shortcode method
+	 *
+	 * @since			1.0.0
+	 */
+	public function shortcode_support_search_form() {
+
+		$template_loader = $this->plugin->get_template_loader();
+		return $template_loader->get_clean_template_part( 'support', 'search-form' );
+
+	}
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since			1.0.0
 	 */
 	public function enqueue_styles() {
 
