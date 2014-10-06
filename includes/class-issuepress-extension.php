@@ -92,10 +92,12 @@ if(!class_exists('IP_Extension')){
 		 *
 		 *  @since		1.0.0
 		 */
-		public function add_setting_default( $settings, $field_key, $field_value ) {
+		public function add_setting_defaults( $settings, $defaults = array()) {
 
-			if( !array_key_exists( $field_key, $settings ) || empty($settings[$field_key]) ) {
-				$settings[$field_key] = $field_value;
+			foreach ( $defaults as $field_key => $field_value ) {
+				if( !array_key_exists( $field_key, $settings ) || empty($settings[$field_key]) ) {
+					$settings[$field_key] = $field_value;
+				}
 			}
 			
 			return $settings;
