@@ -227,6 +227,18 @@ class IssuePress_Public {
 
 	}
 
+	/**
+	 * IP Widgets Init, hooks into widgets_init
+	 *
+	 * Use to initialize ip widgets
+	 *
+	 * @since			1.0.0
+	 */
+	public function ip_widgets_init() {
+		do_action( 'ip_widgets_init' );
+	}
+
+
 
 	/**
 	 * Register shortcodes for IssuePress
@@ -273,8 +285,7 @@ class IssuePress_Public {
 	 */
 	public function shortcode_support_search_form() {
 
-		$template_loader = $this->plugin->get_template_loader();
-		return $template_loader->get_clean_template_part( 'support', 'search-form' );
+		return ip_get_search_form( false );
 
 	}
 

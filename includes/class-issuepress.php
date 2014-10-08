@@ -175,6 +175,11 @@ class IssuePress {
 		require_once ISSUEPRESS_PLUGIN_DIR . 'public/class-issuepress-public.php';
 
 		/**
+		 * The ip widget loader
+		 */
+		require_once ISSUEPRESS_PLUGIN_DIR . 'public/widgets/load.php';
+
+		/**
 		 * Expose IP Functions
 		 */
 		require_once ISSUEPRESS_PLUGIN_DIR . 'public/functions.php';
@@ -245,7 +250,6 @@ class IssuePress {
 		$this->loader->add_action( 'ip_template_redirect',	$ip_admin, 'ip_post_request' );
 		$this->loader->add_action( 'ip_post_request', 			$ip_admin, 'ip_new_support_request_handler' );
 
-
 	}
 
 	/**
@@ -268,6 +272,12 @@ class IssuePress {
 
 		$this->loader->add_action( 'parse_query', 			$ip_public, 'parse_query' );
 		$this->loader->add_filter( 'template_include', 	$ip_public, 'template_include' );
+
+		$this->loader->add_action( 'widgets_init', $ip_public, 'ip_widgets_init' );
+
+		// Register Widgets Included in Widget Loader
+		$this->loader->add_action( 'ip_widgets_init', 'IP_Search_Form_Widget', 'register_widget' );
+		$this->loader->add_action( 'ip_widgets_init', 'IP_New_Request_Form_Widget', 'register_widget' );
 
 	}
 

@@ -63,6 +63,22 @@ function get_ip_default_section () {
 
 }
 
+/**
+ * Get IP Search Form
+ *
+ * @uses			$IssuePress->get_template_loader()
+ * @since			1.0.0
+ */
+function ip_get_search_form( $echo = true ) {
+
+	if( $echo ) {
+		ip_get_template_part( 'support', 'search-form' );
+	} else {
+		return ip_get_clean_template_part ( 'support', 'search-form' );
+	}
+
+}
+
 
 /**
  * Get IP Template Part
@@ -71,11 +87,25 @@ function get_ip_default_section () {
  *
  * @since			1.0.0
  */
-function ip_get_template_part ( $slug, $name = null ) {
+function ip_get_template_part ( $slug, $name = null, $load = true ) {
 
 	global $IssuePress;
 	$template_loader = $IssuePress->get_template_loader();
-	$template_loader->get_template_part($slug, $name);
+	$template_loader->get_template_part($slug, $name, $load);
+
+}
+
+/**
+ * Get IP Clean Template Part
+ *
+ * @uses			$IssuePress->get_template_loader()
+ * @since			1.0.0
+ */
+function ip_get_clean_template_part ( $slug, $name = null, $load = true ) {
+
+	global $IssuePress;
+	$template_loader = $IssuePress->get_template_loader();
+	return $template_loader->get_clean_template_part($slug, $name, $load);
 
 }
 
