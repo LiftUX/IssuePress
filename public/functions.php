@@ -169,6 +169,125 @@ function get_ip_sections ( $args = array( 'hide_empty' => false ) ) {
 }
 
 /**
+ * Return Date of last activity in a given Support Section
+ *
+ * @since			1.0.0
+ * @return		String		The date formatted string
+ */
+function ip_get_section_updated ( $section, $date_format = '' ) {
+
+	// Check for last support request from the section and fetch it's date.
+	//
+	// TODO: Add system that stores latest activity (post creation or comment on a post) and 
+	// stores it in section meta so we can check that for more accurate results.
+	//
+
+	$post = get_posts( array(
+		'posts_per_page' => 1,
+		'post_type' => get_ip_support_request_post_type(),
+		'orderby' => 'modified',
+		'tax_query' => array(
+			array(
+				'taxonomy' => get_ip_support_section_taxonomy(),
+				'terms' => $section->term_id
+			)
+		),
+
+	) );
+
+	if ( empty( $post ) ) {
+		return $date_format ? false : "Never";
+	} else {
+		$post = $post[0];
+	}
+
+	if ( $date_format == '' ) {
+		$the_date = mysql2date( get_option( 'date_format' ), $post->post_modified );
+	} else {
+		$the_date = mysql2date( $date_format, $post->post_modified );
+	}
+
+	return $the_date;
+	
+}
+
+/**
+ * Returns the number of open support requests in a given section
+ *
+ * @since			1.0.0
+ * @return		Int
+ */
+function ip_get_section_open_count ( $section ) {
+	$support_requests = ip_get_support_requests_by_status( 'open', $section );
+	return count( $support_requests );
+}
+
+/**
+ * Returns the number of closed support requests in a given section
+ *
+ * @since			1.0.0
+ * @return		Int
+ */
+function ip_get_section_closed_count ( $section ) {
+	$support_requests = ip_get_support_requests_by_status( 'closed', $section );
+	return count( $support_requests );
+}
+
+/**
+ * Returns the number of total support requests in a given section
+ *
+ * @since			1.0.0
+ * @return		Int
+ */
+function ip_get_section_total_count ( $section ) {
+	$support_requests = ip_get_support_requests_by_status( 'all', $section );
+	return count( $support_requests );
+}
+
+/**
+ * Get array of support requests based on status in a given section
+ *
+ * @since			1.0.0
+ * @param			$status	(String) 'open', 'closed', 'all'. Defaults to 'all'.
+ * @param			$section	(Int) Optional. The Section Term ID to look in
+ * @return		Array
+ */
+function ip_get_support_requests_by_status ( $status = 'all', $section = '' ) {
+
+	$status = strtolower( $status );
+
+	$args = array(
+		'posts_per_page' => -1,
+		'post_type' => get_ip_support_request_post_type(),
+	);
+
+	if( !$status != "all" ) {
+		$args['meta_key'] = 'status';
+	}
+
+	if( $status == "open" ) {
+		$args['meta_value'] = 'open';
+	}
+
+	if( $status == "closed" ) {
+		$args['meta_value'] = 'closed';
+	}
+
+	if( !empty( $section ) ) {
+		$args['tax_query'] = array(
+			array(
+				'taxonomy' => get_ip_support_section_taxonomy(),
+				'terms' => $section->term_id
+			)
+		);
+	}
+
+	return $support_requests = get_posts( $args );
+
+}
+
+
+/**
  * Return array of Support Sections by Request ID
  *
  * @since			1.0.0

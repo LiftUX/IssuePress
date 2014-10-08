@@ -11,18 +11,20 @@ if ( !empty( $sections ) ) : ?>
 
 <li id="support-section-<?php echo $section->term_id; ?>" class="support-section">
 
-	<div class="entry-header">
+	<div class="support-section-title">
 		<h3><a href="<?php echo ip_section_permalink($section); ?>"><?php echo $section->name; ?></a></h3>
 	</div>
 
+	<div class="support-section-description">
 	<?php if( !empty($section->description) ) : ?>
-	<div class="entry-content">
 		<p><?php echo $section->description; ?></p>
-	</div>
 	<?php endif; ?>
+	</div>
 
 	<div class="entry-meta">
-		<p><?php echo $section->count; ?> <?php _e( "Support Requests", $IssuePress->get_plugin_name() ); ?></p>
+		<span class="support-section-open-count support-section-count"><?php echo ip_get_section_open_count($section); ?> <?php _e( "Open", $IssuePress->get_plugin_name() ); ?></span>
+		<span class="support-section-total-count support-section-count"><?php echo ip_get_section_total_count($section); ?> <?php _e( "Total", $IssuePress->get_plugin_name() ); ?></span>
+		<span class="suport-section-updated entry-date"><?php _e( "Updated:", $IssuePress->get_plugin_name() ); ?> <time class="entry-date" datetime="<?php echo ip_get_section_updated($section, 'c'); ?>"><?php echo ip_get_section_updated($section); ?></time></span>
 	</div>
 
 </li>
