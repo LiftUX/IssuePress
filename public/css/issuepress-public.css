@@ -1,3 +1,21 @@
+.support-section-list {
+  margin-left: 0;
+  list-style: none;
+}
+.support-section-list .support-section {
+  border-bottom: 1px solid #2B2B2B;
+  margin-bottom: 20px;
+}
+.support-section-list .support-section:last-child {
+  border-bottom: none;
+}
+.support-section-list .support-section .entry-meta {
+  margin-bottom: 15px;
+}
+.support-section-list .support-section-description p {
+  margin-bottom: 8px;
+}
+
 .ip-form label {
   margin: 0 0 5px 0;
   display: block;
@@ -13,5 +31,5 @@
 
 #ip-support-request-description {
   max-width: 100%;
-  height: 150px;
+  max-height: 150px;
 }
