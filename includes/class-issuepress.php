@@ -330,9 +330,10 @@ class IssuePress {
 
 		$settings = (array) get_option( $this->get_options_key() );
 
+		// Default settings filter, allows extensions to set their default settings easily
 		$default_settings = apply_filters( 'ip_default_settings', array(
 			'ip_test_setting' => 'IP TEST SETTING DEFAULT',
-			'ip_license_key'  => 'IP LICENSE DEFAULT'
+			'ip_default_post_status'  => 'draft'
 		));
 
 		// Set up default initial settings.
