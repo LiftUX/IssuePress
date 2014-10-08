@@ -283,6 +283,14 @@ class IssuePress_Admin {
 			$section_key
 		);
 
+		add_settings_field(
+			'ip_default_post_status',
+			'Default Post Status',
+			array($this, 'render_default_post_status_field'),
+			$this->general_key,
+			$section_key
+		);
+
 	}
 
 
@@ -381,36 +389,41 @@ class IssuePress_Admin {
 		$request_author = get_current_user_id();
 		$request_content = $request_title = '';
 
-		if ( !empty( $_POST['ip-support-request-description'] ) ) {
-			$request_content = esc_attr( strip_tags( $_POST['ip-support-request-description'] ) );
+		if ( !empty( $_POST['ip-support-description'] ) ) {
+			$request_content = esc_attr( strip_tags( $_POST['ip-support-description'] ) );
 		}
 
-		if ( !empty( $_POST['ip-support-request-title'] ) ) {
-			$request_title = esc_attr( strip_tags( $_POST['ip-support-request-title'] ) );
+		if ( !empty( $_POST['ip-support-title'] ) ) {
+			$request_title = esc_attr( strip_tags( $_POST['ip-support-title'] ) );
 		} else {
 			$request_title = substr($request_content, 0, 18);
 		}
 
-		if ( !empty( $_POST['ip-support-request-section'] ) ) {
-			$request_section = $_POST['ip-support-request-section'];
+		if ( !empty( $_POST['ip-support-section'] ) ) {
+			$request_section = $_POST['ip-support-section'];
 		} else {
 			$request_section = get_ip_default_section();
 		}
+
+		$post_status = $this->plugin->get_plugin_setting_by_key('ip_default_post_status');
 
 		$support_request_data = apply_filters( 'ip_new_support_request_pre_insert', array(
 			'post_author'			=> $request_author,
 			'post_title'			=> $request_title,
 			'post_content'		=> $request_content,
-			'comment_status'	=> 'closed',
+			'post_type'				=> get_ip_support_request_post_type(),
+			'post_status'			=> $post_status ? $post_status : 'draft',
+			'comment_status'	=> 'open',
 			'ping_status'			=> 'closed'
 		) );
+
 
 		$support_request_id = wp_insert_post( $support_request_data );
 
 		if( !empty( $support_request_id ) ) {
 
 			update_post_meta( $support_request_id, 'status', 'open');
-			update_post_meta( $support_request_id, 'status', 'open');
+			wp_set_post_terms( $support_request_id, $request_section, get_ip_support_section_taxonomy() );
 
 			do_action( 'ip_new_support_request_post_insert', $support_request_id );
 
@@ -541,7 +554,18 @@ class IssuePress_Admin {
 	 */
 	public function render_default_support_section_field() {
 
-		include_once( 'views/general/default-section.php');
+		include_once( 'views/general/default-section.php' );
+
+	}
+
+	/**
+	 * Build the Default Post Status Field
+	 *
+	 * @since		1.0.0
+	 */
+	public function render_default_post_status_field() {
+
+		include_once( 'views/general/default-post-status.php' );
 
 	}
 
