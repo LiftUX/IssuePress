@@ -5,6 +5,7 @@ if( is_user_logged_in() ) : ?>
 
 	<section id="ip-create-request-form-wrapper">
 		<form method="post" id="ip-create-request-form" class="ip-form" action="<?php echo get_permalink(); ?>">
+			<?php do_action( 'ip_template_notices' ); ?>
 			<label class="ip-support-title-label ip-form-label" for="ip-support-title">Support Request Title:</label>
 			<input class="ip-support-request-title ip-form-input" name="ip-support-title" placeholder="Add a descriptive, but brief title" type="text">	
 			<?php echo get_ip_form_section_select(); ?>
