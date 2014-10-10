@@ -46,3 +46,20 @@
 	max-height: 150px;
 }
 
+.ip-template-notice {
+	font-size: 90%;
+	border: 1px solid #f4eb99;
+	background: #f9f4c7;
+	padding: 0 .8em;
+	margin: .5em 0 1em;
+	border-radius: 3px;
+
+	p {
+		margin: 0.5em 0;
+	}
+}
+
+.ip-error {
+	border-color: #F5B89A;
+	background: #FAD9C8;
+}
