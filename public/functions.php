@@ -385,4 +385,31 @@ function ip_search_process_fields() {
 }
 
 
+/**
+ * Add an ip error
+ *
+ * @since			1.0.0
+ */
+function ip_add_error( $code = '', $message = '', $data = 'ip-error' ) {
+
+	global $IssuePress;
+	$ip_errors = $IssuePress->get_error_handler();
+	$ip_errors->add_error( $code, $message, $data );
+
+}
+
+/**
+ * Checks if there are any ip errors
+ *
+ * @since				1.0.0
+ */
+function ip_has_errors() {
+
+	global $IssuePress;
+	$ip_errors = $IssuePress->get_error_handler();
+	return $ip_errors->has_errors();
+
+}
+
+
 

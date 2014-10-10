@@ -391,12 +391,15 @@ class IssuePress_Admin {
 
 		if ( !empty( $_POST['ip-support-description'] ) ) {
 			$request_content = esc_attr( strip_tags( $_POST['ip-support-description'] ) );
+		} else {
+			ip_add_error( 'ip_support_content', __( '<strong>ERROR</strong>: Support Requests require a description.', $this->name ) );
 		}
+
 
 		if ( !empty( $_POST['ip-support-title'] ) ) {
 			$request_title = esc_attr( strip_tags( $_POST['ip-support-title'] ) );
 		} else {
-			$request_title = substr($request_content, 0, 18);
+			ip_add_error( 'ip_support_title', __( '<strong>ERROR</strong>: Support Requests require a title.', $this->name ) );
 		}
 
 		if ( !empty( $_POST['ip-support-section'] ) ) {
@@ -404,6 +407,10 @@ class IssuePress_Admin {
 		} else {
 			$request_section = get_ip_default_section();
 		}
+
+		if( ip_has_errors() ) 
+			return;
+
 
 		$post_status = $this->plugin->get_plugin_setting_by_key('ip_default_post_status');
 

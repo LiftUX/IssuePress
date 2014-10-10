@@ -289,6 +289,53 @@ class IssuePress_Public {
 
 	}
 
+
+	/**
+	 * Render Template Notices
+	 *
+	 * Will check for any IP Errors and render them for templates.
+	 *
+	 * @since			1.0.0
+	 */
+	public function render_template_notices() {
+
+		if( !ip_has_errors() )
+			return;
+
+		// Local variabel to hold errors array
+		$errors = array();
+
+		$ip_errors = $this->plugin->get_errors();
+
+		foreach ( $ip_errors->get_error_codes() as $error_code ) {
+
+			$error_data = $ip_errors->get_error_data( $error_code );
+			$error_class = $error_data ? $error_data : '';
+
+			foreach ( $ip_errors->get_error_messages( $error_code ) as $error ) {
+
+				$errors[] = array( "class" => $error_class,  "message" => $error );
+
+			}
+
+		}
+
+
+		if ( !empty($errors) )  {
+
+			foreach ( $errors as $error ) : ?>
+
+				<div class="ip-template-notice <?php echo $error['class']; ?>">
+					<p><?php echo $error['message']; ?></p>
+				</div>
+
+			<?php endforeach;
+		
+		}
+
+	}
+
+
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *

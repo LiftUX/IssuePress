@@ -44,9 +44,18 @@ class IssuePress {
 	 *
 	 * @since			1.0.0
 	 * @access		protected
-	 * @var				IssuePress_Template_loader	$template_loader		Loads template parts for the plugin
+	 * @var				IssuePress_Template_Loader	$template_loader		Loads template parts for the plugin
 	 */
 	protected $template_loader;
+
+	/**
+	 * The instance of the error handler class that manages ip errors.
+	 *
+	 * @since			1.0.0
+	 * @access		protected
+	 * @var				IssuePress_Error_Handling		$errors		Adds and checks for errors
+	 */
+	protected $errors;
 
 	/**
 	 * The unique identifier of this plugin.
@@ -159,6 +168,11 @@ class IssuePress {
 		require_once ISSUEPRESS_PLUGIN_DIR . 'includes/class-issuepress-i18n.php';
 
 		/**
+		 * The class responsible for error handling within the plugin.
+		 */
+		require_once ISSUEPRESS_PLUGIN_DIR . 'includes/class-issuepress-error-handling.php';
+
+		/**
 		 * The class responsible for finding & loading templates
 		 */
 		require_once ISSUEPRESS_PLUGIN_DIR . 'includes/class-issuepress-template-loader.php';
@@ -189,6 +203,7 @@ class IssuePress {
 		$this->loader = new IssuePress_Loader();
 		$this->template_loader = new IssuePress_Template_Loader();
 
+		$this->errors = new IssuePress_Error_Handling();
 
 	}
 
@@ -278,6 +293,8 @@ class IssuePress {
 		// Register Widgets Included in Widget Loader
 		$this->loader->add_action( 'ip_widgets_init', 'IP_Search_Form_Widget', 'register_widget' );
 		$this->loader->add_action( 'ip_widgets_init', 'IP_New_Request_Form_Widget', 'register_widget' );
+
+		$this->loader->add_action( 'ip_template_notices', $ip_public, 'render_template_notices' );
 
 	}
 
@@ -429,6 +446,29 @@ class IssuePress {
 	 */
 	public function get_template_loader() {
 		return $this->template_loader;
+	}
+
+	/**
+	 * Get the error handler.
+	 *
+	 * @since			1.0.0
+	 * @return		Class		The Error Handler Class Instance
+	 */
+	public function get_error_handler() {
+		return $this->errors;
+	}
+
+	/**
+	 * Get the error instance.
+	 *
+	 * @since			1.0.0
+	 * @return		Class		The WP_Error Instance
+	 */
+	public function get_errors() {
+
+		$ip_error_handler = $this->get_error_handler();
+		return $ip_error_handler->get_errors();
+
 	}
 
 }
