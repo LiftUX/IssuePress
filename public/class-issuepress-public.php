@@ -337,6 +337,24 @@ class IssuePress_Public {
 
 
 	/**
+	 * Filter the_content for IssuePress Support Requests
+	 *
+	 * @since			1.0.0
+	 */
+	public function filter_the_content( $content ) {
+		global $post;
+
+		$ip_meta = '';
+		if ( $post->post_type == get_ip_support_request_post_type() ) {
+			$template_loader = $this->plugin->get_template_loader();
+			$template_loader->get_template_part( 'support', 'meta' );
+		}
+
+		return $content;
+
+	}
+
+	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
 	 * @since			1.0.0

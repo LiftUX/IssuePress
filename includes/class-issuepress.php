@@ -296,6 +296,8 @@ class IssuePress {
 
 		$this->loader->add_action( 'ip_template_notices', $ip_public, 'render_template_notices' );
 
+		$this->loader->add_action( 'the_content', $ip_public, 'filter_the_content' );
+
 	}
 
 	/**
