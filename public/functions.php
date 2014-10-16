@@ -16,7 +16,7 @@
  * @since			1.0.0
  */
 function get_ip_support_request_post_type() {
-	return 'ip_support_request';
+	return apply_filters( 'ip_support_request_post_type', 'ip_support_request' );
 
 }
 
@@ -26,7 +26,7 @@ function get_ip_support_request_post_type() {
  * @since			1.0.0
  */
 function get_ip_support_section_taxonomy() {
-	return 'ip_support_section';
+	return apply_filters( 'ip_support_section_taxonomy', 'ip_support_section' );
 }
 
 /**
@@ -35,7 +35,7 @@ function get_ip_support_section_taxonomy() {
  * @since			1.0.0
  */
 function get_ip_support_label_taxonomy() {
-	return 'ip_support_label';
+	return apply_filters( 'ip_support_label_taxonomy', 'ip_support_label' );
 }
 
 
@@ -297,6 +297,29 @@ function ip_get_support_requests_by_status ( $status = 'all', $section = '' ) {
 function get_ip_sections_by_id ( $support_request_id, $args = array() ) {
 
 	return wp_get_post_terms( $support_request_id, get_ip_support_section_taxonomy(), $args );
+
+}
+
+
+/**
+ * Return a string of the support sections for a request ID
+ *
+ * Functions similiarly to the_category()
+ *
+ * @since			1.0.0
+ * @param			$glue
+ * @param			$request_id
+ * @uses			implode()
+ * @return		String		The list of sections joined by the $glue
+ */
+function get_ip_the_sections( $glue = ', ', $request_id ) {
+
+	$section_names = array();
+	$sections = get_ip_sections_by_id( $request_id );
+	foreach( $sections as $section ) {
+		$section_links[] = '<a href="' . esc_url( get_term_link( $section ) ) . '">' . $section->name . '</a>';
+	}
+	return implode( $glue, $section_links );
 
 }
 
