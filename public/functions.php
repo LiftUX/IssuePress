@@ -379,8 +379,7 @@ function ip_new_request_process_fields() {
  */
 function ip_search_process_fields() {
 
-	echo '<input type="hidden" name="action" id="ip_post_action" value="ip-search-support-requests" />';
-	wp_nonce_field( 'ip-search-support-requests' );
+	echo '<input type="hidden" name="post_type" value="ip_support_request" />';
 
 }
 
