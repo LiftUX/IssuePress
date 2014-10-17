@@ -1,5 +1,5 @@
 === IssuePress ===
-Contributors: (this should be a list of wordpress.org userid's)
+Contributors: mattsimo, chriswallace, andrewtaylor-1, upthemes 
 Donate link: http://issuepress.co
 Tags: support, support requests, IssuePress
 Requires at least: 3.6
