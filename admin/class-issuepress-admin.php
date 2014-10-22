@@ -493,13 +493,17 @@ class IssuePress_Admin {
 	 * @since			1.0.0
 	 */
 	public function deferred_admin_notices() {
-		if ($notices = get_option('ip_deferred_admin_notices')) {
-			foreach ($notices as $notice) {
+
+		if ( $notices = get_option( 'ip_deferred_admin_notices' ) ) {
+
+			foreach ( $notices as $notice ) {
 				$class = $notice['class'] ? $notice['class'] : 'updated';
 				echo '<div class="' . $class . '"><p>' . $notice['message'] . '</p></div>';
 			}
+
 			delete_option('ip_deferred_admin_notices');
 		}
+
 	}
 
 
