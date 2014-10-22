@@ -34,6 +34,13 @@
   max-height: 150px;
 }
 
+.ip-support-meta {
+  margin: 0 0 1em 0;
+}
+.ip-support-meta span {
+  padding: 0 1em 0 0;
+}
+
 .ip-template-notice {
   background: #f9f4c7;
   border-radius: 3px;

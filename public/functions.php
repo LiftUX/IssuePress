@@ -116,7 +116,7 @@ function ip_get_clean_template_part ( $slug, $name = null, $load = true ) {
  * @since			1.0.0
  * @return		String		The status (closed|open)
  */
-function get_support_request_status ( $support_request_ID = 0 ) {
+function get_support_request_status ( $support_request_ID = 0, $capitalize = false ) {
 
 	if( empty( $support_request_ID ) ) {
 		return false;
@@ -126,6 +126,10 @@ function get_support_request_status ( $support_request_ID = 0 ) {
 
 	if( empty( $status ) ) {
 		$status = 'open';
+	}
+
+	if( $capitalize ) {
+		$status = ucfirst( $status );
 	}
 
 	return $status;
