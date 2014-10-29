@@ -68,5 +68,9 @@ IssuePress Core is the foundation for a customer support solution, it provides t
 == Changelog ==
 
 = 1.0.0 =
-* Initial Release *
+- *Initial Release*
 
+
+== Upgrade Notice ==
+
+*Initial Release*
